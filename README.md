@@ -1,2 +1,2 @@
-# Plant-vs-Zombie
+# Plants vs Zombies
 Command Line PVZ Game
