@@ -1,7 +1,7 @@
 public abstract class Actor{
-    private boolean isAlive;
-    private int health;
-    private int damage;
-    private String type;
+    protected boolean isAlive;
+    protected int health;
+    protected int damage;
+    protected String type;
 
 }
