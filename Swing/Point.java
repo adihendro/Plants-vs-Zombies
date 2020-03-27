@@ -48,7 +48,7 @@ public class Point {
     }
 
     // Menuliskan titik ke layar dengan format "(x,y)"
-    public void print() {
-      System.out.println("(" + this.x + "," + this.y + ")");
+    public String print() {
+      return ("(" + this.x + "," + this.y + ")");
     }
 }
