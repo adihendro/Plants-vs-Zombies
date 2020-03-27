@@ -14,11 +14,12 @@ public class World extends JPanel implements ActionListener{
     private int pheight = 66;
     private Timer timer;
     private int delay=25;
-    Image background, zombie, sunflower, peashooter, repeater, menu;
+    private Image background, zombie, sunflower, peashooter, repeater, menu;
 
     private Shape shape, r_sunflower, r_peashooter, r_repeater;
     private Point mouse = new Point();
-    boolean po=false, t_sun=false, t_pea=false, t_rep=false;
+    private boolean po=false;
+    private int choice=0;
 
     // ArrayList<item> arr = new ArrayList<item>();
     
@@ -50,15 +51,15 @@ public class World extends JPanel implements ActionListener{
         
         Graphics2D g2 = (Graphics2D) g;
         Graphics2D g3 = (Graphics2D) g;
-        if(t_sun){
+        if(choice==1){
             g2.setComposite(AlphaComposite.SrcOver.derive(0.7f));
             g2.drawImage(sunflower, mouse.x-pwidth/2, mouse.y-(pheight+10)/2, pwidth, pheight+5, this);
             g2.setComposite(AlphaComposite.SrcOver.derive(1f));
-        }else if(t_pea){
+        }else if(choice==2){
             g2.setComposite(AlphaComposite.SrcOver.derive(0.7f));
             g2.drawImage(peashooter, mouse.x-pwidth/2, mouse.y-pheight/2, pwidth, pheight, this);
             g2.setComposite(AlphaComposite.SrcOver.derive(1f));
-        }else if(t_rep){
+        }else if(choice==3){
             g2.setComposite(AlphaComposite.SrcOver.derive(0.7f));
             g2.drawImage(repeater, mouse.x-(pwidth+4)/2, mouse.y-(pheight+4)/2, pwidth+4, pheight+4, this);
             g2.setComposite(AlphaComposite.SrcOver.derive(1f));
@@ -112,29 +113,26 @@ public class World extends JPanel implements ActionListener{
             po = (po) ? false:true;
             // check if mouse clicked plants
             if (r_sunflower.contains(e.getPoint())) {
-                t_pea = false; t_rep = false;
-                t_sun = (t_sun) ? false:true;
+                choice=1;
             }else if(r_peashooter.contains(e.getPoint())) {
-                t_sun = false; t_rep = false;
-                t_pea = (t_pea) ? false:true;
+                choice=2;
             }else if(r_repeater.contains(e.getPoint())) {
-                t_sun = false; t_pea = false;
-                t_rep = (t_rep) ? false:true;
+                choice=3;
             }else{
-                t_sun=false; t_pea=false; t_rep=false;
+                choice=0;
             }
         }
     }
     
 
-    public void mouseClicked(MouseEvent e) { 
-    }  
-    public void mouseEntered(MouseEvent e) {  
-    }  
-    public void mouseExited(MouseEvent e) {  
-    }  
-    public void mouseReleased(MouseEvent e) {  
-    }  
+    // public void mouseClicked(MouseEvent e) { 
+    // }  
+    // public void mouseEntered(MouseEvent e) {  
+    // }  
+    // public void mouseExited(MouseEvent e) {  
+    // }  
+    // public void mouseReleased(MouseEvent e) {  
+    // }  
 
     @Override
     public void actionPerformed(ActionEvent e) {
