@@ -1,8 +1,10 @@
 import java.awt.*;
 import java.awt.event.*;  
 import java.awt.geom.Rectangle2D;
-import javax.swing.*;
 import java.util.ArrayList;
+import java.io.*;
+import javax.swing.*;
+import javax.imageio.ImageIO;
 
 public class World extends JPanel implements ActionListener{
     private float posZombieX = 950;
@@ -10,26 +12,22 @@ public class World extends JPanel implements ActionListener{
     private int pwidth = 60;
     private int pheight = 65;
     private Timer timer;
-    private int delay=8;
+    private int delay=50;
     Image background, zombie, sunflower, peashooter, repeater, menu;
 
-    private Shape shape;
+    private Shape shape, shape2;
     private Point mouse = new Point();
-    private JLabel l;
     boolean po = false;
 
     // ArrayList<item> arr = new ArrayList<item>();
-
+    
     @Override
-    public void paint(Graphics g) {
-        Toolkit t=Toolkit.getDefaultToolkit();
-        background=t.getImage("Assets/Frontyard.png");
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Toolkit t=Toolkit.getDefaultToolkit();  
+        // Image i=t.getImage("p3.gif");  
         zombie=t.getImage("Assets/Zombie.gif");
-        sunflower=t.getImage("Assets/Sunflower.png");
-        peashooter=t.getImage("Assets/Peashooter.png");
-        repeater=t.getImage("Assets/Repeater.png");
-        menu=t.getImage("Assets/Menu.png");
-        g.drawImage(background, 0,0,this);
+        g.drawImage(background, 0,0, this);
         g.drawImage(zombie, Math.round(posZombieX), Math.round(posZombieY), this);
         g.drawImage(menu, 20, 60, 110, 500, this);
         g.drawImage(sunflower, 43, 200, pwidth, pheight, this);
@@ -37,34 +35,60 @@ public class World extends JPanel implements ActionListener{
         g.drawImage(repeater, 43, 440, pwidth, pheight, this);
         
         Graphics2D g2 = (Graphics2D) g;
-        g2.drawString("contains(" + (mouse.x) + ", " + (mouse.y) + ")" , 10, 10);
-        g2.drawString(Boolean.toString(po), 10, 20);
-        g2.setColor(Color.GRAY);
-        // g2.fill(shape);
+        g2.setColor(Color.WHITE);
+        g2.drawString("(" + (mouse.x) + ", " + (mouse.y) + ")" , 10, 20);
+        g2.drawString(Boolean.toString(po), 10, 30);
+        if(po){
+            g2.setColor(Color.GRAY);
+            g2.fill(shape);
+        }else{
+            g2.setColor(Color.BLUE);
+            g2.fill(shape);
+        }
         g.dispose();
     }
-
+    
+    public void getImage(){
+        try{
+            background=ImageIO.read(new File("Assets/Frontyard.png"));
+            sunflower=ImageIO.read(new File("Assets/Sunflower.png"));
+            peashooter=ImageIO.read(new File("Assets/Peashooter.png"));
+            repeater=ImageIO.read(new File("Assets/Repeater.png"));
+            menu=ImageIO.read(new File("Assets/Menu.png"));
+        } catch(IOException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog( null, ex.toString() );
+        }
+    }
+    
     public World(){
         // setFocusable(true);
         timer = new Timer(delay, this);
         timer.start();
+        
+        getImage();        
 
-        shape = new Rectangle2D.Double(140, 140, 200, 200);
-        addMouseListener(new MyMouseListener());
-         
+        shape = new Rectangle2D.Double(140, 140, 100, 100);
+        shape2 = new Rectangle2D.Double(36, 193, pwidth+17, pheight+45);
+        addMouseListener(new MouseListener1());
+
+        this.addMouseMotionListener(new MouseMotionAdapter() {
+            public void mouseMoved(MouseEvent e) {
+                mouse = e.getPoint();
+            }
+        });
     }
-
-    private class MyMouseListener extends MouseAdapter {
+    
+    private class MouseListener1 extends MouseAdapter {
         @Override
         public void mousePressed(MouseEvent e) {
-            if (shape.contains(e.getPoint())) {
-                po = true;
-            }
-            else{
-                po=false;
+            if (shape2.contains(e.getPoint())) {
+                mouse = e.getPoint();
+                po = (po) ? false:true;
             }
         }
     }
+    
 
     public void mouseClicked(MouseEvent e) { 
         mouse = e.getPoint(); 
@@ -82,7 +106,7 @@ public class World extends JPanel implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         timer.start();
-        posZombieX-=0.1;
+        posZombieX-=0.7;
         repaint();
     }
 }
