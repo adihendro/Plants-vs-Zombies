@@ -9,7 +9,8 @@ import java.awt.Toolkit;
 import java.awt.event.*;  
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 
 import javax.swing.*;
 import javax.imageio.ImageIO;
@@ -44,7 +45,6 @@ public class World extends JPanel implements ActionListener{
             public void mouseMoved(MouseEvent e) {
                 mouse.setX(e.getX());
                 mouse.setY(e.getY());
-                // = e.getPoint();
             }
         });
     }
@@ -162,6 +162,7 @@ public class World extends JPanel implements ActionListener{
 
     private void getImg(){
         try{
+            //try to load image
             img[0]=ImageIO.read(new File("Assets/Frontyard.png"));
             img[1]=ImageIO.read(new File("Assets/Menu.png"));
             img[2]=ImageIO.read(new File("Assets/Sunflower.png"));
@@ -174,6 +175,7 @@ public class World extends JPanel implements ActionListener{
     }
 
     private void setImg(){
+        //create rectangle for plant menu
         r_sunflower = new Rectangle2D.Double(36, 190, pwidth+17, pheight+50);
         r_peashooter = new Rectangle2D.Double(36, 190+pheight+50, pwidth+17, pheight+52);
         r_repeater = new Rectangle2D.Double(36, 190+2*pheight+102, pwidth+17, pheight+53);
