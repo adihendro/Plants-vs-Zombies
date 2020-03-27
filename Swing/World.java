@@ -17,6 +17,7 @@ public class World extends JPanel implements ActionListener{
     private Image background, zombie, sunflower, peashooter, repeater, menu;
 
     private Shape shape, r_sunflower, r_peashooter, r_repeater;
+    private Shape[][] field = new Shape[5][9]; // 2D Shape array with 5 rows and 9 columns
     private Point mouse = new Point();
     private boolean po=false;
     private int choice=0;
@@ -53,15 +54,15 @@ public class World extends JPanel implements ActionListener{
         Graphics2D g3 = (Graphics2D) g;
         if(choice==1){
             g2.setComposite(AlphaComposite.SrcOver.derive(0.7f));
-            g2.drawImage(sunflower, mouse.x-pwidth/2, mouse.y-(pheight+10)/2, pwidth, pheight+5, this);
+            g2.drawImage(sunflower, mouse.getX()-pwidth/2, mouse.getY()-(pheight+10)/2, pwidth, pheight+5, this);
             g2.setComposite(AlphaComposite.SrcOver.derive(1f));
         }else if(choice==2){
             g2.setComposite(AlphaComposite.SrcOver.derive(0.7f));
-            g2.drawImage(peashooter, mouse.x-pwidth/2, mouse.y-pheight/2, pwidth, pheight, this);
+            g2.drawImage(peashooter, mouse.getX()-pwidth/2, mouse.getY()-pheight/2, pwidth, pheight, this);
             g2.setComposite(AlphaComposite.SrcOver.derive(1f));
         }else if(choice==3){
             g2.setComposite(AlphaComposite.SrcOver.derive(0.7f));
-            g2.drawImage(repeater, mouse.x-(pwidth+4)/2, mouse.y-(pheight+4)/2, pwidth+4, pheight+4, this);
+            g2.drawImage(repeater, mouse.getX()-(pwidth+4)/2, mouse.getY()-(pheight+4)/2, pwidth+4, pheight+4, this);
             g2.setComposite(AlphaComposite.SrcOver.derive(1f));
         }
         
@@ -74,7 +75,7 @@ public class World extends JPanel implements ActionListener{
         // g3.fill(r_repeater);
 
         g3.setColor(Color.WHITE);
-        g3.drawString("(" + (mouse.x) + ", " + (mouse.y) + ")" , 10, 20);
+        g3.drawString("(" + (mouse.getX()) + ", " + (mouse.getY()) + ")" , 10, 20);
         g3.drawString(Boolean.toString(po), 10, 30);
         if(po){
             g3.setColor(Color.GRAY);
@@ -98,11 +99,19 @@ public class World extends JPanel implements ActionListener{
         r_sunflower = new Rectangle2D.Double(36, 190, pwidth+17, pheight+50);
         r_peashooter = new Rectangle2D.Double(36, 190+pheight+50, pwidth+17, pheight+52);
         r_repeater = new Rectangle2D.Double(36, 190+2*pheight+102, pwidth+17, pheight+53);
+        // for(int i=0;i<5;i++){
+        //     for(int j=0;j<9;j++){
+        //         field[i][j] = new Rectangle2D.Double(36, 190+2*pheight+102, pwidth+17, pheight+53);
+        //     }
+        // }
+
         addMouseListener(new MouseListener1());
 
         this.addMouseMotionListener(new MouseMotionAdapter() {
             public void mouseMoved(MouseEvent e) {
-                mouse = e.getPoint();
+                mouse.setX(e.getX());
+                mouse.setY(e.getY());
+                // = e.getPoint();
             }
         });
     }
