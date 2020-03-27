@@ -3,50 +3,24 @@ import java.awt.event.*;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.io.*;
+
 import javax.swing.*;
 import javax.imageio.ImageIO;
 
 public class World extends JPanel implements ActionListener{
     private float posZombieX = 950;
-    private float posZombieY = 120;
-    private int pwidth = 60;
-    private int pheight = 65;
+    private float posZombieY = 133;
+    private int pwidth = 62;
+    private int pheight = 66;
     private Timer timer;
-    private int delay=50;
+    private int delay=25;
     Image background, zombie, sunflower, peashooter, repeater, menu;
 
-    private Shape shape, shape2;
+    private Shape shape, r_sunflower, r_peashooter, r_repeater;
     private Point mouse = new Point();
-    boolean po = false;
+    boolean po=false, t_sun=false, t_pea=false, t_rep=false;
 
     // ArrayList<item> arr = new ArrayList<item>();
-    
-    @Override
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        Toolkit t=Toolkit.getDefaultToolkit();  
-        // Image i=t.getImage("p3.gif");  
-        zombie=t.getImage("Assets/Zombie.gif");
-        g.drawImage(background, 0,0, this);
-        g.drawImage(zombie, Math.round(posZombieX), Math.round(posZombieY), this);
-        g.drawImage(menu, 20, 60, 110, 500, this);
-        g.drawImage(sunflower, 43, 200, pwidth, pheight, this);
-        g.drawImage(peashooter, 43, 320, pwidth, pheight, this);
-        g.drawImage(repeater, 43, 440, pwidth, pheight, this);
-        
-        Graphics2D g2 = (Graphics2D) g;
-        g2.setColor(Color.WHITE);
-        g2.drawString("(" + (mouse.x) + ", " + (mouse.y) + ")" , 10, 20);
-        g2.drawString(Boolean.toString(po), 10, 30);
-        if(po){
-            g2.setColor(Color.GRAY);
-            g2.fill(shape);
-        }else{
-            g2.setColor(Color.BLUE);
-            g2.fill(shape);
-        }
-        g.dispose();
-    }
     
     public void getImage(){
         try{
@@ -61,6 +35,57 @@ public class World extends JPanel implements ActionListener{
         }
     }
     
+
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Toolkit t=Toolkit.getDefaultToolkit();  
+        zombie=t.getImage("Assets/Zombie.gif");
+        g.drawImage(background, 0,0, this);
+        g.drawImage(zombie, Math.round(posZombieX), Math.round(posZombieY), pwidth+11, pheight+53, this);
+        g.drawImage(menu, 20, 60, 110, 500, this);
+        g.drawImage(sunflower, 43, 200, pwidth, pheight+5, this);
+        g.drawImage(peashooter, 43, 320, pwidth, pheight, this);
+        g.drawImage(repeater, 43, 433, pwidth+4, pheight+4, this);
+        
+        Graphics2D g2 = (Graphics2D) g;
+        Graphics2D g3 = (Graphics2D) g;
+        if(t_sun){
+            g2.setComposite(AlphaComposite.SrcOver.derive(0.7f));
+            g2.drawImage(sunflower, mouse.x-pwidth/2, mouse.y-(pheight+10)/2, pwidth, pheight+5, this);
+            g2.setComposite(AlphaComposite.SrcOver.derive(1f));
+        }else if(t_pea){
+            g2.setComposite(AlphaComposite.SrcOver.derive(0.7f));
+            g2.drawImage(peashooter, mouse.x-pwidth/2, mouse.y-pheight/2, pwidth, pheight, this);
+            g2.setComposite(AlphaComposite.SrcOver.derive(1f));
+        }else if(t_rep){
+            g2.setComposite(AlphaComposite.SrcOver.derive(0.7f));
+            g2.drawImage(repeater, mouse.x-(pwidth+4)/2, mouse.y-(pheight+4)/2, pwidth+4, pheight+4, this);
+            g2.setComposite(AlphaComposite.SrcOver.derive(1f));
+        }
+        
+        // g3.setComposite(AlphaComposite.SrcOver.derive(0.7f));
+        // g3.setColor(Color.RED);
+        // g3.fill(r_sunflower);
+        // g3.setColor(Color.YELLOW);
+        // g3.fill(r_peashooter);
+        // g3.setColor(Color.ORANGE);
+        // g3.fill(r_repeater);
+
+        g3.setColor(Color.WHITE);
+        g3.drawString("(" + (mouse.x) + ", " + (mouse.y) + ")" , 10, 20);
+        g3.drawString(Boolean.toString(po), 10, 30);
+        if(po){
+            g3.setColor(Color.GRAY);
+            g3.fill(shape);
+        }else{
+            g3.setColor(Color.BLUE);
+            g3.fill(shape);
+        }
+        g.dispose();
+    }
+    
+  
     public World(){
         // setFocusable(true);
         timer = new Timer(delay, this);
@@ -69,7 +94,9 @@ public class World extends JPanel implements ActionListener{
         getImage();        
 
         shape = new Rectangle2D.Double(140, 140, 100, 100);
-        shape2 = new Rectangle2D.Double(36, 193, pwidth+17, pheight+45);
+        r_sunflower = new Rectangle2D.Double(36, 190, pwidth+17, pheight+50);
+        r_peashooter = new Rectangle2D.Double(36, 190+pheight+50, pwidth+17, pheight+52);
+        r_repeater = new Rectangle2D.Double(36, 190+2*pheight+102, pwidth+17, pheight+53);
         addMouseListener(new MouseListener1());
 
         this.addMouseMotionListener(new MouseMotionAdapter() {
@@ -82,31 +109,37 @@ public class World extends JPanel implements ActionListener{
     private class MouseListener1 extends MouseAdapter {
         @Override
         public void mousePressed(MouseEvent e) {
-            if (shape2.contains(e.getPoint())) {
-                mouse = e.getPoint();
-                po = (po) ? false:true;
+            po = (po) ? false:true;
+            // check if mouse clicked plants
+            if (r_sunflower.contains(e.getPoint())) {
+                t_pea = false; t_rep = false;
+                t_sun = (t_sun) ? false:true;
+            }else if(r_peashooter.contains(e.getPoint())) {
+                t_sun = false; t_rep = false;
+                t_pea = (t_pea) ? false:true;
+            }else if(r_repeater.contains(e.getPoint())) {
+                t_sun = false; t_pea = false;
+                t_rep = (t_rep) ? false:true;
+            }else{
+                t_sun=false; t_pea=false; t_rep=false;
             }
         }
     }
     
 
     public void mouseClicked(MouseEvent e) { 
-        mouse = e.getPoint(); 
     }  
     public void mouseEntered(MouseEvent e) {  
     }  
     public void mouseExited(MouseEvent e) {  
     }  
-    // public void mousePressed(MouseEvent e) {  
-    //     l.setText("Mouse Pressed");  
-    // }  
     public void mouseReleased(MouseEvent e) {  
     }  
 
     @Override
     public void actionPerformed(ActionEvent e) {
         timer.start();
-        posZombieX-=0.7;
+        posZombieX-=0.35;
         repaint();
     }
 }
