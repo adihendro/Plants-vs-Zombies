@@ -23,18 +23,14 @@ import javax.imageio.ImageIO;
 public class World extends JPanel implements ActionListener{
     private float posZombieX=950f, posZombieY=133f; //just for testing
     private int sunX, sunY=-85; //falling sun x and y position
-=======
-    private float posZombieX=950f, posZombieY=133f; //just for testing
-    private int sunX, sunY=-85; //falling sun x and y position
->>>>>>> ed785b3abb1a1b097860d17113b605d75868c750
     //width and height for (p)eashooter, (s)unflower, (r)epeater
     private int pwidth=62, pheight=66, swidth=pwidth, sheight=pheight+5, rwidth=pwidth+2, rheight=pheight+2;
     private Timer timer; //set timer
     private int delay=25; //repaint time
 
-    //img: 0.background, 1.sun, 2.sunflower, 3.peashooter, 4.repeater, 5.sungif, 
-    //6.peagif, 7.repgif, 8.zombie, 9.zombief, 10.pea, 11.wasted, 12.try again
-    private Image[] img = new Image[13];
+    //img: 0.background, 1.sun, 2.sunflower, 3.peashooter, 4.repeater, 5.sungif, 6.peagif, 7.repgif, 
+    //8.zombie, 9.zombief, 10.pea, 11.wasted, 12.try again, 13.sun_g, 14.pea_g, 15.rep_g
+    private Image[] img = new Image[16];
     private Rectangle r_sunflower, r_peashooter, r_repeater, r_pea, r_try, r_zombie; //rectangle for plants menu and others
     private Ellipse2D e_sun; //ellipse for falling sun
     private Shape[][] field = new Shape[5][9]; //rectangle array with 5 rows and 9 columns for field area
@@ -96,6 +92,16 @@ public class World extends JPanel implements ActionListener{
         img[9]=t.getImage("Assets/Zombief.gif");
         img[10]=t.getImage("Assets/Pea.gif");
         g.drawImage(img[0], 0, 0, 1024, 626, this); //draw background
+        
+        if(true){
+            g.drawImage(img[13], 42, 196, swidth, sheight, this); //draw sunflower g
+            if(true){
+                g.drawImage(img[14], 41, 319, pwidth+2, pheight+1, this); //draw peashooter g
+                if(true){
+                    g.drawImage(img[15], 39, 431, rwidth+4, rheight+4, this); //draw repeater g
+                }
+            }
+        }
            
         Graphics2D g2 = (Graphics2D) g;
         //sunflower points
@@ -171,7 +177,7 @@ public class World extends JPanel implements ActionListener{
         // show rectangle field
         // for(int i=0;i<9;i++){
             // for(int j=0;j<5;j++){
-                // g3.fill(field[i][j]);
+                // g2.fill(field[i][j]);
         //     }
         // }
         g2.drawString(mouse.print(), 10, 20); //testing coordinate
@@ -181,6 +187,9 @@ public class World extends JPanel implements ActionListener{
         // if(zombie.getX < 245){
         //     play=false;
             g.drawImage(img[11],365,130,this); //game over text
+            g2.setComposite(AlphaComposite.SrcOver.derive(0.7f));
+            g2.fill(r_try);
+            g2.setComposite(AlphaComposite.SrcOver.derive(1f));
             g.drawImage(img[12],390,350,250,28,this); //try again text
 
         // }
@@ -243,6 +252,9 @@ public class World extends JPanel implements ActionListener{
             img[4]=ImageIO.read(new File("Assets/Repeater.png"));
             img[11]=ImageIO.read(new File("Assets/Wasted.png"));
             img[12]=ImageIO.read(new File("Assets/Tryagain.png"));
+            img[13]=ImageIO.read(new File("Assets/Sunflower_g.png"));
+            img[14]=ImageIO.read(new File("Assets/Peashooter_g.png"));
+            img[15]=ImageIO.read(new File("Assets/Repeater_g.png"));
             font = new Font("Assets/Chalkboard.ttc", Font.BOLD, 22); //load font
         } catch(IOException ex) {
             ex.printStackTrace();
@@ -256,7 +268,7 @@ public class World extends JPanel implements ActionListener{
         r_peashooter = new Rectangle(30, 190+pheight+50, pwidth+25, pheight+52);
         r_repeater = new Rectangle(30, 190+2*pheight+95, pwidth+25, pheight+53);
         r_pea = new Rectangle(0, 0, 20, 20);
-        r_try = new Rectangle(0, 0, 20, 20);
+        r_try = new Rectangle(389, 347, 253, 35);
         //create ellipse for sun
         e_sun = new Ellipse2D.Float(sunX, sunY, 80, 80);
 
