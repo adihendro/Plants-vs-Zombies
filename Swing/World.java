@@ -8,7 +8,8 @@ import java.awt.Rectangle;
 import java.awt.geom.Ellipse2D;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-// import java.util.ArrayList;
+import java.util.List;
+import java.util.ArrayList;
 import java.io.File;
 import java.io.IOException;
 import java.lang.Math;
@@ -19,28 +20,29 @@ import javax.swing.Timer;
 import javax.imageio.ImageIO;
 
 public class World extends JPanel implements ActionListener{
-    private float posZombieX=950f, posZombieY=133f, sunX, sunY=-85f;
+    private float posZombieX=950f, posZombieY=133f;
+    private int sunX, sunY=-85;
     //width and height for (p)eashooter, (s)unflower, (r)epeater
     private int pwidth=62, pheight=66, swidth=pwidth, sheight=pheight+5, rwidth=pwidth+2, rheight=pheight+2;
-    // private int zwidth
+    //private int zwidth
     private Timer timer;
     private int delay=25;
     //img: 0.background, 1.menu, 2.sunflower, 3.peashooter, 4.repeater, 5.sungif, 6.peagif, 7.repgif, 8.zombie, 9.sun
     private Image[] img = new Image[10];
-    private Rectangle r_sunflower, r_peashooter, r_repeater, r_zombie; // rectangle for plants menu and others
+    private Rectangle r_sunflower, r_peashooter, r_repeater, r_zombie; //rectangle for plants menu and others
     private Ellipse2D e_sun;
-    private Shape[][] field = new Shape[5][9]; // rectangle array with 5 rows and 9 columns for field area
+    private Shape[][] field = new Shape[5][9]; //rectangle array with 5 rows and 9 columns for field area
     private Point mouse = new Point();
-    private Point[][] plant_field = new Point[5][9]; // array for placing plants
+    private Point[][] plant_field = new Point[5][9]; //array for placing plants
     private int choice=0, trans=0, i=0,j=0, xa,ya;
-    private long startTime, elapsed; // for timer
-    // int seconds;
+    private long startTime, elapsed, sun_elapsed; //for timer
+    private boolean b1=false, b2=false;
+    //int seconds;
+    // private List<Integer> suns = new ArrayList<Integer>(); //store sunX data
 
-    // private boolean po=false;
 
-    // public class ListMap<K, V> implements Map<K, V> {
+    //public class ListMap<K, V> implements Map<K, V> {
 
-    // ArrayList<item> arr = new ArrayList<item>();
 
     public World(){
         // setFocusable(true);
@@ -52,6 +54,8 @@ public class World extends JPanel implements ActionListener{
         getImg();     
         setImg(); 
 
+        sunX=(int)(Math.random() * (900-270+1)+270); //generate sunX from x=270 to x=900
+
         addMouseListener(new MListener1());
 
         this.addMouseMotionListener(new MouseMotionAdapter() {
@@ -62,19 +66,20 @@ public class World extends JPanel implements ActionListener{
         });
     }
 
+
     @Override
     public void actionPerformed(ActionEvent e) {
-        elapsed=(System.currentTimeMillis()-startTime)/1000;
+        elapsed=(System.currentTimeMillis()-startTime)/1000; // count time in seconds
         // seconds++;
         // timer.setInitialDelay((int)(startTime+seconds*1000-now));
-
         timer.start();
         posZombieX-=0.35;
         
-        if(elapsed>=4){
-            sunX=(float)(Math.random() * (900-270+1)+270); // generate sun from x=270 to x=900
-            sunY+=1;
+        if(elapsed>1 && elapsed%6==0){ //drop sun every 6 seconds
+            b1=true;
         }
+
+
         // r_zombie.setLocation(Math.round(posZombieX), Math.round(posZombieY));
         r_zombie = new Rectangle(Math.round(posZombieX)+43, Math.round(posZombieY)+60, 20, 40);
 
@@ -127,9 +132,16 @@ public class World extends JPanel implements ActionListener{
             g.drawImage(img[8], Math.round(posZombieX), Math.round(posZombieY), pwidth+11, pheight+53, this); //zombie
         }
         
-        if(elapsed>=4){
-            g.drawImage(img[9],Math.round(sunX),Math.round(sunY),80,80,this);
-
+        if(b1){ //drop sun every 6 seconds
+            if(sunY<470){ 
+                g.drawImage(img[9],sunX,sunY,80,80,this);
+                e_sun = new Ellipse2D.Float(sunX, sunY, 80, 80);
+                sunY+=1;
+            }else{ //sun reach bottom
+                sunY=-85;
+                sunX=(int)(Math.random() * (900-270+1)+270); //generate sunX from x=270 to x=900
+                b1=false;
+            }
         }
 
 
@@ -153,7 +165,6 @@ public class World extends JPanel implements ActionListener{
         //     }
         // }
         g3.drawString(mouse.print(), 10, 20);
-        g3.drawString(Integer.toString(plant_field[xa][ya].getX()), 10, 30);
         g.dispose();
     }
     
@@ -161,28 +172,33 @@ public class World extends JPanel implements ActionListener{
     private class MListener1 extends MouseAdapter {
         @Override
         public void mousePressed(MouseEvent e) {
-            // check if mouse clicked plants
-            if (r_sunflower.contains(e.getPoint())) {
-                choice= (choice==1) ? 0:1;
-                trans=1;
-            }else if(r_peashooter.contains(e.getPoint())) {
-                choice= (choice==2) ? 0:2;
-                trans=1;
-            }else if(r_repeater.contains(e.getPoint())) {
-                choice= (choice==3) ? 0:3;
-                trans=1;
-            }else if(trans==1 && (choice==1 || choice==2 || choice==3)){
-                trans=2;
-                for(i=0;i<5;i++){
-                    for(j=0;j<9;j++){
-                        if(field[i][j].contains(e.getPoint())){
-                            xa=i;
-                            ya=j;
-                            i=10;j=9; //break
+            if(e_sun.contains(e.getPoint())){
+                sunY=470;
+                //add sun points;
+            }else{ // check if mouse clicked plants
+                if (r_sunflower.contains(e.getPoint())) {
+                    choice= (choice==1) ? 0:1;
+                    trans=1;
+                }else if(r_peashooter.contains(e.getPoint())) {
+                    choice= (choice==2) ? 0:2;
+                    trans=1;
+                }else if(r_repeater.contains(e.getPoint())) {
+                    choice= (choice==3) ? 0:3;
+                    trans=1;
+                }else if(trans==1 && (choice==1 || choice==2 || choice==3)){
+                    trans=2;
+                    for(i=0;i<5;i++){
+                        for(j=0;j<9;j++){
+                            if(field[i][j].contains(e.getPoint())){
+                                xa=i;
+                                ya=j;
+                                i=10;j=9; //break
+                            }
                         }
                     }
+                    if(i==5){trans=0;} //not selected a plant-able area
                 }
-                if(i==5){trans=0;} //not selected a plant-able area
+
             }
         }
     }
@@ -218,8 +234,8 @@ public class World extends JPanel implements ActionListener{
         r_sunflower = new Rectangle(30, 185, pwidth+25, pheight+55);
         r_peashooter = new Rectangle(30, 190+pheight+50, pwidth+25, pheight+52);
         r_repeater = new Rectangle(30, 190+2*pheight+95, pwidth+25, pheight+53);
+        e_sun = new Ellipse2D.Float(sunX, sunY, 80, 80);
         
-
         //create rectangle for field
         int[] fw = {0,90,165,250,330,410,492,570,651,749}; //field width
         int[] fh = {0,118,215,323,405,516}; //field height
