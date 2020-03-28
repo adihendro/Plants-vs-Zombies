@@ -27,9 +27,9 @@ public class World extends JPanel implements ActionListener{
     //private int zwidth
     private Timer timer;
     private int delay=25;
-    //img: 0.background, 1.menu, 2.sunflower, 3.peashooter, 4.repeater, 5.sungif, 6.peagif, 7.repgif, 8.zombie, 9.sun
-    private Image[] img = new Image[10];
-    private Rectangle r_sunflower, r_peashooter, r_repeater, r_zombie; //rectangle for plants menu and others
+    //img: 0.background, 1.sun, 2.sunflower, 3.peashooter, 4.repeater, 5.sungif, 6.peagif, 7.repgif, 8.zombie, 9.zombief, 10.pea
+    private Image[] img = new Image[11];
+    private Rectangle r_sunflower, r_peashooter, r_repeater, r_pea, r_zombie; //rectangle for plants menu and others
     private Ellipse2D e_sun;
     private Shape[][] field = new Shape[5][9]; //rectangle array with 5 rows and 9 columns for field area
     private Point mouse = new Point();
@@ -37,7 +37,6 @@ public class World extends JPanel implements ActionListener{
     private int choice=0, trans=0, i=0,j=0, xa,ya;
     private long startTime, elapsed, sun_elapsed; //for timer
     private boolean b1=false, b2=false;
-    //int seconds;
     // private List<Integer> suns = new ArrayList<Integer>(); //store sunX data
 
 
@@ -47,7 +46,6 @@ public class World extends JPanel implements ActionListener{
     public World(){
         // setFocusable(true);
         startTime=System.currentTimeMillis();
-        // seconds=1;
         timer = new Timer(delay, this);
         timer.start();
         
@@ -70,8 +68,6 @@ public class World extends JPanel implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         elapsed=(System.currentTimeMillis()-startTime)/1000; // count time in seconds
-        // seconds++;
-        // timer.setInitialDelay((int)(startTime+seconds*1000-now));
         timer.start();
         posZombieX-=0.35;
         
@@ -95,14 +91,12 @@ public class World extends JPanel implements ActionListener{
         img[6]=t.getImage("Assets/Peashooter.gif");
         img[7]=t.getImage("Assets/Repeater.gif");
         img[8]=t.getImage("Assets/Zombie.gif");
+        img[9]=t.getImage("Assets/Zombief.gif");
+        img[10]=t.getImage("Assets/Pea.gif");
         g.drawImage(img[0], 0, 0, 1024, 626, this); //background
-        // g.drawImage(img[1], 22, 60, 105, 487, this); //menu
-        // g.drawImage(img[2], 43, 200, swidth, sheight, this); //sunflower
-        // g.drawImage(img[3], 43, 320, pwidth, pheight, this); //peashooter
-        // g.drawImage(img[4], 43, 433, rwidth, rheight, this); //repeater
 
         Graphics2D g2 = (Graphics2D) g;
-        Graphics2D g3 = (Graphics2D) g;
+        
         // make a transparent plant selection which follows mouse
         if(trans==1){ //transparent plant
             if(choice==1){ //sunflower
@@ -131,10 +125,20 @@ public class World extends JPanel implements ActionListener{
         if(!r_zombie.intersects(field[1][6].getBounds2D())){
             g.drawImage(img[8], Math.round(posZombieX), Math.round(posZombieY), pwidth+11, pheight+53, this); //zombie
         }
-        
+
+        g.drawImage(img[9],900,130,this);
+
+        // for(i=0;i<5;i++){
+        //     for(j=0;j<9;j++){
+            //     }
+            // }
+        // g.drawImage(img[10], plant_field[i][j].getX()+23, plant_field[i][j].getY()-19, this);
+        // r_pea = new Rectangle(plant_field[i][j].getX()+23, plant_field[i][j].getY()-19, 20, 20);
+
+            
         if(b1){ //drop sun every 6 seconds
             if(sunY<470){ 
-                g.drawImage(img[9],sunX,sunY,80,80,this);
+                g.drawImage(img[1],sunX,sunY,80,80,this);
                 e_sun = new Ellipse2D.Float(sunX, sunY, 80, 80);
                 sunY+=1;
             }else{ //sun reach bottom
@@ -154,7 +158,7 @@ public class World extends JPanel implements ActionListener{
         // g3.setColor(Color.ORANGE);
         // g3.fill(r_repeater);
         
-        g3.setColor(Color.WHITE);
+        g2.setColor(Color.WHITE);
         // g3.setComposite(AlphaComposite.SrcOver.derive(0.7f));
         // g3.fill(r_zombie);
 
@@ -164,7 +168,7 @@ public class World extends JPanel implements ActionListener{
                 // g3.fill(field[i][j]);
         //     }
         // }
-        g3.drawString(mouse.print(), 10, 20);
+        g2.drawString(mouse.print(), 10, 20);
         g.dispose();
     }
     
@@ -202,8 +206,6 @@ public class World extends JPanel implements ActionListener{
             }
         }
     }
-    
-
     // public void mouseClicked(MouseEvent e) { 
     // }  
     // public void mouseEntered(MouseEvent e) {  
@@ -215,14 +217,12 @@ public class World extends JPanel implements ActionListener{
 
 
     private void getImg(){
-        try{
-            //try to load image
+        try{ //try to load image
             img[0]=ImageIO.read(new File("Assets/Background.jpg"));
-            // img[1]=ImageIO.read(new File("Assets/Menu.png"));
+            img[1]=ImageIO.read(new File("Assets/Sun.png"));
             img[2]=ImageIO.read(new File("Assets/Sunflower.png"));
             img[3]=ImageIO.read(new File("Assets/Peashooter.png"));
             img[4]=ImageIO.read(new File("Assets/Repeater.png"));
-            img[9]=ImageIO.read(new File("Assets/Sun.png"));
         } catch(IOException ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(null, ex.toString());
@@ -230,10 +230,12 @@ public class World extends JPanel implements ActionListener{
     }
 
     private void setImg(){
-        //create rectangle for plant menu
+        //create rectangle for plant menu and peas
         r_sunflower = new Rectangle(30, 185, pwidth+25, pheight+55);
         r_peashooter = new Rectangle(30, 190+pheight+50, pwidth+25, pheight+52);
         r_repeater = new Rectangle(30, 190+2*pheight+95, pwidth+25, pheight+53);
+        r_pea = new Rectangle(0, 0, 20, 20);
+        //create ellipse for sun
         e_sun = new Ellipse2D.Float(sunX, sunY, 80, 80);
         
         //create rectangle for field
@@ -246,8 +248,5 @@ public class World extends JPanel implements ActionListener{
                 plant_field[i][j] = new Point(296+j*81,117+i*98);
             }
         }
-
-        //create oval for peas
-        // Shape shape = new Ellipse2D.Double(10, 10, 90, 90);
     }
 }
