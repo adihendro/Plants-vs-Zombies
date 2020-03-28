@@ -2,6 +2,7 @@ import java.awt.event.*;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Image;
+import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.Shape;
 import java.awt.Rectangle;
@@ -37,6 +38,7 @@ public class World extends JPanel implements ActionListener{
     private int choice=0, trans=0, i=0,j=0, xa,ya;
     private long startTime, elapsed, sun_elapsed; //for timer
     private boolean bsun=false, play=true;
+    private Font font;
     // private List<Integer> suns = new ArrayList<Integer>(); //store sunX data
 
 
@@ -130,8 +132,7 @@ public class World extends JPanel implements ActionListener{
         //     for(j=0;j<9;j++){
             //     }
             // }
-            
-        g.drawImage(img[8], Math.round(posZombieX), plant_field[i][j].getY()-82, pwidth+11, pheight+53, this); //zombie
+        g.drawImage(img[8], Math.round(posZombieX), plant_field[2][6].getY()-82, pwidth+11, pheight+53, this); //zombie
         // g.drawImage(img[10], plant_field[i][j].getX()+23, plant_field[i][j].getY()-19, this);
         // r_pea = new Rectangle(plant_field[i][j].getX()+23, plant_field[i][j].getY()-19, 20, 20);
 
@@ -157,8 +158,8 @@ public class World extends JPanel implements ActionListener{
         // g2.fill(r_repeater);
         
         g2.setColor(Color.WHITE);
-        g2.setComposite(AlphaComposite.SrcOver.derive(0.7f));
-        g2.fill(r_zombie);
+        // g2.setComposite(AlphaComposite.SrcOver.derive(0.7f));
+        // g2.fill(r_zombie);
 
         // show rectangle field
         // for(int i=0;i<9;i++){
@@ -167,6 +168,11 @@ public class World extends JPanel implements ActionListener{
         //     }
         // }
         g2.drawString(mouse.print(), 10, 20);
+        
+        g2.setFont(font); 
+        g2.setColor(Color.BLACK);
+        g2.drawString("0", 66, 166);
+
 
         //game over
         // if(zombie.getX < 245){
@@ -227,13 +233,14 @@ public class World extends JPanel implements ActionListener{
 
 
     private void getImg(){
-        try{ //try to load image
+        try{ //try to load image and font
             img[0]=ImageIO.read(new File("Assets/Background.jpg"));
             img[1]=ImageIO.read(new File("Assets/Sun.png"));
             img[2]=ImageIO.read(new File("Assets/Sunflower.png"));
             img[3]=ImageIO.read(new File("Assets/Peashooter.png"));
             img[4]=ImageIO.read(new File("Assets/Repeater.png"));
             img[11]=ImageIO.read(new File("Assets/Wasted.png"));
+            font = new Font("Assets/Chalkboard.ttc", Font.BOLD, 22);
         } catch(IOException ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(null, ex.toString());
