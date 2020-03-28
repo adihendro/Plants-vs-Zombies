@@ -11,7 +11,7 @@ protected void setHealth(int  health){
 protected void setDamage (int damage){
     zombieDamage = damage;
 }
-}
+
 protected void setSpeed (int speed){
     if(isTouching(Plant.class)){
         zombieSpeed=0;
