@@ -93,6 +93,7 @@ public class World extends JPanel implements ActionListener{
             }
         }
         
+        // show plant menu rectangle
         // g3.setComposite(AlphaComposite.SrcOver.derive(0.7f));
         // g3.setColor(Color.RED);
         // g3.fill(r_sunflower);
@@ -191,5 +192,7 @@ public class World extends JPanel implements ActionListener{
             }
         }
 
+        //create oval for peas
+        Shape shape = new Ellipse2D.Double(10, 10, 90, 90);
     }
 }
