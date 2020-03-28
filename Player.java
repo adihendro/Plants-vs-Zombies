@@ -23,7 +23,7 @@ public static void setCredits(int credits){
     sunCredits = credits;
 }
 //getter jumlah suncredit dari player
-pblic static void getCredits(){
+public static void getCredits(){
     return sunCredits;
 }
 // getter world

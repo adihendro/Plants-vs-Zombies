@@ -28,9 +28,10 @@ public class World extends JPanel implements ActionListener{
     private Timer timer; //set timer
     private int delay=25; //repaint time
 
-    //img: 0.background, 1.sun, 2.sunflower, 3.peashooter, 4.repeater, 5.sungif, 6.peagif, 7.repgif, 8.zombie, 9.zombief, 10.pea
-    private Image[] img = new Image[12];
-    private Rectangle r_sunflower, r_peashooter, r_repeater, r_pea, r_zombie; //rectangle for plants menu and others
+    //img: 0.background, 1.sun, 2.sunflower, 3.peashooter, 4.repeater, 5.sungif, 
+    //6.peagif, 7.repgif, 8.zombie, 9.zombief, 10.pea, 11.wasted, 12.try again
+    private Image[] img = new Image[13];
+    private Rectangle r_sunflower, r_peashooter, r_repeater, r_pea, r_try, r_zombie; //rectangle for plants menu and others
     private Ellipse2D e_sun; //ellipse for falling sun
     private Shape[][] field = new Shape[5][9]; //rectangle array with 5 rows and 9 columns for field area
     private Point mouse = new Point(); //point for mouse position
@@ -177,7 +178,8 @@ public class World extends JPanel implements ActionListener{
         //game over
         // if(zombie.getX < 245){
         //     play=false;
-        //     g.drawImage(img[11],365,150,this); //game over text
+            g.drawImage(img[11],365,130,this); //game over text
+            g.drawImage(img[12],390,350,250,28,this); //try again text
 
         // }
         
@@ -218,7 +220,9 @@ public class World extends JPanel implements ActionListener{
                     }
                 }
             }else{ //the game is not playing
-
+                if (r_try.contains(e.getPoint())) { //click try again
+                    play=true;
+                }
             }
         }
     }
@@ -236,6 +240,7 @@ public class World extends JPanel implements ActionListener{
             img[3]=ImageIO.read(new File("Assets/Peashooter.png"));
             img[4]=ImageIO.read(new File("Assets/Repeater.png"));
             img[11]=ImageIO.read(new File("Assets/Wasted.png"));
+            img[12]=ImageIO.read(new File("Assets/Tryagain.png"));
             font = new Font("Assets/Chalkboard.ttc", Font.BOLD, 22); //load font
         } catch(IOException ex) {
             ex.printStackTrace();
@@ -244,11 +249,12 @@ public class World extends JPanel implements ActionListener{
     }
 
     private void init(){
-        //create rectangle for plant menu and peas
+        //create rectangle for plant menu, peas, and try again
         r_sunflower = new Rectangle(30, 185, pwidth+25, pheight+55);
         r_peashooter = new Rectangle(30, 190+pheight+50, pwidth+25, pheight+52);
         r_repeater = new Rectangle(30, 190+2*pheight+95, pwidth+25, pheight+53);
         r_pea = new Rectangle(0, 0, 20, 20);
+        r_try = new Rectangle(0, 0, 20, 20);
         //create ellipse for sun
         e_sun = new Ellipse2D.Float(sunX, sunY, 80, 80);
 
