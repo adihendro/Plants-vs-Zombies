@@ -5,6 +5,7 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.Shape;
 import java.awt.Rectangle;
+import java.awt.geom.Ellipse2D;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 // import java.util.ArrayList;
@@ -12,23 +13,28 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.Math;
 
-import javax.swing.*;
+import javax.swing.JPanel;
+import javax.swing.JOptionPane;
+import javax.swing.Timer;
 import javax.imageio.ImageIO;
 
 public class World extends JPanel implements ActionListener{
-    private float posZombieX=950, posZombieY=133;
+    private float posZombieX=950f, posZombieY=133f, sunX, sunY=-85f;
     //width and height for (p)eashooter, (s)unflower, (r)epeater
     private int pwidth=62, pheight=66, swidth=pwidth, sheight=pheight+5, rwidth=pwidth+2, rheight=pheight+2;
     // private int zwidth
     private Timer timer;
     private int delay=25;
-    //img: 0.background, 1.menu, 2.sunflower, 3.peashooter, 4.repeater, 5.sungif, 6.peagif, 7.repgif, 8.zombie;
-    private Image[] img = new Image[9];
-    private Rectangle r_sunflower, r_peashooter, r_repeater, r_zombie; // rectangle for plants menu
+    //img: 0.background, 1.menu, 2.sunflower, 3.peashooter, 4.repeater, 5.sungif, 6.peagif, 7.repgif, 8.zombie, 9.sun
+    private Image[] img = new Image[10];
+    private Rectangle r_sunflower, r_peashooter, r_repeater, r_zombie; // rectangle for plants menu and others
+    private Ellipse2D e_sun;
     private Shape[][] field = new Shape[5][9]; // rectangle array with 5 rows and 9 columns for field area
     private Point mouse = new Point();
     private Point[][] plant_field = new Point[5][9]; // array for placing plants
     private int choice=0, trans=0, i=0,j=0, xa,ya;
+    private long startTime, elapsed; // for timer
+    // int seconds;
 
     // private boolean po=false;
 
@@ -38,6 +44,8 @@ public class World extends JPanel implements ActionListener{
 
     public World(){
         // setFocusable(true);
+        startTime=System.currentTimeMillis();
+        // seconds=1;
         timer = new Timer(delay, this);
         timer.start();
         
@@ -56,8 +64,17 @@ public class World extends JPanel implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        elapsed=(System.currentTimeMillis()-startTime)/1000;
+        // seconds++;
+        // timer.setInitialDelay((int)(startTime+seconds*1000-now));
+
         timer.start();
         posZombieX-=0.35;
+        
+        if(elapsed>=4){
+            sunX=(float)(Math.random() * (900-270+1)+270); // generate sun from x=270 to x=900
+            sunY+=1;
+        }
         // r_zombie.setLocation(Math.round(posZombieX), Math.round(posZombieY));
         r_zombie = new Rectangle(Math.round(posZombieX)+43, Math.round(posZombieY)+60, 20, 40);
 
@@ -107,8 +124,14 @@ public class World extends JPanel implements ActionListener{
         }
 
         if(!r_zombie.intersects(field[1][6].getBounds2D())){
-            // g.drawImage(img[8], Math.round(posZombieX), Math.round(posZombieY), pwidth+11, pheight+53, this); //zombie
+            g.drawImage(img[8], Math.round(posZombieX), Math.round(posZombieY), pwidth+11, pheight+53, this); //zombie
         }
+        
+        if(elapsed>=4){
+            g.drawImage(img[9],Math.round(sunX),Math.round(sunY),80,80,this);
+
+        }
+
 
         
         // show plant menu rectangle
@@ -129,8 +152,8 @@ public class World extends JPanel implements ActionListener{
                 // g3.fill(field[i][j]);
         //     }
         // }
-        // g3.drawString(mouse.print(), 10, 20);
-        // g3.drawString(Integer.toString(plant_field[xa][ya].getX()), 10, 30);
+        g3.drawString(mouse.print(), 10, 20);
+        g3.drawString(Integer.toString(plant_field[xa][ya].getX()), 10, 30);
         g.dispose();
     }
     
@@ -183,6 +206,7 @@ public class World extends JPanel implements ActionListener{
             img[2]=ImageIO.read(new File("Assets/Sunflower.png"));
             img[3]=ImageIO.read(new File("Assets/Peashooter.png"));
             img[4]=ImageIO.read(new File("Assets/Repeater.png"));
+            img[9]=ImageIO.read(new File("Assets/Sun.png"));
         } catch(IOException ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(null, ex.toString());
