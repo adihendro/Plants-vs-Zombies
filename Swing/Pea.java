@@ -4,7 +4,11 @@ public class Pea{
     
     public Pea(String type){
         this.type=type;
-        if(type.equals("Peashooter")){damage=10;}
-        else if(type.equals("Repeater")){damage=8;}
+        if(type.equals("Peashooter")){
+        	damage=10;
+        }
+        else if(type.equals("Repeater")){
+        	damage=8;
+        }
     }
 }
