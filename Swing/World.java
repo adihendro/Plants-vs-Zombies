@@ -22,8 +22,13 @@ import javax.imageio.ImageIO;
 
 public class World extends JPanel implements ActionListener{
 <<<<<<< HEAD
+
     private float posZombieX=950f, posZombieY=133f; // Ini untuk coba-coba masukin zombienya
     private int sunX, sunY=-85;
+=======
+    private float posZombieX=950f, posZombieY=133f; //just for testing
+    private int sunX, sunY=-85; //falling sun x and y position
+>>>>>>> ed785b3abb1a1b097860d17113b605d75868c750
 =======
     private float posZombieX=950f, posZombieY=133f; //just for testing
     private int sunX, sunY=-85; //falling sun x and y position
@@ -46,6 +51,10 @@ public class World extends JPanel implements ActionListener{
     private long startTime, elapsed, sun_elapsed; //for timer
     private boolean bsun=false, play=true;
     // private List<Integer> suns = new ArrayList<Integer>(); //store sunX data
+<<<<<<< HEAD
+=======
+
+>>>>>>> ed785b3abb1a1b097860d17113b605d75868c750
     //public class ListMap<K, V> implements Map<K, V> {
 
     public World(){
