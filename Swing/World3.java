@@ -74,10 +74,10 @@ public class World extends JPanel implements ActionListener{
         img[7]=t.getImage("Assets/Repeater.gif");
         img[8]=t.getImage("Assets/Zombie.gif");
         g.drawImage(img[0], 0, 0, 1024, 626, this); //background
-        // g.drawImage(img[1], 22, 60, 105, 487, this); //menu
-        // g.drawImage(img[2], 43, 200, swidth, sheight, this); //sunflower
-        // g.drawImage(img[3], 43, 320, pwidth, pheight, this); //peashooter
-        // g.drawImage(img[4], 43, 433, rwidth, rheight, this); //repeater
+        g.drawImage(img[1], 22, 60, 105, 487, this); //menu
+        g.drawImage(img[2], 43, 200, swidth, sheight, this); //sunflower
+        g.drawImage(img[3], 43, 320, pwidth, pheight, this); //peashooter
+        g.drawImage(img[4], 43, 433, rwidth, rheight, this); //repeater
 
         Graphics2D g2 = (Graphics2D) g;
         Graphics2D g3 = (Graphics2D) g;
@@ -178,8 +178,8 @@ public class World extends JPanel implements ActionListener{
     private void getImg(){
         try{
             //try to load image
-            img[0]=ImageIO.read(new File("Assets/Background.jpg"));
-            // img[1]=ImageIO.read(new File("Assets/Menu.png"));
+            img[0]=ImageIO.read(new File("Assets/Backyard.png"));
+            img[1]=ImageIO.read(new File("Assets/Menu.png"));
             img[2]=ImageIO.read(new File("Assets/Sunflower.png"));
             img[3]=ImageIO.read(new File("Assets/Peashooter.png"));
             img[4]=ImageIO.read(new File("Assets/Repeater.png"));
