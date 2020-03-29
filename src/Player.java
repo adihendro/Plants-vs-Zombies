@@ -10,7 +10,6 @@ import javax.swing.JOptionPane;
 public class Player {
     private int sunCredits, temp;
     private Font font;
-    // public static PlantvsZombie world = new PlantvsZombie();
 
     //profil player
     public Player(){
@@ -45,7 +44,7 @@ public class Player {
         }
     }
 
-    //tambahkan credit 25 poin
+    //add 25 credits
     public void addSunCredits(){
         sunCredits+=25;
     }
@@ -72,7 +71,6 @@ public class Player {
             case 1: sunCredits-=50; break; //sunflower
             case 2: sunCredits-=100; break; //peashooter
             case 3: sunCredits-=150; break; //repeater
-            // default : sunCredits -= 1000;
         }
     }
 }

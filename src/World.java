@@ -39,7 +39,7 @@ public class World extends JPanel implements ActionListener{
     private boolean play=true;
 
     private Player player;
-    private Sun sun;
+    private Sun<Integer> sun;
 
     // private List<Integer> suns = new ArrayList<Integer
     //public class ListMap<K, V> implements Map<K, V> {
@@ -50,7 +50,7 @@ public class World extends JPanel implements ActionListener{
         timer.start();
 
         player = new Player();
-        sun = new Sun(8);
+        sun = new Sun<Integer>(8);
         
         getImg(); //load image from disk
         init();
