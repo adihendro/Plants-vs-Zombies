@@ -2,7 +2,6 @@ import java.awt.event.*;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Image;
-import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.Shape;
 import java.awt.Rectangle;
@@ -31,16 +30,17 @@ public class World extends JPanel implements ActionListener{
     //img: 0.background, 1.sun, 2.sunflower, 3.peashooter, 4.repeater, 5.sungif, 6.peagif, 7.repgif, 
     //8.zombie, 9.zombief, 10.pea, 11.wasted, 12.try again, 13.sun_g, 14.pea_g, 15.rep_g
     private Image[] img = new Image[16];
-    private Rectangle r_sunflower, r_peashooter, r_repeater, r_pea, r_try, r_zombie; //rectangle for plants menu and others
+    private Rectangle r_sunflower, r_peashooter, r_repeater, r_pea, r_try, r_end, r_zombie; //rectangle for plants menu and others
     private Ellipse2D e_sun; //ellipse for falling sun
     private Shape[][] field = new Shape[5][9]; //rectangle array with 5 rows and 9 columns for field area
     private Point mouse = new Point(); //point for mouse position
     private Point[][] plant_field = new Point[5][9]; //array for placing plants
-    private Font font;
 
     private int choice=0, trans=0, i=0,j=0, xa,ya; //for paint plant chooser
     private long startTime, elapsed, sun_elapsed; //for timer
     private boolean bsun=false, play=true;
+
+    private Player player;
     // private List<Integer> suns = new ArrayList<Integer>(); //store sunX data
     //public class ListMap<K, V> implements Map<K, V> {
 
@@ -51,6 +51,8 @@ public class World extends JPanel implements ActionListener{
         
         getImg(); //load image from disk
         init();
+
+        player = new Player();
 
         addMouseListener(new MListener1()); //listen to mouse click
 
@@ -85,32 +87,31 @@ public class World extends JPanel implements ActionListener{
         super.paintComponent(g);
         Toolkit t=Toolkit.getDefaultToolkit();  
         //load gif image from disk
-        img[5]=t.getImage("Assets/Sunflower.gif");
-        img[6]=t.getImage("Assets/Peashooter.gif");
-        img[7]=t.getImage("Assets/Repeater.gif");
-        img[8]=t.getImage("Assets/Zombie.gif");
-        img[9]=t.getImage("Assets/Zombief.gif");
-        img[10]=t.getImage("Assets/Pea.gif");
+        img[5]=t.getImage("../Assets/Sunflower.gif");
+        img[6]=t.getImage("../Assets/Peashooter.gif");
+        img[7]=t.getImage("../Assets/Repeater.gif");
+        img[8]=t.getImage("../Assets/Zombie.gif");
+        img[9]=t.getImage("../Assets/Zombief.gif");
+        img[10]=t.getImage("../Assets/Pea.gif");
         g.drawImage(img[0], 0, 0, 1024, 626, this); //draw background
         
-        if(true){
-            g.drawImage(img[13], 42, 196, swidth, sheight, this); //draw sunflower g
-            if(true){
+        //not enough sunflower points
+        if(player.getCredits()<150){ //<150
+            g.drawImage(img[15], 39, 431, rwidth+4, rheight+4, this); //draw repeater g
+            if(player.getCredits()<100){ //<100
                 g.drawImage(img[14], 41, 319, pwidth+2, pheight+1, this); //draw peashooter g
-                if(true){
-                    g.drawImage(img[15], 39, 431, rwidth+4, rheight+4, this); //draw repeater g
+                if(player.getCredits()<50){ //<50
+                    g.drawImage(img[13], 42, 196, swidth, sheight, this); //draw sunflower g
                 }
             }
         }
            
         Graphics2D g2 = (Graphics2D) g;
-        //sunflower points
-        g2.setFont(font); 
-        g2.setColor(Color.BLACK);
-
-        g2.drawString("0", 66, 166);
         
-        // make a transparent plant selection following mouse movement
+        //draw sunflower points
+        player.draw(g2);
+        
+        //make a transparent plant selection following mouse movement
         if(trans==1){ //transparent plant
             if(choice==1){ //sunflower
                 g2.setComposite(AlphaComposite.SrcOver.derive(0.7f)); //set alpha 0.7
@@ -186,11 +187,15 @@ public class World extends JPanel implements ActionListener{
         //game over
         // if(zombie.getX < 245){
         //     play=false;
-            g.drawImage(img[11],365,130,this); //game over text
-            g2.setComposite(AlphaComposite.SrcOver.derive(0.7f));
-            g2.fill(r_try);
-            g2.setComposite(AlphaComposite.SrcOver.derive(1f));
-            g.drawImage(img[12],390,350,250,28,this); //try again text
+            // r_end = new Rectangle(0, 0, 1024, 626);
+            // g2.setComposite(AlphaComposite.SrcOver.derive(0.7f));
+            // g2.fill(r_end);
+            // g2.setComposite(AlphaComposite.SrcOver.derive(1f));
+            // g.drawImage(img[11],365,130,this); //game over text
+            // g2.setComposite(AlphaComposite.SrcOver.derive(0.7f));
+            // g2.fill(r_try);
+            // g2.setComposite(AlphaComposite.SrcOver.derive(1f));
+            // g.drawImage(img[12],390,350,250,28,this); //try again text
 
         // }
         
@@ -205,17 +210,23 @@ public class World extends JPanel implements ActionListener{
             if(play){ //the game is playing
                 if(e_sun.contains(e.getPoint())){ //click falling sun
                     sunY=470;
-                    //add sun points;
+                    player.addSunCredits(); //add 25 sun points;
                 }else{ // check if mouse clicked plants
                     if (r_sunflower.contains(e.getPoint())) { //click sunflower
-                        choice= (choice==1) ? 0:1;
-                        trans=1;
+                        if(player.getCredits()>=50){ //>=50
+                            choice= (choice==1) ? 0:1;
+                            trans=1;
+                        }
                     }else if(r_peashooter.contains(e.getPoint())) { //click peashooter
-                        choice= (choice==2) ? 0:2;
-                        trans=1;
+                        if(player.getCredits()>=100){ //>=100
+                            choice= (choice==2) ? 0:2;
+                            trans=1;
+                        }
                     }else if(r_repeater.contains(e.getPoint())) { //click repeater
-                        choice= (choice==3) ? 0:3;
-                        trans=1;
+                        if(player.getCredits()>=150){ //>=150
+                            choice= (choice==3) ? 0:3;
+                            trans=1;
+                        }
                     }else if(trans==1 && (choice==1 || choice==2 || choice==3)){ //click field
                         trans=2;
                         for(i=0;i<5;i++){
@@ -223,6 +234,7 @@ public class World extends JPanel implements ActionListener{
                                 if(field[i][j].contains(e.getPoint())){
                                     xa=i;
                                     ya=j;
+                                    player.plantType(choice);
                                     i=10;j=9; //break
                                 }
                             }
@@ -245,17 +257,16 @@ public class World extends JPanel implements ActionListener{
 
     private void getImg(){
         try{ //try to load image and font
-            img[0]=ImageIO.read(new File("Assets/Background.jpg"));
-            img[1]=ImageIO.read(new File("Assets/Sun.png"));
-            img[2]=ImageIO.read(new File("Assets/Sunflower.png"));
-            img[3]=ImageIO.read(new File("Assets/Peashooter.png"));
-            img[4]=ImageIO.read(new File("Assets/Repeater.png"));
-            img[11]=ImageIO.read(new File("Assets/Wasted.png"));
-            img[12]=ImageIO.read(new File("Assets/Tryagain.png"));
-            img[13]=ImageIO.read(new File("Assets/Sunflower_g.png"));
-            img[14]=ImageIO.read(new File("Assets/Peashooter_g.png"));
-            img[15]=ImageIO.read(new File("Assets/Repeater_g.png"));
-            font = new Font("Assets/Chalkboard.ttc", Font.BOLD, 22); //load font
+            img[0]=ImageIO.read(new File("../Assets/Background.jpg"));
+            img[1]=ImageIO.read(new File("../Assets/Sun.png"));
+            img[2]=ImageIO.read(new File("../Assets/Sunflower.png"));
+            img[3]=ImageIO.read(new File("../Assets/Peashooter.png"));
+            img[4]=ImageIO.read(new File("../Assets/Repeater.png"));
+            img[11]=ImageIO.read(new File("../Assets/Wasted.png"));
+            img[12]=ImageIO.read(new File("../Assets/Tryagain.png"));
+            img[13]=ImageIO.read(new File("../Assets/Sunflower_g.png"));
+            img[14]=ImageIO.read(new File("../Assets/Peashooter_g.png"));
+            img[15]=ImageIO.read(new File("../Assets/Repeater_g.png"));
         } catch(IOException ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(null, ex.toString()); //show error dialog
