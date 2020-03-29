@@ -2,6 +2,10 @@ import java.awt.Graphics2D;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
+import java.awt.GraphicsEnvironment;
+import java.io.File;
+
+import javax.swing.JOptionPane;
 
 public class Player {
     private int sunCredits, temp;
@@ -10,9 +14,18 @@ public class Player {
 
     //profil player
     public Player(){
-        sunCredits = 200;
+        sunCredits=200;
         temp=sunCredits;
-        font = new Font("../Assets/Chalkboard.ttc", Font.BOLD, 20); //load font
+        try{
+            //create the font to use
+            font=Font.createFont(Font.TRUETYPE_FONT, new File("../Assets/Chalkboard.ttc")).deriveFont(Font.BOLD, 20f);
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(font); //register the font
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null, ex.toString()); //show error dialog
+        }
+        font=new Font("Chalkboard", Font.BOLD, 20); //load font
     }
 
     public void draw(Graphics2D g){
@@ -20,14 +33,15 @@ public class Player {
         g.setFont(font); 
         g.setColor(Color.BLACK);
         FontMetrics metrics = g.getFontMetrics(font); //font width and height
+        //to animate sunflower points change
         if(sunCredits==temp){
             g.drawString(Integer.toString(temp), 74-(metrics.stringWidth(Integer.toString(temp))/2), 165);
         }else if(sunCredits<temp){
-            g.drawString(Integer.toString(temp), 74-(metrics.stringWidth(Integer.toString(temp))/2), 165);
             temp-=5;
-        }else{ //sunCredits>temp
             g.drawString(Integer.toString(temp), 74-(metrics.stringWidth(Integer.toString(temp))/2), 165);
+        }else{ //sunCredits>temp
             temp+=5;
+            g.drawString(Integer.toString(temp), 74-(metrics.stringWidth(Integer.toString(temp))/2), 165);
         }
     }
 

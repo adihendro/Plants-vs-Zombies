@@ -21,7 +21,7 @@ import javax.imageio.ImageIO;
 
 public class World extends JPanel implements ActionListener{
     private float posZombieX=950f, posZombieY=133f; //just for testing
-    private int sunX, sunY=-85; //falling sun x and y position
+    private int sunX, sunY=-85, limitSunY; //falling sun x and y position
     //width and height for (p)eashooter, (s)unflower, (r)epeater
     private int pwidth=62, pheight=66, swidth=pwidth, sheight=pheight+5, rwidth=pwidth+2, rheight=pheight+2;
     private Timer timer; //set timer
@@ -72,7 +72,7 @@ public class World extends JPanel implements ActionListener{
 
         posZombieX-=0.35; //testing
         
-        if(elapsed>1 && elapsed%6==0){ //drop falling sun every 6 seconds
+        if(elapsed>1 && elapsed%8==0){ //drop falling sun every 8 seconds
             bsun=true;
         }
 
@@ -107,7 +107,7 @@ public class World extends JPanel implements ActionListener{
         }
            
         Graphics2D g2 = (Graphics2D) g;
-        
+
         //draw sunflower points
         player.draw(g2);
         
@@ -151,14 +151,20 @@ public class World extends JPanel implements ActionListener{
         // r_pea = new Rectangle(plant_field[i][j].getX()+23, plant_field[i][j].getY()-19, 20, 20);
 
             
-        if(bsun){ //drop sun every 6 seconds
-            if(sunY<470){ //sun falls
+        if(bsun){ //drop sun every 8 seconds
+            if(sunY<limitSunY){ //sun falls
                 g.drawImage(img[1],sunX,sunY,80,80,this);
                 e_sun = new Ellipse2D.Float(sunX, sunY, 80, 80);
                 sunY+=1;
-            }else{ //sun reach bottom
+            }else if(sunY<(limitSunY+150)){ //sun waits a while until gone
+                g.drawImage(img[1],sunX,limitSunY,80,80,this);
+                e_sun = new Ellipse2D.Float(sunX, limitSunY, 80, 80);
+                sunY+=1;
+            }else{ //falling sun gone
                 sunY=-85;
+                e_sun = new Ellipse2D.Float(-85, -85, 80, 80);
                 sunX=(int)(Math.random() * (900-270+1)+270); //generate sunX from x=270 to x=900
+                limitSunY=(int)(Math.random() * (470-250+1)+250); //generate limit falling sunY from y=250 to x=470
                 bsun=false;
             }
         }
@@ -209,7 +215,7 @@ public class World extends JPanel implements ActionListener{
         public void mousePressed(MouseEvent e) { //if mouse pressed
             if(play){ //the game is playing
                 if(e_sun.contains(e.getPoint())){ //click falling sun
-                    sunY=470;
+                    sunY=limitSunY+150;
                     player.addSunCredits(); //add 25 sun points;
                 }else{ // check if mouse clicked plants
                     if (r_sunflower.contains(e.getPoint())) { //click sunflower
@@ -228,18 +234,21 @@ public class World extends JPanel implements ActionListener{
                             trans=1;
                         }
                     }else if(trans==1 && (choice==1 || choice==2 || choice==3)){ //click field
-                        trans=2;
                         for(i=0;i<5;i++){
                             for(j=0;j<9;j++){
                                 if(field[i][j].contains(e.getPoint())){
                                     xa=i;
                                     ya=j;
+                                    trans=2;
                                     player.plantType(choice);
                                     i=10;j=9; //break
                                 }
                             }
                         }
-                        if(i==5){trans=0;} //not selected a plant-able area
+                        if(i==5){ //not selected a plant-able area
+                            trans=0;
+                            choice=0;
+                        }
                     }
                 }
             }else{ //the game is not playing
@@ -278,13 +287,13 @@ public class World extends JPanel implements ActionListener{
         r_sunflower = new Rectangle(30, 185, pwidth+25, pheight+55);
         r_peashooter = new Rectangle(30, 190+pheight+50, pwidth+25, pheight+52);
         r_repeater = new Rectangle(30, 190+2*pheight+95, pwidth+25, pheight+53);
-        r_pea = new Rectangle(0, 0, 20, 20);
+        r_pea = new Rectangle(-25, -25, 20, 20);
         r_try = new Rectangle(389, 347, 253, 35);
         //create ellipse for sun
         e_sun = new Ellipse2D.Float(sunX, sunY, 80, 80);
 
-        //generate falling sunX from x=270 to x=900
-        sunX=(int)(Math.random() * (900-270+1)+270); 
+        sunX=(int)(Math.random() * (900-270+1)+270); //generate falling sunX from x=270 to x=900
+        limitSunY=(int)(Math.random() * (470-250+1)+250); //generate limit falling sunY from y=250 to x=470
         
         //create rectangle clickable area for field
         int[] fw = {0,90,165,250,330,410,492,570,651,749}; //field width
