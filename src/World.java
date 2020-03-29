@@ -8,8 +8,6 @@ import java.awt.Rectangle;
 import java.awt.geom.Ellipse2D;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.util.List;
-import java.util.ArrayList;
 import java.io.File;
 import java.io.IOException;
 import java.lang.Math;
@@ -21,7 +19,7 @@ import javax.imageio.ImageIO;
 
 public class World extends JPanel implements ActionListener{
     private float posZombieX=950f, posZombieY=133f; //just for testing
-    private int sunX, sunY=-85, limitSunY; //falling sun x and y position
+    
     //width and height for (p)eashooter, (s)unflower, (r)epeater
     private int pwidth=62, pheight=66, swidth=pwidth, sheight=pheight+5, rwidth=pwidth+2, rheight=pheight+2;
     private Timer timer; //set timer
@@ -37,22 +35,25 @@ public class World extends JPanel implements ActionListener{
     private Point[][] plant_field = new Point[5][9]; //array for placing plants
 
     private int choice=0, trans=0, i=0,j=0, xa,ya; //for paint plant chooser
-    private long startTime, elapsed, sun_elapsed; //for timer
-    private boolean bsun=false, play=true;
+    private long startTime, elapsed; //for timer
+    private boolean play=true;
 
     private Player player;
-    // private List<Integer> suns = new ArrayList<Integer>(); //store sunX data
+    private Sun sun;
+
+    // private List<Integer> suns = new ArrayList<Integer
     //public class ListMap<K, V> implements Map<K, V> {
 
     public World(){
         startTime=System.currentTimeMillis(); //get current time
         timer = new Timer(delay, this); //set up timer
         timer.start();
+
+        player = new Player();
+        sun = new Sun(8);
         
         getImg(); //load image from disk
         init();
-
-        player = new Player();
 
         addMouseListener(new MListener1()); //listen to mouse click
 
@@ -72,8 +73,8 @@ public class World extends JPanel implements ActionListener{
 
         posZombieX-=0.35; //testing
         
-        if(elapsed>1 && elapsed%8==0){ //drop falling sun every 8 seconds
-            bsun=true;
+        if((elapsed>1) && (elapsed%sun.inter()==0)){ //drop falling sun
+            sun.drop(true);
         }
 
         r_zombie = new Rectangle(Math.round(posZombieX)+41, Math.round(posZombieY)+55, 20, 40); //testing
@@ -150,22 +151,22 @@ public class World extends JPanel implements ActionListener{
         // g.drawImage(img[10], plant_field[i][j].getX()+23, plant_field[i][j].getY()-19, this);
         // r_pea = new Rectangle(plant_field[i][j].getX()+23, plant_field[i][j].getY()-19, 20, 20);
 
-            
-        if(bsun){ //drop sun every 8 seconds
-            if(sunY<limitSunY){ //sun falls
-                g.drawImage(img[1],sunX,sunY,80,80,this);
-                e_sun = new Ellipse2D.Float(sunX, sunY, 80, 80);
-                sunY+=1;
-            }else if(sunY<(limitSunY+150)){ //sun waits a while until gone
-                g.drawImage(img[1],sunX,limitSunY,80,80,this);
-                e_sun = new Ellipse2D.Float(sunX, limitSunY, 80, 80);
-                sunY+=1;
+        //draw falling sun
+        if(sun.getFall()){ //drop sun
+            if(sun.getY()<sun.limit()){ //sun falls
+                g.drawImage(img[1],sun.getX(),sun.getY(),80,80,this);
+                e_sun = new Ellipse2D.Float(sun.getX(), sun.getY(), 80, 80);
+                sun.lower();
+            }else if(sun.getY()<(sun.limit()+150)){ //sun waits a while until gone
+                g.drawImage(img[1],sun.getX(),sun.limit(),80,80,this);
+                e_sun = new Ellipse2D.Float(sun.getX(), sun.limit(), 80, 80);
+                sun.lower();
             }else{ //falling sun gone
-                sunY=-85;
+                sun.reset();
                 e_sun = new Ellipse2D.Float(-85, -85, 80, 80);
-                sunX=(int)(Math.random() * (900-270+1)+270); //generate sunX from x=270 to x=900
-                limitSunY=(int)(Math.random() * (470-250+1)+250); //generate limit falling sunY from y=250 to x=470
-                bsun=false;
+                sun.setX();
+                sun.setLimit();
+                sun.drop(false);
             }
         }
         
@@ -215,7 +216,7 @@ public class World extends JPanel implements ActionListener{
         public void mousePressed(MouseEvent e) { //if mouse pressed
             if(play){ //the game is playing
                 if(e_sun.contains(e.getPoint())){ //click falling sun
-                    sunY=limitSunY+150;
+                    sun.remove();
                     player.addSunCredits(); //add 25 sun points;
                 }else{ // check if mouse clicked plants
                     if (r_sunflower.contains(e.getPoint())) { //click sunflower
@@ -233,10 +234,10 @@ public class World extends JPanel implements ActionListener{
                             choice= (choice==3) ? 0:3;
                             trans=1;
                         }
-                    }else if(trans==1 && (choice==1 || choice==2 || choice==3)){ //click field
+                    }else if(trans==1 && (choice==1 || choice==2 || choice==3)){ //to click field
                         for(i=0;i<5;i++){
                             for(j=0;j<9;j++){
-                                if(field[i][j].contains(e.getPoint())){
+                                if(field[i][j].contains(e.getPoint())){ //plant the plant in field
                                     xa=i;
                                     ya=j;
                                     trans=2;
@@ -290,10 +291,7 @@ public class World extends JPanel implements ActionListener{
         r_pea = new Rectangle(-25, -25, 20, 20);
         r_try = new Rectangle(389, 347, 253, 35);
         //create ellipse for sun
-        e_sun = new Ellipse2D.Float(sunX, sunY, 80, 80);
-
-        sunX=(int)(Math.random() * (900-270+1)+270); //generate falling sunX from x=270 to x=900
-        limitSunY=(int)(Math.random() * (470-250+1)+250); //generate limit falling sunY from y=250 to x=470
+        e_sun = new Ellipse2D.Float(sun.getX(), sun.getY(), 80, 80);
         
         //create rectangle clickable area for field
         int[] fw = {0,90,165,250,330,410,492,570,651,749}; //field width
