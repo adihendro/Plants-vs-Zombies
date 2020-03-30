@@ -24,8 +24,7 @@ public class World extends JPanel implements ActionListener{
     
     //width and height for (p)eashooter, (s)unflower, (r)epeater
     private int pwidth=62, pheight=66, swidth=pwidth, sheight=pheight+5, rwidth=pwidth+2, rheight=pheight+2;
-    private Timer timer, ab; //set timer
-    private int delay=25; //repaint time
+    private Timer timer; //set timer
 
     //img: 0.background, 1.sun, 2.sunflower, 3.peashooter, 4.repeater, 5.sungif, 6.peagif, 7.repgif, 
     //8.zombie, 9.zombief, 10.pea, 11.wasted, 12.try again, 13.sun_g, 14.pea_g, 15.rep_g
@@ -33,26 +32,29 @@ public class World extends JPanel implements ActionListener{
     private Rectangle r_sunflower, r_peashooter, r_repeater, r_pea, r_try, r_end, r_zombie; //rectangle for plants menu and others
     private Shape[][] field = new Shape[5][9]; //rectangle array with 5 rows and 9 columns for field area
     private Point mouse = new Point(); //point for mouse position
-    private Point[][] plant_field = new Point[5][9]; //array for placing plants
+    private Point[][] plant_f = new Point[5][9]; //array for plants coordinate
 
-    private int choice=0, trans=0, i=0,j=0, xa,ya; //for paint plant chooser
+    private int choice=0, xp, yp, i, j; //for paint plant chooser
     private long startTime, elapsed; //for timer
-    private boolean play=true;
+    private boolean play=true, bsun=true;
 
     private Player player;
+    private Plant<Integer> plant = new Plant<Integer>(0, 0, 0);
     private Sun sun = new Sun();
+    public static List<Plant<Integer>> plants = new ArrayList<Plant<Integer>>();
     public static List<Sun> suns = new ArrayList<Sun>();
+    // public static List<Pea<Integer>> peas = new ArrayList<Pea<Integer>>();
 
     // private List<Integer> suns = new ArrayList<Integer
     //public class ListMap<K, V> implements Map<K, V> {
 
     public World(){
         startTime=System.currentTimeMillis(); //get current time
-        timer = new Timer(delay, this); //set up timer
+        timer = new Timer(25, this); //set up timer
         timer.start();
         
         player = new Player();
-        sun.start(1); 
+        sun.start(5);
         
         getImg(); //load image from disk
         init();
@@ -113,7 +115,6 @@ public class World extends JPanel implements ActionListener{
         player.draw(g2);
         
         //make a transparent plant selection following mouse movement
-        if(trans==1){ //transparent plant
             if(choice==1){ //sunflower
                 g2.setComposite(AlphaComposite.SrcOver.derive(0.7f)); //set alpha 0.7
                 g2.drawImage(img[2], mouse.getX()-swidth/2, mouse.getY()-sheight/2, swidth, sheight, this);
@@ -127,13 +128,17 @@ public class World extends JPanel implements ActionListener{
                 g2.drawImage(img[4], mouse.getX()-(rwidth+8)/2, mouse.getY()-(rheight+8)/2, rwidth+4, rheight+4, this);
                 g2.setComposite(AlphaComposite.SrcOver.derive(1f));
             }
-        }else if(trans==2){ //select field and plant a plant
-            if(choice==1){ //sunflower gif
-                g.drawImage(img[5], plant_field[xa][ya].getX()-swidth/2, plant_field[xa][ya].getY()-sheight/2, swidth, sheight, this);
-            }else if(choice==2){ //peashooter gif
-                g.drawImage(img[6], plant_field[xa][ya].getX()-(pwidth+2)/2, plant_field[xa][ya].getY()-(pheight+2)/2, pwidth+2, pheight+2, this);
-            }else if(choice==3){ //repeater gif
-                g.drawImage(img[7], plant_field[xa][ya].getX()-(rwidth+20)/2, plant_field[xa][ya].getY()-(rheight+9)/2, rwidth+26, rheight+13, this);
+
+        //draw plant
+        for(Plant plant: plants){
+            xp=plant_f[plant.X()][plant.Y()].getX();
+            yp=plant_f[plant.X()][plant.Y()].getY();
+            if(plant.getType().equals(1)){ //sunflower gif
+                g.drawImage(img[5], xp-swidth/2, yp-sheight/2, swidth, sheight, this);
+            }else if(plant.getType().equals(2)){ //peashooter gif
+                g.drawImage(img[6], xp-(pwidth+2)/2, yp-(pheight+2)/2, pwidth+2, pheight+2, this);
+            }else if(plant.getType().equals(3)){ //repeater gif
+                g.drawImage(img[7], xp-(rwidth+20)/2, yp-(rheight+9)/2, rwidth+26, rheight+13, this);
             }
         }
 
@@ -147,7 +152,8 @@ public class World extends JPanel implements ActionListener{
         //     for(j=0;j<9;j++){
         //     }
         // }
-        g.drawImage(img[8], Math.round(posZombieX), plant_field[2][6].getY()-82, pwidth+11, pheight+53, this); //zombie
+
+        // g.drawImage(img[8], Math.round(posZombieX), plant_field[2][6].getY()-82, pwidth+11, pheight+53, this); //zombie
         // g.drawImage(img[10], plant_field[i][j].getX()+23, plant_field[i][j].getY()-19, this);
         // r_pea = new Rectangle(plant_field[i][j].getX()+23, plant_field[i][j].getY()-19, 20, 20);
 
@@ -216,42 +222,41 @@ public class World extends JPanel implements ActionListener{
                     if(sun.getE().contains(e.getPoint())){ //click falling sun
                         suns.remove(sun);
                         player.addSunCredits(); //add 25 sun points;
+                        bsun=false;
                         break A;
                     }
                 }
-                // check if mouse clicked plants
-                if (r_sunflower.contains(e.getPoint())) { //click sunflower
-                    if(player.getCredits()>=50){ //>=50
-                        choice= (choice==1) ? 0:1;
-                        trans=1;
-                    }
-                }else if(r_peashooter.contains(e.getPoint())) { //click peashooter
-                    if(player.getCredits()>=100){ //>=100
-                        choice= (choice==2) ? 0:2;
-                        trans=1;
-                    }
-                }else if(r_repeater.contains(e.getPoint())) { //click repeater
-                    if(player.getCredits()>=150){ //>=150
-                        choice= (choice==3) ? 0:3;
-                        trans=1;
-                    }
-                }else if(trans==1 && (choice==1 || choice==2 || choice==3)){ //to click field
-                    for(i=0;i<5;i++){
-                        for(j=0;j<9;j++){
-                            if(field[i][j].contains(e.getPoint())){ //plant the plant in field
-                                xa=i;
-                                ya=j;
-                                trans=2;
-                                player.plantType(choice);
-                                i=10;j=9; //break
+                if(bsun){
+                    // check if mouse clicked plants
+                    if (r_sunflower.contains(e.getPoint())) { //click sunflower
+                        if(player.getCredits()>=50){ //>=50
+                            choice= (choice==1) ? 0:1;
+                        }
+                    }else if(r_peashooter.contains(e.getPoint())) { //click peashooter
+                        if(player.getCredits()>=100){ //>=100
+                            choice= (choice==2) ? 0:2;
+                        }
+                    }else if(r_repeater.contains(e.getPoint())) { //click repeater
+                        if(player.getCredits()>=150){ //>=150
+                            choice= (choice==3) ? 0:3;
+                        }
+                    }else if(choice!=0){ //to click field
+                        B: for(i=0;i<5;i++){
+                            for(j=0;j<9;j++){
+                                if(field[i][j].contains(e.getPoint())){ //plant the plant in field
+                                    if(plant.put(i,j,choice)){
+                                        player.plantType(choice);
+                                        choice=0;
+                                    }
+                                    break B;
+                                }
                             }
                         }
+                        if(i==5){ //not selected a plant-able area
+                            choice=0;
+                        }
                     }
-                    if(i==5){ //not selected a plant-able area
-                        trans=0;
-                        choice=0;
-                    }
-                }
+                }else{bsun=true;}
             }else{ //the game is not playing
                 if (r_try.contains(e.getPoint())) { //click try again
                     play=true;
@@ -293,8 +298,10 @@ public class World extends JPanel implements ActionListener{
             for(j=0;j<9;j++){
                 //set rectangle field area
                 field[i][j] = new Rectangle(245+fw[j], 50+fh[i], fw[j+1]-fw[j], fh[i+1]-fh[i]);
+                
                 //set point for plant field
-                plant_field[i][j] = new Point(296+j*81,117+i*98);
+                plant_f[i][j] = new Point(296+j*81,117+i*98);
+                plant.setP(i, j);
             }
         }
     }

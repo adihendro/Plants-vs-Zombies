@@ -1,6 +1,6 @@
-public class Pea{
+public class Pea<T>{
     private String type;
-    private int damage;
+    private T damage;
     
     public Pea(String type){
         this.type=type;
