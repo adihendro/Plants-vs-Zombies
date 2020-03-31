@@ -39,10 +39,11 @@ public class World extends JPanel implements ActionListener{
     private boolean play=true, bsun=true;
 
     private Player player;
-    private Plant<Integer> plant = new Plant<Integer>(0, 0, 0);
+    private Plant<Integer> plant = new Plant<Integer>(0, 0, 0); // isinya list of plant
     private Sun sun = new Sun();
-    public static List<Plant<Integer>> plants = new ArrayList<Plant<Integer>>();
+    public static List<Plant<Integer>> plants = new ArrayList<Plant<Integer>>(); // List of plant dengan type dinyatakan dalam bentuk integer
     public static List<Sun> suns = new ArrayList<Sun>();
+
     // public static List<Pea<Integer>> peas = new ArrayList<Pea<Integer>>();
 
     // private List<Integer> suns = new ArrayList<Integer
@@ -69,16 +70,14 @@ public class World extends JPanel implements ActionListener{
         });
     }
 
-
-
-
     @Override
     public void actionPerformed(ActionEvent e) {
         elapsed=(System.currentTimeMillis()-startTime)/1000; // count time in seconds
         timer.start();
 
-        posZombieX-=0.35; //testing
-        
+        Zombie zombie = new Zombie("Zombie");
+        posZombieX-=zombie.getzombieSpeed(); // INI ZOMBIE JALAN YA GAIS
+
         r_zombie = new Rectangle(Math.round(posZombieX)+41, Math.round(posZombieY)+55, 20, 40); //testing
 
         repaint();
@@ -195,6 +194,7 @@ public class World extends JPanel implements ActionListener{
 
 
         //game over
+
         // if(zombie.getX < 245){
         //     play=false;
             // r_end = new Rectangle(0, 0, 1024, 626);
