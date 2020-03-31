@@ -13,7 +13,7 @@ public class Player {
 
     //profil player
     public Player(){
-        sunCredits=200;
+        sunCredits=50;
         temp=sunCredits;
         try{
             //create the font to use
@@ -48,22 +48,16 @@ public class Player {
     public void addSunCredits(){
         sunCredits+=25;
     }
-    // // reset credit
-    // public void clearCredits(){
-    //     sunCredits=0;
-    // }
-    // //mengubah jumlah credit
-    // public void setCredits(int credits){
-    //     sunCredits = credits;
-    // }
+    // reset credit
+    public void resetCredits(){
+        sunCredits=50;
+    }
+    
     //getter jumlah suncredit dari player
     public int getCredits(){
         return sunCredits;
     }
-    // // getter world
-    // public PlantvsZombie getWorld(){
-    //     return world;
-    // }
+
 
     //jumlah credit pada plants
     public void plantType (int plantT){
