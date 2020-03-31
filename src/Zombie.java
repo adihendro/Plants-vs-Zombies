@@ -142,7 +142,4 @@ public class Zombie extends Actor{
             move();
         }
     }
-    public void hit(int damage){
-        super.health-=damage;
-    }
 }

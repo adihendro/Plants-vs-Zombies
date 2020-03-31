@@ -80,7 +80,7 @@ public class Plant<T> extends Actor{
             return false;
         }
     }
-    public void shoot(){
+    public void attack(){
         timer.start();
         timer3.start();
         timer3.setDelay(2000);
@@ -94,8 +94,5 @@ public class Plant<T> extends Actor{
     }
     public void act(){
         timer2.start();
-    }
-    public void hit(int damage){
-        super.health-=damage;
     }
 }

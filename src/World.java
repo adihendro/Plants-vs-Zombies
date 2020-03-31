@@ -143,7 +143,7 @@ public class World extends JPanel implements ActionListener{
                 A: for(Zombie zombie: zombies){
                     if(xp==zombie.getLane() && yp<=zombie.getColumn()){ //zombie exist in front of plant?
                         if(plant.isIdle()){
-                            plant.shoot();
+                            plant.attack();
                         }
                         plant.setThreat(true);
                         break A;
