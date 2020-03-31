@@ -20,12 +20,18 @@ import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import javax.imageio.ImageIO;
 
+import javax.sound.sampled.AudioInputStream; 
+import javax.sound.sampled.AudioSystem; 
+import javax.sound.sampled.Clip; 
+import javax.sound.sampled.LineUnavailableException; 
+import javax.sound.sampled.UnsupportedAudioFileException; 
+
 public class World extends JPanel implements ActionListener{
     private static final long serialVersionUID = 1L;
 
     // width and height for (p)eashooter, (s)unflower, (r)epeater
     private int pwidth=62, pheight=66, swidth=pwidth, sheight=pheight+5, rwidth=pwidth+2, rheight=pheight+2;
-    private Timer timer; //set timer
+    private Timer timer, timer2; //set timer
 
     //img: 0.background, 1.sun, 2.sunflower, 3.peashooter, 4.repeater, 5.sungif, 6.peagif, 7.repgif, 
     //8.zombie, 9.zombief, 10.pea, 11.wasted, 12.try again, 13.sun_g, 14.pea_g, 15.rep_g, 16.win, 17.play again
@@ -50,6 +56,14 @@ public class World extends JPanel implements ActionListener{
     public static List<Zombie> zombies = new ArrayList<Zombie>();
 
 
+    // to store current position 
+    Clip clip, clip2, clip3; 
+      
+    // current status of clip 
+    String status; 
+      
+
+
     public World(){
         timer = new Timer(25, this); //set up timer
         
@@ -67,11 +81,36 @@ public class World extends JPanel implements ActionListener{
                 mouse.setY(e.getY());
             }
         });
+        
+        
+        //music
+        try{
+            // create clip reference 
+            clip = AudioSystem.getClip(); 
+            clip2 = AudioSystem.getClip(); 
+            clip3 = AudioSystem.getClip(); 
+            // open audioInputStream to the clip 
+            clip.open(AudioSystem.getAudioInputStream(new File("../Assets/Background.wav").getAbsoluteFile())); 
+            clip2.open(AudioSystem.getAudioInputStream(new File("../Assets/End.wav").getAbsoluteFile())); 
+            clip3.open(AudioSystem.getAudioInputStream(new File("../Assets/Zombies_coming.wav").getAbsoluteFile())); 
+            clip.loop(Clip.LOOP_CONTINUOUSLY); 
+        }catch (Exception ex)  { 
+            System.out.println("Error with playing sound."); 
+        } 
+        clip.start(); 
 
+        timer2 = new Timer(15000, new ActionListener(){
+            public void actionPerformed(ActionEvent e) {
+                clip3.start();
+                timer2.stop();
+            }
+        });
+        
         timer.start();
+        timer2.start();
     }
-
-
+    
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         timer.start();
@@ -250,6 +289,10 @@ public class World extends JPanel implements ActionListener{
             }
 
         }else{ //play=false, win or game over
+            clip.stop(); 
+            clip.close(); 
+            clip3.start();
+
             peas.clear();
             suns.clear();
             for(Plant plant: plants){

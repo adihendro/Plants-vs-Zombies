@@ -7,7 +7,6 @@ public class Plant<T> extends Actor{
     private int x, y; //array for plant location [5][9]
     private boolean repeat=false;
     private boolean idle=true, threaten=false;
-    // private int health;
     private Timer timer, timer2, timer3; //set timer
     private static int[][] occ = new int[5][10];
     
@@ -16,13 +15,10 @@ public class Plant<T> extends Actor{
         this.x=x;
         this.y=y;
         if(type.equals(1)){ //Sunflower
-            super.type="Sunflower";
             super.health = 40;
         }else if(type.equals(2)){ //Peashooter
-            super.type="Peashooter";
             super.health = 40;
         }else if(type.equals(3)){ //Repeater
-            super.type="Repeater";
             super.health = 60;
         }else{}
     }
@@ -34,7 +30,7 @@ public class Plant<T> extends Actor{
             }
         });
 
-        timer3=new Timer(300, new ActionListener(){
+        timer2=new Timer(300, new ActionListener(){
             public void actionPerformed(ActionEvent e) {
                 if(type.equals(3)){ //repeater
                     if(repeat){
@@ -46,7 +42,7 @@ public class Plant<T> extends Actor{
             }
         });
 
-        timer2=new Timer(10000, new ActionListener(){
+        timer3=new Timer(10000, new ActionListener(){
             public void actionPerformed(ActionEvent e) {
                 World.suns.add(new Sun(x, y));
             }
@@ -82,17 +78,17 @@ public class Plant<T> extends Actor{
     }
     public void attack(){
         timer.start();
-        timer3.start();
-        timer3.setDelay(2000);
+        timer2.start();
+        timer2.setDelay(2000);
         idle=false;
     }
     public void stop(){
         timer.stop();
-        timer2.stop();
         timer3.stop();
+        timer2.stop();
         idle=true;
     }
     public void act(){
-        timer2.start();
+        timer3.start();
     }
 }
