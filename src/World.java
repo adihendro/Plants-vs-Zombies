@@ -38,15 +38,6 @@ public class World extends JPanel implements ActionListener{
     private int choice=0, xp, yp, i, j; //for paint plant chooser
     private boolean play=true, win=false, sun_clicked=false;
 
-<<<<<<< HEAD
-    private Player player;
-    private Plant<Integer> plant = new Plant<Integer>(0, 0, 0); // isinya list of plant
-    private Sun sun = new Sun();
-    public static List<Plant<Integer>> plants = new ArrayList<Plant<Integer>>(); // List of plant dengan type dinyatakan dalam bentuk integer
-    public static List<Sun> suns = new ArrayList<Sun>();
-
-    // public static List<Pea<Integer>> peas = new ArrayList<Pea<Integer>>();
-=======
     private Player player;  
     private Plant<Integer> plant = new Plant<Integer>(0, 0, 0);
     private Sun sun = new Sun();
@@ -57,7 +48,6 @@ public class World extends JPanel implements ActionListener{
     public static List<Sun> suns = new ArrayList<Sun>();
     public static List<Pea> peas = new ArrayList<Pea>();
     public static List<Zombie> zombies = new ArrayList<Zombie>();
->>>>>>> 7691f8c9e1f1a1cd630700dde2bb56ec98d862d5
 
 
     public World(){
@@ -77,28 +67,14 @@ public class World extends JPanel implements ActionListener{
                 mouse.setY(e.getY());
             }
         });
-<<<<<<< HEAD
-    }
-
-=======
 
         timer.start();
     }
 
 
->>>>>>> 7691f8c9e1f1a1cd630700dde2bb56ec98d862d5
     @Override
     public void actionPerformed(ActionEvent e) {
         timer.start();
-<<<<<<< HEAD
-
-        Zombie zombie = new Zombie("Zombie");
-        posZombieX-=zombie.getzombieSpeed(); // INI ZOMBIE JALAN YA GAIS
-
-        r_zombie = new Rectangle(Math.round(posZombieX)+41, Math.round(posZombieY)+55, 20, 40); //testing
-
-=======
->>>>>>> 7691f8c9e1f1a1cd630700dde2bb56ec98d862d5
         repaint();
     }
     
@@ -283,21 +259,6 @@ public class World extends JPanel implements ActionListener{
             //     zombie.stop();
             // }
 
-<<<<<<< HEAD
-        //game over
-
-        // if(zombie.getX < 245){
-        //     play=false;
-            // r_end = new Rectangle(0, 0, 1024, 626);
-            // g2.setComposite(AlphaComposite.SrcOver.derive(0.7f));
-            // g2.fill(r_end);
-            // g2.setComposite(AlphaComposite.SrcOver.derive(1f));
-            // g.drawImage(img[11],365,130,this); //game over text
-            // g2.setComposite(AlphaComposite.SrcOver.derive(0.7f));
-            // g2.fill(r_try);
-            // g2.setComposite(AlphaComposite.SrcOver.derive(1f));
-            // g.drawImage(img[12],390,350,250,28,this); //try again text
-=======
             if(win){
                 r_end = new Rectangle(0, 0, 1024, 626);
                 g2.setColor(Color.WHITE);
@@ -305,7 +266,6 @@ public class World extends JPanel implements ActionListener{
                 g2.fill(r_end);
                 g2.setComposite(AlphaComposite.SrcOver.derive(1f));
                 // r_again = new Rectangle(445, 410, 140, 65);
->>>>>>> 7691f8c9e1f1a1cd630700dde2bb56ec98d862d5
 
                 g.drawImage(img[16],263,130,500,250,this); //win text
                 // g.drawImage(img[17],445,410,140,65,this); //play again text

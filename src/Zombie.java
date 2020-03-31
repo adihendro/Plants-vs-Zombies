@@ -4,9 +4,6 @@ import javax.swing.Timer;
 
 public class Zombie extends Actor{
     protected int zombieDamage;
-<<<<<<< HEAD
-    protected double zombieSpeed;
-=======
     protected float zombieSpeed;
     private int[] column = {296,377,458,539,620,701,782,863,944}; //9
     private int type, lane, coorY, yp, interval;
@@ -14,7 +11,6 @@ public class Zombie extends Actor{
     private static int[] arrY = new int[5];
     private static int n=0;
     private Timer timer, timer2; //set timer
->>>>>>> 7691f8c9e1f1a1cd630700dde2bb56ec98d862d5
 
     public Zombie(int type){
         this.type=type;
@@ -23,15 +19,9 @@ public class Zombie extends Actor{
         if(type==1){ //Normal zombie
             super.health=40;
             zombieDamage=10;
-<<<<<<< HEAD
-            zombieSpeed=0.5;
-        }else { //Football zombie
-            health=80;
-=======
             zombieSpeed=0.35f;
         }else if(type==2) { //Football zombie
             super.health=60;
->>>>>>> 7691f8c9e1f1a1cd630700dde2bb56ec98d862d5
             zombieDamage=15;
             zombieSpeed=0.6f;
         }
@@ -126,21 +116,6 @@ public class Zombie extends Actor{
         }
     }
 
-<<<<<<< HEAD
-    //getter
-
-    public double getzombieSpeed(){
-        return(zombieSpeed);
-    }
-    
-    // public void setSpeed(int speed){
-    //     if(isTouching(Plant.class)){
-    //         zombieSpeed=0;
-    //     } else {
-    //         zombieSpeed =speed;
-    //     }
-    // }
-=======
     public void move(){
         coorX-=zombieSpeed;
     }
@@ -170,5 +145,4 @@ public class Zombie extends Actor{
     public void hit(int damage){
         super.health-=damage;
     }
->>>>>>> 7691f8c9e1f1a1cd630700dde2bb56ec98d862d5
 }
