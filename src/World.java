@@ -19,12 +19,9 @@ import javax.swing.JPanel;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import javax.imageio.ImageIO;
-
 import javax.sound.sampled.AudioInputStream; 
 import javax.sound.sampled.AudioSystem; 
 import javax.sound.sampled.Clip; 
-import javax.sound.sampled.LineUnavailableException; 
-import javax.sound.sampled.UnsupportedAudioFileException; 
 
 public class World extends JPanel implements ActionListener{
     private static final long serialVersionUID = 1L;
@@ -40,9 +37,11 @@ public class World extends JPanel implements ActionListener{
     private Shape[][] field = new Shape[5][9]; //rectangle array with 5 rows and 9 columns for field area
     private Point mouse = new Point(); //point for mouse position
     public static Point[][] plant_f = new Point[5][9]; //array for plants coordinate
-
     private int choice=0, xp, yp, i, j; //for paint plant chooser
     private boolean play=true, win=false, sun_clicked=false;
+
+    //audio
+    private Clip clip, clip2, clip3; 
 
     private Player player;  
     private Plant<Integer> plant = new Plant<Integer>(0, 0, 0);
@@ -54,15 +53,7 @@ public class World extends JPanel implements ActionListener{
     public static List<Sun> suns = new ArrayList<Sun>();
     public static List<Pea> peas = new ArrayList<Pea>();
     public static List<Zombie> zombies = new ArrayList<Zombie>();
-
-
-    // to store current position 
-    Clip clip, clip2, clip3; 
       
-    // current status of clip 
-    String status; 
-      
-
 
     public World(){
         timer = new Timer(25, this); //set up timer
@@ -99,9 +90,9 @@ public class World extends JPanel implements ActionListener{
         } 
         clip.start(); 
 
-        timer2 = new Timer(15000, new ActionListener(){
+        timer2 = new Timer(12000, new ActionListener(){
             public void actionPerformed(ActionEvent e) {
-                clip3.start();
+                clip3.start(); 
                 timer2.stop();
             }
         });
@@ -290,8 +281,8 @@ public class World extends JPanel implements ActionListener{
 
         }else{ //play=false, win or game over
             clip.stop(); 
-            clip.close(); 
-            clip3.start();
+            clip2.start();
+            clip2.loop(Clip.LOOP_CONTINUOUSLY); 
 
             peas.clear();
             suns.clear();

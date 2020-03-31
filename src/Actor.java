@@ -1,7 +1,7 @@
 public abstract class Actor{
     protected int health;
 
-    // Abstract method
+    //Abstract method
     public abstract void attack();
     public abstract void stop();
 
@@ -9,8 +9,8 @@ public abstract class Actor{
     	health -= damage;
     }
 
-    // Method apakah mati
-    protected boolean isDead(){
+    //is Actor dead method
+    public boolean isDead(){
         return health<=0;
     }
 }

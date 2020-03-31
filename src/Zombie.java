@@ -17,7 +17,7 @@ public class Zombie extends Actor{
         coorX=1020f;
         coorY=arrY[setLane()];
         if(type==1){ //Normal zombie
-            super.health=40;
+            super.health=35;
             zombieDamage=10;
             zombieSpeed=0.35f;
         }else if(type==2) { //Football zombie
