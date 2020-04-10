@@ -21,9 +21,6 @@ import java.util.Iterator;
 import javax.swing.JPanel;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
-import javax.sound.sampled.AudioInputStream; 
-import javax.sound.sampled.AudioSystem; 
-import javax.sound.sampled.Clip; 
 
 public class World extends JPanel implements ActionListener{
     private static final long serialVersionUID = 1L;
@@ -43,13 +40,10 @@ public class World extends JPanel implements ActionListener{
     private int xp, yp, i, j; //coordinate
     private boolean play=true, win=false, sun_clicked=false;
 
-    //audio
-    private Clip clip, clip2, clip3; 
-
     private Player player;  
     private Plant<Integer> plant = new Plant<Integer>(0, 0, 0);
-    private Sun sun = new Sun();
     private Pea pea = new Pea(0, 0, 0);
+    private Sun sun;
 
     public static List<Plant<Integer>> plants = new ArrayList<Plant<Integer>>();
     public static List<Sun> suns = new ArrayList<Sun>();
@@ -61,7 +55,7 @@ public class World extends JPanel implements ActionListener{
         timer = new Timer(25, this); //set up timer
         
         player = new Player();
-        sun.start(5);
+        Sun.start(5);
         Zombie.start(20);
         
         getImg(); //load image from disk
@@ -75,32 +69,8 @@ public class World extends JPanel implements ActionListener{
             }
         });
         
-        
-        //music
-        try{
-            // create clip reference 
-            clip = AudioSystem.getClip(); 
-            clip2 = AudioSystem.getClip(); 
-            clip3 = AudioSystem.getClip(); 
-            // open audioInputStream to the clip 
-            clip.open(AudioSystem.getAudioInputStream(getClass().getResource(("Assets/Background.wav")))); 
-            clip2.open(AudioSystem.getAudioInputStream(getClass().getResource(("Assets/End.wav")))); 
-            clip3.open(AudioSystem.getAudioInputStream(getClass().getResource(("Assets/Zombies_coming.wav")))); 
-            clip.loop(Clip.LOOP_CONTINUOUSLY); 
-        }catch (Exception ex)  { 
-            System.out.println("Error with playing sound."); 
-        } 
-        clip.start(); 
-
-        timer2 = new Timer(10000, new ActionListener(){
-            public void actionPerformed(ActionEvent e) {
-                clip3.start(); 
-                timer2.stop();
-            }
-        });
-        
+        Audio.begin();
         timer.start();
-        timer2.start();
     }
     
     
@@ -121,7 +91,7 @@ public class World extends JPanel implements ActionListener{
         
         //draw black&white plant menu
         if(player.getCredits()<150){ //suncredits <150
-            g.drawImage(img[15], 41, 434, rwidth+1, rheight, this); //draw repeater g
+            g.drawImage(img[15], 40, 433, rwidth+2, rheight+1, this); //draw repeater g
             if(player.getCredits()<100){ //suncredits <100
                 g.drawImage(img[14], 41, 320, pwidth+2, pheight, this); //draw peashooter g
                 if(player.getCredits()<50){ //suncredits <50
@@ -279,17 +249,16 @@ public class World extends JPanel implements ActionListener{
             }
 
         }else{ //play=false, win or game over
-            clip.stop(); 
-            clip2.start();
-            clip2.loop(Clip.LOOP_CONTINUOUSLY); 
+            Audio.end();
 
             player.setChoice(0);
-            peas.clear();
-            suns.clear();
             for(Plant plant: plants){
                 plant.stop();
             }
-            Zombie.stop()
+            Zombie.stop();
+            Sun.stop();
+            suns.clear();
+            peas.clear();
 
             if(win){
                 r_end = new Rectangle(0, 0, 1024, 626);
@@ -297,21 +266,21 @@ public class World extends JPanel implements ActionListener{
                 g2.setComposite(AlphaComposite.SrcOver.derive(0.6f));
                 g2.fill(r_end);
                 g2.setComposite(AlphaComposite.SrcOver.derive(1f));
-                // r_again = new Rectangle(445, 410, 140, 65);
+                r_again = new Rectangle(445, 410, 140, 65);
 
-                g.drawImage(img[16],263,130,500,250,this); //win text
-                // g.drawImage(img[17],445,410,140,65,this); //play again text
+                g.drawImage(img[16],263,120,500,250,this); //win text
+                g.drawImage(img[17],445,410,140,65,this); //play again text
                 
-            }else{
+            }else{ //lose
                 r_end = new Rectangle(0, 0, 1024, 626);
                 g2.setColor(Color.WHITE);
                 g2.setComposite(AlphaComposite.SrcOver.derive(0.6f));
                 g2.fill(r_end);
                 g2.setComposite(AlphaComposite.SrcOver.derive(1f));
-                // r_again = new Rectangle(395, 340, 240, 35);
+                r_again = new Rectangle(395, 340, 240, 35);
                 
-                g.drawImage(img[11],365,130,this); //game over text
-                // g.drawImage(img[12],400,345,230,25,this); //try again text
+                g.drawImage(img[11],365,120,this); //game over text
+                g.drawImage(img[12],400,345,230,25,this); //try again text
             }
         }
 
@@ -368,24 +337,23 @@ public class World extends JPanel implements ActionListener{
                 }else{sun_clicked=false;}
 
             }else{ //the game is not playing
-                // if (r_again.contains(e.getPoint())) { //click again
-                //     play=true;
-                //     win=false;
-                //     player.resetCredits();
-                //     plants.clear();
-                //     suns.clear();
-                //     peas.clear();
-                //     zombies.clear();
-                //     Zombie.resetN();
+                if (r_again.contains(e.getPoint())) { //click try/play again
+                    play=true;
+                    win=false;
+                    player.resetCredits();
+                    plants.clear();
+                    zombies.clear();
+                    Zombie.resetN();
+                    Audio.begin();
 
-                //     sun.start(5);
-                //     // zombie.start(20);
-                //     for(i=0;i<5;i++){
-                //         for(j=0;j<9;j++){
-                //             Plant.setOcc(i, j);
-                //         }
-                //     }
-                // }
+                    Sun.start(5);
+                    Zombie.start(20);
+                    for(i=0;i<5;i++){
+                        for(j=0;j<9;j++){
+                            Plant.setOcc(i, j);
+                        }
+                    }
+                }
             }
         }
     }

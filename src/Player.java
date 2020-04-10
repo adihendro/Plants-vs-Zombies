@@ -52,7 +52,6 @@ public class Player {
     public void resetCredits(){
         sunCredits=50;
     }
-    
     //getter jumlah suncredit dari player
     public int getCredits(){
         return sunCredits;
@@ -61,7 +60,6 @@ public class Player {
     public int getChoice(){
         return choice;
     }
-    
     public void setChoice(int choice){
         this.choice=choice;
     }

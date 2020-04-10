@@ -7,7 +7,7 @@ import javax.swing.Timer;
 public class Sun{
     private int sunX, sunY, limitSunY, sunY2; //falling sun x and y position (coordinate)
     private boolean sunflower=false; //for sunflower's sun
-    private Timer timer; //set timer
+    private static Timer timer; //set timer
     private Ellipse2D e_sun; //ellipse for falling sun
 
     public Sun(){
@@ -25,7 +25,7 @@ public class Sun{
         sunflower=true;
     }
 
-    public void start(int interval){
+    public static void start(int interval){
         timer=new Timer(interval*1000, new ActionListener(){
             public void actionPerformed(ActionEvent e) {
                 World.suns.add(new Sun());
@@ -33,6 +33,10 @@ public class Sun{
         });
         timer.setRepeats(true);
         timer.start();
+    }
+
+    public static void stop(){
+        timer.stop();
     }
 
     //getter

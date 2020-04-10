@@ -60,9 +60,9 @@ public class Zombie extends Actor{
         timer.start();
     }
 
-    // public static void stop(){
-    //     timer.stop();
-    // }
+    public static void stop(){
+        timer.stop();
+    }
 
     //getter
     public static int getN(){return n;}
