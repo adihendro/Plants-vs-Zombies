@@ -30,7 +30,7 @@ public class Plant<T> extends Actor{
             }
         });
 
-        timer2=new Timer(300, new ActionListener(){
+        timer2=new Timer(150, new ActionListener(){
             public void actionPerformed(ActionEvent e) {
                 if(type.equals(3)){ //repeater
                     if(repeat){

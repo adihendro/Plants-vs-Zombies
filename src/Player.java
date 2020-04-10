@@ -8,7 +8,7 @@ import java.io.File;
 import javax.swing.JOptionPane;
 
 public class Player {
-    private int sunCredits, temp;
+    private int sunCredits, temp, choice=0;
     private Font font;
 
     //profil player
@@ -17,14 +17,14 @@ public class Player {
         temp=sunCredits;
         try{
             //create the font to use
-            font=Font.createFont(Font.TRUETYPE_FONT, new File("../Assets/Chalkboard.ttc")).deriveFont(Font.BOLD, 20f);
+            font=Font.createFont(Font.TRUETYPE_FONT, getClass().getResource("Assets/Chalkboard.ttc").openStream()).deriveFont(Font.BOLD, 20f);
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(font); //register the font
         } catch (Exception ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(null, ex.toString()); //show error dialog
         }
-        font=new Font("Chalkboard", Font.BOLD, 20); //load font
+        // font=new Font("Chalkboard", Font.BOLD, 20); //load font
     }
 
     public void draw(Graphics2D g){
@@ -57,11 +57,18 @@ public class Player {
     public int getCredits(){
         return sunCredits;
     }
-
+    
+    public int getChoice(){
+        return choice;
+    }
+    
+    public void setChoice(int choice){
+        this.choice=choice;
+    }
 
     //jumlah credit pada plants
-    public void plantType (int plantT){
-        switch (plantT){
+    public void plant(){
+        switch (choice){
             case 1: sunCredits-=50; break; //sunflower
             case 2: sunCredits-=100; break; //peashooter
             case 3: sunCredits-=150; break; //repeater

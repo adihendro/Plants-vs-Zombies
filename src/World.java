@@ -1,4 +1,8 @@
-import java.awt.event.*;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Image;
@@ -8,8 +12,7 @@ import java.awt.Rectangle;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
-import java.io.File;
-import java.io.IOException;
+
 import java.lang.Math;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +21,6 @@ import java.util.Iterator;
 import javax.swing.JPanel;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
-import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioInputStream; 
 import javax.sound.sampled.AudioSystem; 
 import javax.sound.sampled.Clip; 
@@ -33,11 +35,12 @@ public class World extends JPanel implements ActionListener{
     //img: 0.background, 1.sun, 2.sunflower, 3.peashooter, 4.repeater, 5.sungif, 6.peagif, 7.repgif, 
     //8.zombie, 9.zombief, 10.pea, 11.wasted, 12.try again, 13.sun_g, 14.pea_g, 15.rep_g, 16.win, 17.play again
     private Image[] img = new Image[18];
+    private Toolkit t = Toolkit.getDefaultToolkit();
     private Rectangle r_sunflower, r_peashooter, r_repeater, r_again, r_end; //rectangle for plants menu and others
     private Shape[][] field = new Shape[5][9]; //rectangle array with 5 rows and 9 columns for field area
     private Point mouse = new Point(); //point for mouse position
     public static Point[][] plant_f = new Point[5][9]; //array for plants coordinate
-    private int choice=0, xp, yp, i, j; //for paint plant chooser
+    private int xp, yp, i, j; //coordinate
     private boolean play=true, win=false, sun_clicked=false;
 
     //audio
@@ -47,7 +50,6 @@ public class World extends JPanel implements ActionListener{
     private Plant<Integer> plant = new Plant<Integer>(0, 0, 0);
     private Sun sun = new Sun();
     private Pea pea = new Pea(0, 0, 0);
-    private Zombie zombie = new Zombie(0);
 
     public static List<Plant<Integer>> plants = new ArrayList<Plant<Integer>>();
     public static List<Sun> suns = new ArrayList<Sun>();
@@ -60,7 +62,7 @@ public class World extends JPanel implements ActionListener{
         
         player = new Player();
         sun.start(5);
-        zombie.start(20);
+        Zombie.start(20);
         
         getImg(); //load image from disk
         init();
@@ -81,16 +83,16 @@ public class World extends JPanel implements ActionListener{
             clip2 = AudioSystem.getClip(); 
             clip3 = AudioSystem.getClip(); 
             // open audioInputStream to the clip 
-            clip.open(AudioSystem.getAudioInputStream(new File("../Assets/Background.wav").getAbsoluteFile())); 
-            clip2.open(AudioSystem.getAudioInputStream(new File("../Assets/End.wav").getAbsoluteFile())); 
-            clip3.open(AudioSystem.getAudioInputStream(new File("../Assets/Zombies_coming.wav").getAbsoluteFile())); 
+            clip.open(AudioSystem.getAudioInputStream(getClass().getResource(("Assets/Background.wav")))); 
+            clip2.open(AudioSystem.getAudioInputStream(getClass().getResource(("Assets/End.wav")))); 
+            clip3.open(AudioSystem.getAudioInputStream(getClass().getResource(("Assets/Zombies_coming.wav")))); 
             clip.loop(Clip.LOOP_CONTINUOUSLY); 
         }catch (Exception ex)  { 
             System.out.println("Error with playing sound."); 
         } 
         clip.start(); 
 
-        timer2 = new Timer(12000, new ActionListener(){
+        timer2 = new Timer(10000, new ActionListener(){
             public void actionPerformed(ActionEvent e) {
                 clip3.start(); 
                 timer2.stop();
@@ -112,46 +114,25 @@ public class World extends JPanel implements ActionListener{
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Toolkit t=Toolkit.getDefaultToolkit();  
-        //load gif image from disk
-        img[5]=t.getImage("../Assets/Sunflower.gif");
-        img[6]=t.getImage("../Assets/Peashooter.gif");
-        img[7]=t.getImage("../Assets/Repeater.gif");
-        img[8]=t.getImage("../Assets/Zombie.gif");
-        img[9]=t.getImage("../Assets/Zombief.gif");
-        g.drawImage(img[0], 0, 0, 1024, 626, this); //draw background
+        Graphics2D g2 = (Graphics2D) g;
         
-        //check if not enough sunflower points
-        if(player.getCredits()<150){ //<150
+        //draw background
+        g.drawImage(img[0], 0, 0, 1024, 626, this);
+        
+        //draw black&white plant menu
+        if(player.getCredits()<150){ //suncredits <150
             g.drawImage(img[15], 41, 434, rwidth+1, rheight, this); //draw repeater g
-            if(player.getCredits()<100){ //<100
+            if(player.getCredits()<100){ //suncredits <100
                 g.drawImage(img[14], 41, 320, pwidth+2, pheight, this); //draw peashooter g
-                if(player.getCredits()<50){ //<50
+                if(player.getCredits()<50){ //suncredits <50
                     g.drawImage(img[13], 42, 196, swidth, sheight, this); //draw sunflower g
                 }
             }
         }
-           
-        Graphics2D g2 = (Graphics2D) g;
 
         //draw sunflower points
         player.draw(g2);
         
-        //make a transparent plant selection following mouse movement
-            if(choice==1){ //sunflower
-                g2.setComposite(AlphaComposite.SrcOver.derive(0.7f)); //set alpha 0.7
-                g2.drawImage(img[2], mouse.getX()-swidth/2, mouse.getY()-sheight/2, swidth, sheight, this);
-                g2.setComposite(AlphaComposite.SrcOver.derive(1f)); //set alpha back to 1
-            }else if(choice==2){ //peashooter
-                g2.setComposite(AlphaComposite.SrcOver.derive(0.7f));
-                g2.drawImage(img[3], mouse.getX()-pwidth/2, mouse.getY()-pheight/2, pwidth, pheight, this);
-                g2.setComposite(AlphaComposite.SrcOver.derive(1f));
-            }else if(choice==3){ //repeater
-                g2.setComposite(AlphaComposite.SrcOver.derive(0.7f));
-                g2.drawImage(img[4], mouse.getX()-(rwidth+8)/2, mouse.getY()-(rheight+8)/2, rwidth+4, rheight+4, this);
-                g2.setComposite(AlphaComposite.SrcOver.derive(1f));
-            }
-
         //draw plant
         for(Plant plant: plants){
             xp=plant_f[plant.X()][plant.Y()].getX();
@@ -186,11 +167,26 @@ public class World extends JPanel implements ActionListener{
                 }
             }
         }
+
+        //make a transparent plant selection following mouse movement
+        if(player.getChoice()==1){ //sunflower
+            g2.setComposite(AlphaComposite.SrcOver.derive(0.7f)); //set alpha 0.7
+            g2.drawImage(img[2], mouse.getX()-swidth/2, mouse.getY()-sheight/2, swidth, sheight, this);
+            g2.setComposite(AlphaComposite.SrcOver.derive(1f)); //set alpha back to 1
+        }else if(player.getChoice()==2){ //peashooter
+            g2.setComposite(AlphaComposite.SrcOver.derive(0.7f));
+            g2.drawImage(img[3], mouse.getX()-pwidth/2, mouse.getY()-pheight/2, pwidth, pheight, this);
+            g2.setComposite(AlphaComposite.SrcOver.derive(1f));
+        }else if(player.getChoice()==3){ //repeater
+            g2.setComposite(AlphaComposite.SrcOver.derive(0.7f));
+            g2.drawImage(img[4], mouse.getX()-(rwidth+8)/2, mouse.getY()-(rheight+8)/2, rwidth+4, rheight+4, this);
+            g2.setComposite(AlphaComposite.SrcOver.derive(1f));
+        }
         
         //zombie
         Iterator<Zombie> itz = zombies.iterator(); 
         while (itz.hasNext()){
-            zombie=itz.next();
+            Zombie zombie=itz.next();
             
             //draw zombie
             if(zombie.getType()==1){ //standard zombie
@@ -199,10 +195,10 @@ public class World extends JPanel implements ActionListener{
                 g.drawImage(img[9], Math.round(zombie.getCoorX()), zombie.getCoorY(), this);
             }
 
-            //check is zombie intersect plant
+            //check if zombie intersects plant
             zombie.attack();
             
-            //check is zombie intersect pea
+            //check if zombie intersects pea
             Iterator<Pea> itp = peas.iterator(); 
             A: while (itp.hasNext()){
                 pea=itp.next();
@@ -224,15 +220,18 @@ public class World extends JPanel implements ActionListener{
                 }
             }
 
+            //check if zombie is dead
             if(zombie.isDead()){
                 itz.remove();
             }
             
+            //check if zombie reaches house
             if(zombie.gameOver()){
                 play=false;
             }
         }
 
+        //check if all 40 zombies are killed
         if(Zombie.getN()==40 && zombies.isEmpty()){
             play=false;
             win=true;
@@ -284,14 +283,13 @@ public class World extends JPanel implements ActionListener{
             clip2.start();
             clip2.loop(Clip.LOOP_CONTINUOUSLY); 
 
+            player.setChoice(0);
             peas.clear();
             suns.clear();
             for(Plant plant: plants){
                 plant.stop();
             }
-            // for(Zombie zombie: zombies){
-            //     zombie.stop();
-            // }
+            Zombie.stop()
 
             if(win){
                 r_end = new Rectangle(0, 0, 1024, 626);
@@ -341,30 +339,30 @@ public class World extends JPanel implements ActionListener{
                     // check if mouse clicked plants
                     if (r_sunflower.contains(e.getPoint())) { //click sunflower
                         if(player.getCredits()>=50){ //>=50
-                            choice= (choice==1) ? 0:1;
+                            player.setChoice((player.getChoice()==1) ? 0:1);
                         }
                     }else if(r_peashooter.contains(e.getPoint())) { //click peashooter
                         if(player.getCredits()>=100){ //>=100
-                            choice= (choice==2) ? 0:2;
+                            player.setChoice((player.getChoice()==2) ? 0:2);
                         }
                     }else if(r_repeater.contains(e.getPoint())) { //click repeater
                         if(player.getCredits()>=150){ //>=150
-                            choice= (choice==3) ? 0:3;
+                            player.setChoice((player.getChoice()==3) ? 0:3);
                         }
-                    }else if(choice!=0){ //to click field
+                    }else if(player.getChoice()!=0){ //to click field
                         A: for(i=0;i<5;i++){
                             for(j=0;j<9;j++){
                                 if(field[i][j].contains(e.getPoint())){ //plant the plant in field
-                                    if(plant.put(i,j,choice)){
-                                        player.plantType(choice);
-                                        choice=0;
+                                    if(plant.put(i,j,player.getChoice())){
+                                        player.plant();
+                                        player.setChoice(0);
                                     }
                                     break A;
                                 }
                             }
                         }
                         if(i==5){ //not selected a plant-able area
-                            choice=0;
+                            player.setChoice(0);
                         }
                     }
                 }else{sun_clicked=false;}
@@ -394,20 +392,25 @@ public class World extends JPanel implements ActionListener{
 
     private void getImg(){
         try{ //try to load image and font
-            img[0]=ImageIO.read(new File("../Assets/Background.jpg"));
-            img[1]=ImageIO.read(new File("../Assets/Sun.png"));
-            img[2]=ImageIO.read(new File("../Assets/Sunflower.png"));
-            img[3]=ImageIO.read(new File("../Assets/Peashooter.png"));
-            img[4]=ImageIO.read(new File("../Assets/Repeater.png"));
-            img[10]=ImageIO.read(new File("../Assets/Pea.png"));
-            img[11]=ImageIO.read(new File("../Assets/Wasted.png"));
-            img[12]=ImageIO.read(new File("../Assets/Tryagain.png"));
-            img[13]=ImageIO.read(new File("../Assets/Sunflower_g.png"));
-            img[14]=ImageIO.read(new File("../Assets/Peashooter_g.png"));
-            img[15]=ImageIO.read(new File("../Assets/Repeater_g.png"));
-            img[16]=ImageIO.read(new File("../Assets/Win.png"));
-            img[17]=ImageIO.read(new File("../Assets/Playagain.png"));
-        } catch(IOException ex) {
+            img[0]=t.getImage(getClass().getResource("Assets/Background.jpg"));
+            img[1]=t.getImage(getClass().getResource("Assets/Sun.png"));
+            img[2]=t.getImage(getClass().getResource("Assets/Sunflower.png"));
+            img[3]=t.getImage(getClass().getResource("Assets/Peashooter.png"));
+            img[4]=t.getImage(getClass().getResource("Assets/Repeater.png"));
+            img[5]=t.getImage(getClass().getResource("Assets/Sunflower.gif"));
+            img[6]=t.getImage(getClass().getResource("Assets/Peashooter.gif"));
+            img[7]=t.getImage(getClass().getResource("Assets/Repeater.gif"));
+            img[8]=t.getImage(getClass().getResource("Assets/Zombie.gif"));
+            img[9]=t.getImage(getClass().getResource("Assets/Zombief.gif"));
+            img[10]=t.getImage(getClass().getResource("Assets/Pea.png"));
+            img[11]=t.getImage(getClass().getResource("Assets/Wasted.png"));
+            img[12]=t.getImage(getClass().getResource("Assets/Tryagain.png"));
+            img[13]=t.getImage(getClass().getResource("Assets/Sunflower_g.png"));
+            img[14]=t.getImage(getClass().getResource("Assets/Peashooter_g.png"));
+            img[15]=t.getImage(getClass().getResource("Assets/Repeater_g.png"));
+            img[16]=t.getImage(getClass().getResource("Assets/Win.png"));
+            img[17]=t.getImage(getClass().getResource("Assets/Playagain.png"));
+        } catch(Exception ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(null, ex.toString()); //show error dialog
         }

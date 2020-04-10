@@ -6,11 +6,12 @@ public class Zombie extends Actor{
     protected int zombieDamage;
     protected float zombieSpeed;
     private int[] column = {296,377,458,539,620,701,782,863,944}; //9
-    private int type, lane, coorY, yp, interval;
+    private int type, lane, coorY, yp;
     private float coorX; //zombie x coordinate
-    private static int[] arrY = new int[5];
-    private static int n=0;
-    private Timer timer, timer2; //set timer
+    private static int[] arrY = new int[5]; //zombie y coordinate
+    private static int n=0, interval;
+    private static Timer timer; //spawning zombie timer
+    private Timer timer2; //attacking plant timer
 
     public Zombie(int type){
         this.type=type;
@@ -27,13 +28,8 @@ public class Zombie extends Actor{
         }
     }
 
-    static{
-        for(int i=0;i<5;i++){
-            arrY[i]=117+i*98-82;
-        }
-    }
-
     {
+        //attacking plant
         timer2=new Timer(1000, new ActionListener(){
             public void actionPerformed(ActionEvent e) {
                 for(Plant plant: World.plants){
@@ -45,8 +41,14 @@ public class Zombie extends Actor{
         });
     }
 
-    public void start(int interval){
-        this.interval=interval;
+    static{
+        for(int i=0;i<5;i++){
+            arrY[i]=117+i*98-82;
+        }
+    }
+
+    public static void start(int inter){
+        interval=inter;
         timer=new Timer(interval*1000, new ActionListener(){
             public void actionPerformed(ActionEvent e) {
                 if(n<40){
@@ -58,9 +60,9 @@ public class Zombie extends Actor{
         timer.start();
     }
 
-    public void stop(){
-        timer.stop();
-    }
+    // public static void stop(){
+    //     timer.stop();
+    // }
 
     //getter
     public static int getN(){return n;}
@@ -80,13 +82,14 @@ public class Zombie extends Actor{
     }
     
     //setter
-    public static void resetN(){n=0;}
     public int setLane(){
         lane=(int)(Math.random() * 5); //generate zombie lane from 0 to 4
         return lane;
     }
+    
+    public static void resetN(){n=0;}
 
-    public int setType(){
+    public static int setType(){
         if(n<=3){ //easy
             if(n>=1){
                 timer.setDelay(interval*500);
