@@ -27,7 +27,7 @@ public class World extends JPanel implements ActionListener{
 
     // width and height for (p)eashooter, (s)unflower, (r)epeater
     private int pwidth=62, pheight=66, swidth=pwidth, sheight=pheight+5, rwidth=pwidth+2, rheight=pheight+2;
-    private Timer timer, timer2; //set timer
+    private Timer timer; //set timer
 
     //img: 0.background, 1.sun, 2.sunflower, 3.peashooter, 4.repeater, 5.sungif, 6.peagif, 7.repgif, 
     //8.zombie, 9.zombief, 10.pea, 11.wasted, 12.try again, 13.sun_g, 14.pea_g, 15.rep_g, 16.win, 17.play again
@@ -42,7 +42,7 @@ public class World extends JPanel implements ActionListener{
 
     private Player player;  
     private Plant<Integer> plant = new Plant<Integer>(0, 0, 0);
-    private Pea pea = new Pea(0, 0, 0);
+    private Pea pea;
     private Sun sun;
 
     public static List<Plant<Integer>> plants = new ArrayList<Plant<Integer>>();
@@ -52,11 +52,11 @@ public class World extends JPanel implements ActionListener{
       
 
     public World(){
-        timer = new Timer(25, this); //set up timer
+        timer = new Timer(25, this); //set up timer for 25 milliseconds
         
         player = new Player();
         Sun.start(5);
-        Zombie.start(20);
+        Zombie.start(10);
         
         getImg(); //load image from disk
         init();
@@ -172,18 +172,20 @@ public class World extends JPanel implements ActionListener{
             Iterator<Pea> itp = peas.iterator(); 
             A: while (itp.hasNext()){
                 pea=itp.next();
-                xp=zombie.getLane();
+                xp=zombie.getLane(); //get zombie lane
                 if(pea.X()==xp){ //same lane
                     if(zombie.getType()==1){ //normal zombie
-                        if((pea.getCoorX()>=zombie.getCoorX()-3) && (pea.getCoorX()<=zombie.getCoorX()+92)){ //hit 62
-                            zombie.hit(pea.getDamage());
-                            itp.remove();
+                        if((pea.getCoorX()>=zombie.getCoorX()-3) && (pea.getCoorX()<=zombie.getCoorX()+92)){
+                            pea.splat(); //play splat sound
+                            zombie.hit(pea.getDamage()); //damage zombie
+                            itp.remove(); //remove pea from list
                             break A;
                         }
                     }else if(zombie.getType()==2){ //football zombie
-                        if((pea.getCoorX()>=zombie.getCoorX()+10) && (pea.getCoorX()<=zombie.getCoorX()+105)){ //hit 75
-                            zombie.hit(pea.getDamage());
-                            itp.remove();
+                        if((pea.getCoorX()>=zombie.getCoorX()+10) && (pea.getCoorX()<=zombie.getCoorX()+105)){
+                            pea.splat(); //play splat sound
+                            zombie.hit(pea.getDamage()); //damage zombie
+                            itp.remove(); //remove pea from list
                             break A;
                         }
                     }
@@ -216,7 +218,7 @@ public class World extends JPanel implements ActionListener{
                 g.drawImage(img[10], pea.getCoorX(), pea.getCoorY(), this);
                 pea.move();
                     
-                if(pea.getCoorX()>1030){
+                if(pea.getCoorX()>1030){ //pea move beyond the frame
                     itp.remove();
                 }
             }
@@ -225,15 +227,15 @@ public class World extends JPanel implements ActionListener{
             Iterator<Sun> its = suns.iterator(); 
             while (its.hasNext()){
                 sun=its.next();
-                if(sun.isSunflower()){
-                    if(sun.getY()<sun.getLimit()){ //sun falls
+                if(sun.isSunflower()){ //sun from sunflower
+                    if(sun.getY()<sun.getLimit()){ //sun waits a while until gone
                         g.drawImage(img[1],sun.getX(),sun.getY2(),80,80,this);
                         sun.setE(new Ellipse2D.Float(sun.getX(), sun.getY2(), 80, 80));
                         sun.lower();
                     }else{ //falling sun gone
                         its.remove();
                     }
-                }else{
+                }else{ //sun from the sky
                     if(sun.getY()<sun.getLimit()){ //sun falls
                         g.drawImage(img[1],sun.getX(),sun.getY(),80,80,this);
                         sun.setE(new Ellipse2D.Float(sun.getX(), sun.getY(), 80, 80));
@@ -249,8 +251,6 @@ public class World extends JPanel implements ActionListener{
             }
 
         }else{ //play=false, win or game over
-            Audio.end();
-
             player.setChoice(0);
             for(Plant plant: plants){
                 plant.stop();
@@ -261,6 +261,7 @@ public class World extends JPanel implements ActionListener{
             peas.clear();
 
             if(win){
+                Audio.win();
                 r_end = new Rectangle(0, 0, 1024, 626);
                 g2.setColor(Color.WHITE);
                 g2.setComposite(AlphaComposite.SrcOver.derive(0.6f));
@@ -272,6 +273,7 @@ public class World extends JPanel implements ActionListener{
                 g.drawImage(img[17],445,410,140,65,this); //play again text
                 
             }else{ //lose
+                Audio.lose();
                 r_end = new Rectangle(0, 0, 1024, 626);
                 g2.setColor(Color.WHITE);
                 g2.setComposite(AlphaComposite.SrcOver.derive(0.6f));
@@ -297,6 +299,7 @@ public class World extends JPanel implements ActionListener{
                     sun=its.next();
                     try{
                         if(sun.getE().contains(e.getPoint())){ //click falling sun
+                            sun.points(); //play points sound
                             player.addSunCredits(); //add 25 sun points;
                             sun_clicked=true;
                             its.remove();
@@ -325,6 +328,7 @@ public class World extends JPanel implements ActionListener{
                                     if(plant.put(i,j,player.getChoice())){
                                         player.plant();
                                         player.setChoice(0);
+                                        Audio.plant();
                                     }
                                     break A;
                                 }

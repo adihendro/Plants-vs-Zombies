@@ -21,6 +21,7 @@ public class Zombie extends Actor{
             super.health=35;
             zombieDamage=10;
             zombieSpeed=0.35f;
+            // zombieSpeed=3f;
         }else if(type==2) { //Football zombie
             super.health=60;
             zombieDamage=15;
@@ -28,19 +29,25 @@ public class Zombie extends Actor{
         }
     }
 
+    //initialization block
     {
         //attacking plant
         timer2=new Timer(1000, new ActionListener(){
             public void actionPerformed(ActionEvent e) {
                 for(Plant plant: World.plants){
                     if(plant.X()==lane && plant.Y()==yp){ //intersect plant
-                        plant.hit(zombieDamage);
+                        if(!Audio.isEating()){ //"eat" audio is not playing
+                            Audio.eat(); //play "eat" audio
+                        }
+                        plant.hit(zombieDamage); //damage plant
                     }
                 }
             }
         });
+        timer2.setInitialDelay(200);
     }
 
+    //static initialization block
     static{
         for(int i=0;i<5;i++){
             arrY[i]=117+i*98-82;

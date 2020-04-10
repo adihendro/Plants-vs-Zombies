@@ -2,13 +2,18 @@ import java.awt.geom.Ellipse2D;
 import java.awt.event.ActionEvent;  
 import java.awt.event.ActionListener;
 import java.lang.Math;
+
 import javax.swing.Timer;
+import javax.sound.sampled.AudioInputStream; 
+import javax.sound.sampled.AudioSystem; 
+import javax.sound.sampled.Clip; 
 
 public class Sun{
     private int sunX, sunY, limitSunY, sunY2; //falling sun x and y position (coordinate)
     private boolean sunflower=false; //for sunflower's sun
     private static Timer timer; //set timer
     private Ellipse2D e_sun; //ellipse for falling sun
+    private Clip clip;
 
     public Sun(){
         setX();
@@ -23,6 +28,16 @@ public class Sun{
         sunY2=sunY;
         limitSunY=sunY+250;
         sunflower=true;
+    }
+
+    //initialization block
+    {
+        try{
+            clip = AudioSystem.getClip();
+            clip.open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Points.wav")))); 
+        }catch(Exception ex)  { 
+            ex.printStackTrace();
+        }
     }
 
     public static void start(int interval){
@@ -59,7 +74,12 @@ public class Sun{
     public void setLimit(){ 
         limitSunY=(int)(Math.random() * (470-200+1)+200); //generate limit falling sunY from y=200 to y=470
     }
+
     public void lower(){ //lower sun position
         sunY+=2;
+    }
+
+    public void points(){ //play points sound
+        clip.start();
     }
 }

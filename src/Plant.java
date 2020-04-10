@@ -23,13 +23,16 @@ public class Plant<T> extends Actor{
         }else{}
     }
 
+    //initialization block
     {
+        //shoot pea every 2 seconds
         timer=new Timer(2000, new ActionListener(){
             public void actionPerformed(ActionEvent e) {
                 World.peas.add(new Pea((int)type, x, y));
             }
         });
 
+        //repeater shoots second pea every 2.15 seconds
         timer2=new Timer(150, new ActionListener(){
             public void actionPerformed(ActionEvent e) {
                 if(type.equals(3)){ //repeater
@@ -41,7 +44,9 @@ public class Plant<T> extends Actor{
                 }
             }
         });
+        timer2.setDelay(2000);
 
+        //drop sun every 10 seconds
         timer3=new Timer(10000, new ActionListener(){
             public void actionPerformed(ActionEvent e) {
                 World.suns.add(new Sun(x, y));
@@ -79,12 +84,10 @@ public class Plant<T> extends Actor{
     public void attack(){
         timer.start();
         timer2.start();
-        timer2.setDelay(2000);
         idle=false;
     }
     public void stop(){
         timer.stop();
-        timer3.stop();
         timer2.stop();
         idle=true;
     }
