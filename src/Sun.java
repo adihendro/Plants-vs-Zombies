@@ -34,7 +34,7 @@ public class Sun{
         try{
             clip = AudioSystem.getClip();
             clip.open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Points.wav")))); 
-        }catch(Exception ex)  { 
+        }catch(Exception ex){ 
             ex.printStackTrace();
         }
     }

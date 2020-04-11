@@ -142,10 +142,10 @@ public class Zombie extends Actor{
             A: for(Plant plant: World.plants){
                 if(plant.X()==lane && plant.Y()==yp){
                     timer2.start();
-                    if(plant.isDead()){
-                        plant.stop();
-                        Plant.setOcc(lane, yp);
-                        timer2.stop();
+                    if(plant.isDead()){ //plant dies
+                        plant.stop(); //stop plant's activity
+                        Plant.setOcc(lane, yp); //set spot to empty
+                        timer2.stop(); //stop attacking plant
                         World.plants.remove(plant);
                         break A;
                     }

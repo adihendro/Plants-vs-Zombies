@@ -1,8 +1,8 @@
 import java.awt.event.ActionEvent;  
 import java.awt.event.ActionListener;
 import javax.swing.Timer;
-import javax.sound.sampled.AudioSystem; 
-import javax.sound.sampled.Clip;
+// import javax.sound.sampled.AudioSystem; 
+// import javax.sound.sampled.Clip;
 
 public class Plant<T> extends Actor{
     private T type;
@@ -11,7 +11,7 @@ public class Plant<T> extends Actor{
     private boolean idle=true, threaten=false;
     private Timer timer, timer2, timer3; //set timer
     private static int[][] occ = new int[5][10];
-    private Clip clip;
+    // private Clip clip;
     
     public Plant(T type, int x, int y){
         this.type=type;
@@ -31,8 +31,8 @@ public class Plant<T> extends Actor{
         //shoot pea every 2 seconds
         timer=new Timer(2000, new ActionListener(){
             public void actionPerformed(ActionEvent e) {
-                clip.setMicrosecondPosition(0);
-                clip.start(); //play shoot sound
+                // clip.setMicrosecondPosition(0);
+                // clip.start(); //play shoot sound
                 World.peas.add(new Pea((int)type, x, y));
             }
         });
@@ -42,8 +42,8 @@ public class Plant<T> extends Actor{
             public void actionPerformed(ActionEvent e) {
                 if(type.equals(3)){ //repeater
                     if(repeat){
-                        clip.setMicrosecondPosition(0);
-                        clip.start(); //play shoot sound
+                        // clip.setMicrosecondPosition(0);
+                        // clip.start(); //play shoot sound
                         World.peas.add(new Pea(3, x, y));
                     }else{
                         repeat=true;
@@ -60,12 +60,12 @@ public class Plant<T> extends Actor{
             }
         });
 
-        try{
-            clip = AudioSystem.getClip();
-            clip.open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Shoot.wav"))));
-        }catch(Exception ex)  { 
-            ex.printStackTrace();
-        }
+        // try{
+        //     clip = AudioSystem.getClip();
+        //     clip.open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Shoot.wav"))));
+        // }catch(Exception ex)  { 
+        //     ex.printStackTrace();
+        // }
     }
 
     //getter
@@ -103,6 +103,7 @@ public class Plant<T> extends Actor{
     public void stop(){
         timer.stop();
         timer2.stop();
+        timer3.stop();
         idle=true;
     }
     public void act(){
