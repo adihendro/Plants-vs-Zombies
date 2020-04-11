@@ -31,8 +31,8 @@ public class Audio{
             JOptionPane.showMessageDialog(null, ex.toString()); //show error dialog
         } 
 
-        //play zombies coming after 10 seconds
-        timer = new Timer(10000, new ActionListener(){
+        //play zombies coming after 12 seconds
+        timer = new Timer(12000, new ActionListener(){
             public void actionPerformed(ActionEvent e) {
                 clip[4].setMicrosecondPosition(0);
                 clip[4].start(); 

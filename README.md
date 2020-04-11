@@ -1,2 +1,2 @@
 # Plants vs Zombies
-Command Line PVZ Game
+Java Swing PVZ Game

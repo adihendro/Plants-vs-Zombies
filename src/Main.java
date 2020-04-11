@@ -10,14 +10,12 @@ public class Main{
         frame.setTitle("Plants vs Zombies");
         frame.add(world);
 
-        //Get the bottom of the taskbar height
+        //Get the top taskbar height
         Insets screenInsets = Toolkit.getDefaultToolkit().getScreenInsets(frame.getGraphicsConfiguration());
 
-        frame.setBounds(130,0, 1024, 625+screenInsets.top); //646
+        frame.setBounds(130,0, 1024, 625+screenInsets.top);
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
-
-        System.out.println(screenInsets.top);
     }
 }

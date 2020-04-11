@@ -121,6 +121,7 @@ public class World extends JPanel implements ActionListener{
                 //shoot zombie
                 xp=plant.X();
                 yp=plant.Y();
+
                 A: for(Zombie zombie: zombies){
                     if(xp==zombie.getLane() && yp<=zombie.getColumn()){ //zombie exist in front of plant?
                         if(plant.isIdle()){
@@ -131,6 +132,9 @@ public class World extends JPanel implements ActionListener{
                     }else{
                         plant.setThreat(false);
                     }
+                }
+                if(zombies.isEmpty()){ //there is no zombie
+                    plant.setThreat(false);
                 }
                 if(!plant.isThreaten()){ //plant is not threaten: no zombie in front of plant
                     plant.stop();
@@ -352,6 +356,7 @@ public class World extends JPanel implements ActionListener{
                             }
                         }
                         if(i==5){ //not selected a plant-able area
+                            Audio.seedlift(); //play seedlift sound
                             player.setChoice(0);
                         }
                     }
