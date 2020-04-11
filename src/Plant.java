@@ -6,11 +6,12 @@ import javax.swing.Timer;
 
 public class Plant<T> extends Actor{
     private T type;
-    private int x, y; //array for plant location [5][9]
     private boolean repeat=false;
     private boolean idle=true, threaten=false;
     private Timer timer, timer2, timer3; //set timer
+    private int x, y; //array for plant location [5][9]
     private static int[][] occ = new int[5][10];
+    private static Point[][] coor = new Point[5][9]; //array for plants coordinate
     // private Clip clip;
     
     public Plant(T type, int x, int y){
@@ -23,7 +24,7 @@ public class Plant<T> extends Actor{
             super.health = 40;
         }else if(type.equals(3)){ //Repeater
             super.health = 60;
-        } else if(type.equals(4)){ //wallnut
+        }else if(type.equals(4)){ //Wallnut
             super.health=200;
         }else{}
     }
@@ -76,6 +77,7 @@ public class Plant<T> extends Actor{
     public T getType(){return type;}
     public boolean isThreaten(){return threaten;}
     public static int getOcc(int x, int y){return occ[x][y];}
+    public static Point getCoor(int x, int y){return coor[x][y];}
     public boolean isIdle(){
         return idle;
     }
@@ -83,6 +85,9 @@ public class Plant<T> extends Actor{
     //setter
     public static void setOcc(int i, int j){
         occ[i][j]=0;
+    }
+    public static void setCoor(int i, int j){
+        coor[i][j]=new Point(296+j*81,117+i*98);
     }
     public void setThreat(boolean threat){
         threaten=threat;

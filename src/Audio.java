@@ -41,7 +41,13 @@ public class Audio{
         });
     }
 
+    public static void menu(){
+        clip[0].start(); 
+        clip[0].loop(Clip.LOOP_CONTINUOUSLY);
+    }
+
     public static void begin(){
+        clip[0].stop();
         clip[2].stop();
         clip[3].stop();
         

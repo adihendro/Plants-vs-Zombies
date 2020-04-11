@@ -22,10 +22,10 @@ public class Sun{
     }
 
     public Sun(int x, int y){
-        sunX=World.plant_f[x][y].getX()-15;
-        sunY=World.plant_f[x][y].getY()-30;
+        sunX=Plant.getCoor(x, y).getX()-15;
+        sunY=Plant.getCoor(x, y).getY()-30;
         sunY2=sunY;
-        limitSunY=sunY+250;
+        limitSunY=sunY+300;
         sunflower=true;
     }
 
