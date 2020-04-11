@@ -23,6 +23,8 @@ public class Plant<T> extends Actor{
             super.health = 40;
         }else if(type.equals(3)){ //Repeater
             super.health = 60;
+        } else if(type.equals(4)){ //wallnut
+            super.health=200;
         }else{}
     }
 
