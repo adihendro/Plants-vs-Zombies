@@ -4,7 +4,6 @@ import java.awt.event.ActionListener;
 import java.lang.Math;
 
 import javax.swing.Timer;
-import javax.sound.sampled.AudioInputStream; 
 import javax.sound.sampled.AudioSystem; 
 import javax.sound.sampled.Clip; 
 

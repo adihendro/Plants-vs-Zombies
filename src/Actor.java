@@ -5,7 +5,7 @@ public abstract class Actor{
     public abstract void attack();
 
     public void hit(int damage){
-    	health -= damage;
+        health-=damage;
     }
 
     //is Actor dead method

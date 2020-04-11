@@ -10,6 +10,7 @@ public class Zombie extends Actor{
     private float coorX; //zombie x coordinate
     private static int[] arrY = new int[5]; //zombie y coordinate
     private static int n=0, interval;
+    private static boolean gameOver=false;
     private static Timer timer; //spawning zombie timer
     private Timer timer2; //attacking plant timer
 
@@ -36,8 +37,8 @@ public class Zombie extends Actor{
             public void actionPerformed(ActionEvent e) {
                 for(Plant plant: World.plants){
                     if(plant.X()==lane && plant.Y()==yp){ //intersect plant
-                        if(!Audio.isEating()){ //"eat" audio is not playing
-                            Audio.eat(); //play "eat" audio
+                        if(!Audio.isEating() && !gameOver){
+                            Audio.eat();
                         }
                         plant.hit(zombieDamage); //damage plant
                     }
@@ -54,21 +55,21 @@ public class Zombie extends Actor{
         }
     }
 
+    //init
     public static void start(int inter){
         interval=inter;
         timer=new Timer(interval*1000, new ActionListener(){
             public void actionPerformed(ActionEvent e) {
                 if(n<40){
-                    n++;
-                    World.zombies.add(new Zombie(setType()));
+                    n++; //increase count zombie
+                    World.zombies.add(new Zombie(setType())); //deploy zombie
                 }
             }
         });
         timer.start();
     }
-
     public static void stop(){
-        timer.stop();
+        timer.stop(); //stop deploying zombie
     }
 
     //getter
@@ -126,18 +127,20 @@ public class Zombie extends Actor{
         }
     }
 
-    public void move(){
-        coorX-=zombieSpeed;
-    }
     public boolean gameOver(){
-        return coorX<210;
+        if(coorX>210){ //zombie hasn't reach house yet
+            return false;
+        }else{ //zombie reaches house
+            gameOver=true;
+            return true;
+        }
     }
     public void attack(){
         //check is zombie intersect plant
         yp=getColumn();
-        if(Plant.getOcc(lane, yp)!=0){
+        if(Plant.getOcc(lane, yp)!=0){ //intersect plant
             A: for(Plant plant: World.plants){
-                if(plant.X()==lane && plant.Y()==yp){ //intersect plant
+                if(plant.X()==lane && plant.Y()==yp){
                     timer2.start();
                     if(plant.isDead()){
                         plant.stop();
@@ -148,8 +151,11 @@ public class Zombie extends Actor{
                     }
                 }
             }
-        }else{
-            move();
+        }else{ //empty spot
+            coorX-=zombieSpeed; //move
         }
+    }
+    public void stopEat(){
+        timer2.stop(); //stop eating plant
     }
 }
