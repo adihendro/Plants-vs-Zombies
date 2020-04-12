@@ -21,12 +21,12 @@ public class Zombie extends Actor{
         if(type==1){ //Normal zombie
             super.health=35;
             zombieDamage=10;
-            zombieSpeed=0.35f;
-            // zombieSpeed=3f;
+            zombieSpeed=0.3f;
+            // zombieSpeed=5f;
         }else if(type==2) { //Football zombie
             super.health=60;
             zombieDamage=15;
-            zombieSpeed=0.6f;
+            zombieSpeed=0.55f;
         }
     }
 
@@ -76,6 +76,7 @@ public class Zombie extends Actor{
     public static int getN(){return n;}
     public int getType(){return type;}
     public int getDamage(){return zombieDamage;}
+    public int getHealth(){return health;}
     public float getCoorX(){return coorX;}
     public int getCoorY(){return coorY;}
     public int getLane(){return lane;}
@@ -99,12 +100,10 @@ public class Zombie extends Actor{
 
     public static int setType(){
         if(n<=3){ //easy
-            if(n>=1){
-                timer.setDelay(interval*500);
-            }
+            timer.setDelay(interval*450);
             return 1; //normal zombie
         }else if(n<=6){ //medium
-            timer.setDelay(interval*170);
+            timer.setDelay(interval*220);
             if((int)(Math.random() * 4)==2){ //generate zombie type from 0 to 3
                 return 2; //football zombie
             }else{
