@@ -1,15 +1,16 @@
 import java.awt.event.ActionEvent;  
 import java.awt.event.ActionListener;
+import java.util.Collections;
 import javax.swing.Timer;
 
-public class Zombie extends Actor{
+public class Zombie extends Actor implements Comparable<Zombie>{
     protected int zombieDamage;
     protected float zombieSpeed;
     private int[] column = {296,377,458,539,620,701,782,863,944}; //9
     private int type, lane, coorY, yp;
     private float coorX; //zombie x coordinate
     private static int[] arrY = new int[5]; //zombie y coordinate
-    private static int n=0, interval;
+    private static int n=0, max=40, interval;
     private static boolean gameOver=false;
     private static Timer timer; //spawning zombie timer
     private Timer timer2; //attacking plant timer
@@ -60,9 +61,12 @@ public class Zombie extends Actor{
         interval=inter;
         timer=new Timer(interval*1000, new ActionListener(){
             public void actionPerformed(ActionEvent e) {
-                if(n<40){
+                if(n<max){
                     n++; //increase count zombie
                     World.zombies.add(new Zombie(setType())); //deploy zombie
+
+                    //sort zombie based on lane
+                    Collections.sort(World.zombies);
                 }
             }
         });
@@ -72,8 +76,14 @@ public class Zombie extends Actor{
         timer.stop(); //stop deploying zombie
     }
 
+    @Override
+	public int compareTo(Zombie z) { //sort zombies based on lane
+		return lane-z.getLane();
+	}
+
     //getter
     public static int getN(){return n;}
+    public static int getMax(){return max;}
     public int getType(){return type;}
     public int getDamage(){return zombieDamage;}
     public int getHealth(){return health;}
@@ -116,7 +126,7 @@ public class Zombie extends Actor{
             }else{
                 return 1; //normal zombie
             }
-        }else{ //n<40 extreme
+        }else{ //n<max extreme
             timer.setDelay(interval*100);
             if((int)(Math.random() * 4)==1){ //generate zombie type from 0 to 3
                 return 1; //normal zombie
