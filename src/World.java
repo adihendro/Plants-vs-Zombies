@@ -31,10 +31,11 @@ public class World extends JPanel implements ActionListener{
 
     //img: 0.background, 1.sun, 2.sunflower, 3.peashooter, 4.repeater, 5.sungif, 6.peagif, 7.repgif, 8.zombie, 9.zombief 
     //10.pea_p, 11.wasted, 12.try again, 13.sun_g, 14.pea_g, 15.rep_g, 16.win, 17.play again, 18.brain, 19.pea_r, 
-    //20.zombief2, 21.shovel
-    private Image[] img = new Image[22];
+    //20.zombief2, 21.shovel, 22.shovel1, 23.shovel2, 24.progress1, 25.progress2, 26.progress3, 27.progress4
+    private Image[] img = new Image[28];
     private Toolkit t = Toolkit.getDefaultToolkit();
-    private Rectangle r_play, r_sunflower, r_peashooter, r_repeater, r_shovel, r_again, r_end; //rectangle for plants menu and others
+    private Rectangle r_play, r_sunflower, r_peashooter, r_repeater, r_again, r_end; //rectangle for plants menu and others
+    private Ellipse2D e_shovel; //ellipse for shovel
     private Shape[][] field = new Shape[5][9]; //rectangle array with 5 rows and 9 columns for field area
     private Point mouse = new Point(); //point for mouse position
     private int xp, yp, i, j; //coordinate
@@ -78,7 +79,7 @@ public class World extends JPanel implements ActionListener{
     public void start(){
         player = new Player();
         Sun.start(5);
-        Zombie.start(10);
+        Zombie.start(5);
         
         getImg(); //load image from disk
         init();
@@ -107,6 +108,18 @@ public class World extends JPanel implements ActionListener{
             Graphics2D g2 = (Graphics2D) g;
             //draw background
             g.drawImage(img[0], 0, 0, 1024, 626, this);
+
+            //draw progress
+            xp = Math.round(4.625f*Zombie.getN());
+            yp = Math.round(4.175f*Zombie.getN());
+            g.drawImage(img[27], 795+185-xp, 588, xp, 16, this); //draw greenbar
+            g.drawImage(img[26], 790, 572, 195, 40, this); //draw bar
+            if(Zombie.getN() < Zombie.getMax()-4){
+                g.drawImage(img[25], 790, 572, 241, 40, this); //draw flag
+            }else{
+                g.drawImage(img[25], 790, 560, 241, 40, this); //draw flag
+            }
+            g.drawImage(img[24], 952-yp, 574, 35, 38, this); //draw zombie head (785-952)
             
             //draw black&white plant menu
             if(player.getCredits()<150){ //suncredits <150
@@ -232,18 +245,19 @@ public class World extends JPanel implements ActionListener{
                 }
             }
 
-            //check if all 40 zombies are killed
-            if(Zombie.getN()==40 && zombies.isEmpty()){
+            //check if all zombies are killed
+            if(Zombie.getN()==Zombie.getMax() && zombies.isEmpty()){
                 play=false;
                 win=true;
             }
 
             //draw shovel
             if(!player.getShovel()){ //if shovel is idle
-                g.drawImage(img[21], 145, 520, this);
+                g.drawImage(img[22], 145, 520, 80, 80, this);
             }else{ //if shovel is taken
+                g.drawImage(img[23], 145, 520, 80, 80, this);
                 //draw shovel following mouse position
-                g.drawImage(img[21], mouse.getX(), mouse.getY()-75, this);
+                g.drawImage(img[21], mouse.getX(), mouse.getY()-80, 80, 80, this);
             }
             
             if(play){
@@ -428,7 +442,7 @@ public class World extends JPanel implements ActionListener{
                         }
                         player.setShovel(false);
 
-                    }else if(r_shovel.contains(e.getPoint())){ //click shovel
+                    }else if(e_shovel.contains(e.getPoint())){ //click shovel
                         player.setShovel(true);
                         Audio.shovel(); //play shovel sound
                     }
@@ -482,6 +496,12 @@ public class World extends JPanel implements ActionListener{
             img[19]=t.getImage(getClass().getResource("Assets/Pea_r.png"));
             img[20]=t.getImage(getClass().getResource("Assets/Zombief2.gif"));
             img[21]=t.getImage(getClass().getResource("Assets/Shovel.png"));
+            img[22]=t.getImage(getClass().getResource("Assets/Shovel1.png"));
+            img[23]=t.getImage(getClass().getResource("Assets/Shovel2.png"));
+            img[24]=t.getImage(getClass().getResource("Assets/Progress1.png"));
+            img[25]=t.getImage(getClass().getResource("Assets/Progress2.png"));
+            img[26]=t.getImage(getClass().getResource("Assets/Progress3.png"));
+            img[27]=t.getImage(getClass().getResource("Assets/Progress4.png"));
         }catch(Exception ex){
             ex.printStackTrace();
             JOptionPane.showMessageDialog(null, ex.toString()); //show error dialog
@@ -489,13 +509,15 @@ public class World extends JPanel implements ActionListener{
     }
 
     private void init(){
-        //create rectangle for plant menu, shovel, and end game
+        //create rectangle for plant menu and end game
         r_sunflower = new Rectangle(30, 184, pwidth+26, pheight+56);
         r_peashooter = new Rectangle(30, 190+pheight+50, pwidth+26, pheight+52);
         r_repeater = new Rectangle(30, 190+2*pheight+95, pwidth+26, pheight+55);
-        r_shovel = new Rectangle(145, 520, 70, 75);
         r_end = new Rectangle(0, 0, 1024, 626);
         
+        //create ellipse for shovel
+        e_shovel = new Ellipse2D.Float(145, 520, 80, 80);
+
         //create rectangle clickable area for field
         int[] fw = {0,90,165,250,330,410,492,570,651,749}; //field width
         int[] fh = {0,118,215,323,405,516}; //field height
