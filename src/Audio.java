@@ -7,13 +7,13 @@ import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
 public class Audio{
-    private static Clip[] clip = new Clip[10]; 
+    private static Clip[] clip = new Clip[15]; 
     private static Timer timer; //set timer
 
     static{
         try{
             // create clip reference 
-            for(int i=0;i<10;i++){
+            for(int i=0;i<15;i++){
                 clip[i] = AudioSystem.getClip(); 
             }
             // open audioInputStream to the clip 
@@ -27,6 +27,8 @@ public class Audio{
             clip[7].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Eat.wav")))); 
             clip[8].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Buzzer.wav")))); 
             clip[9].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Evillaugh.wav")))); 
+            clip[10].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Shovel.wav")))); 
+            clip[11].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Remove.wav")))); 
         }catch(Exception ex)  { 
             ex.printStackTrace();
             JOptionPane.showMessageDialog(null, ex.toString()); //show error dialog
@@ -84,6 +86,14 @@ public class Audio{
     public static void plant(){
         clip[6].setMicrosecondPosition(0);
         clip[6].start();
+    }
+    public static void shovel(){
+        clip[10].setMicrosecondPosition(0);
+        clip[10].start();
+    }
+    public static void remove(){
+        clip[11].setMicrosecondPosition(0);
+        clip[11].start();
     }
     
     public static void eat(){

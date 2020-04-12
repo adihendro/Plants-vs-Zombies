@@ -30,10 +30,11 @@ public class World extends JPanel implements ActionListener{
     private Timer timer; //set timer
 
     //img: 0.background, 1.sun, 2.sunflower, 3.peashooter, 4.repeater, 5.sungif, 6.peagif, 7.repgif, 8.zombie, 9.zombief 
-    //10.pea, 11.wasted, 12.try again, 13.sun_g, 14.pea_g, 15.rep_g, 16.win, 17.play again, 18.brain
-    private Image[] img = new Image[19];
+    //10.pea_p, 11.wasted, 12.try again, 13.sun_g, 14.pea_g, 15.rep_g, 16.win, 17.play again, 18.brain, 19.pea_r, 
+    //20.zombief2, 21.shovel
+    private Image[] img = new Image[22];
     private Toolkit t = Toolkit.getDefaultToolkit();
-    private Rectangle r_play, r_sunflower, r_peashooter, r_repeater, r_again, r_end; //rectangle for plants menu and others
+    private Rectangle r_play, r_sunflower, r_peashooter, r_repeater, r_shovel, r_again, r_end; //rectangle for plants menu and others
     private Shape[][] field = new Shape[5][9]; //rectangle array with 5 rows and 9 columns for field area
     private Point mouse = new Point(); //point for mouse position
     private int xp, yp, i, j; //coordinate
@@ -77,7 +78,7 @@ public class World extends JPanel implements ActionListener{
     public void start(){
         player = new Player();
         Sun.start(5);
-        Zombie.start(20);
+        Zombie.start(10);
         
         getImg(); //load image from disk
         init();
@@ -120,7 +121,7 @@ public class World extends JPanel implements ActionListener{
 
             //draw sunflower points
             player.draw(g2);
-            
+
             //draw plant
             for(Plant plant: plants){
                 xp=Plant.getCoor(plant.X(), plant.Y()).getX();
@@ -161,7 +162,7 @@ public class World extends JPanel implements ActionListener{
                 }
             }
 
-            //draw a transparent plant following mouse position
+            //draw transparent plant following mouse position
             if(player.getChoice()==1){ //sunflower
                 g2.setComposite(AlphaComposite.SrcOver.derive(0.7f)); //set alpha to 0.7
                 g2.drawImage(img[2], mouse.getX()-swidth/2, mouse.getY()-sheight/2, swidth, sheight, this);
@@ -185,7 +186,11 @@ public class World extends JPanel implements ActionListener{
                 if(zombie.getType()==1){ //standard zombie
                     g.drawImage(img[8], Math.round(zombie.getCoorX()), zombie.getCoorY(), pwidth+11, pheight+53, this);
                 }else if(zombie.getType()==2){ //football zombie
-                    g.drawImage(img[9], Math.round(zombie.getCoorX()), zombie.getCoorY(), this);
+                    if(zombie.getHealth()>=30){ //zombie uses helmet
+                        g.drawImage(img[9], Math.round(zombie.getCoorX()), zombie.getCoorY(), this);
+                    }else{ //zombie doesn't use helmet
+                        g.drawImage(img[20], Math.round(zombie.getCoorX()), zombie.getCoorY(), this);
+                    }
                 }
 
                 //check if zombie intersects plant
@@ -206,7 +211,7 @@ public class World extends JPanel implements ActionListener{
                             }
                         }else if(zombie.getType()==2){ //football zombie
                             if((pea.getCoorX()>=zombie.getCoorX()+10) && (pea.getCoorX()<=zombie.getCoorX()+105)){
-                                pea.splat(); //play splat sound
+                                pea.shieldhit(); //play shieldhit sound
                                 zombie.hit(pea.getDamage()); //damage zombie
                                 itp.remove(); //remove pea from list
                                 break A;
@@ -233,13 +238,24 @@ public class World extends JPanel implements ActionListener{
                 win=true;
             }
 
+            //draw shovel
+            if(!player.getShovel()){ //if shovel is idle
+                g.drawImage(img[21], 145, 520, this);
+            }else{ //if shovel is taken
+                //draw shovel following mouse position
+                g.drawImage(img[21], mouse.getX(), mouse.getY()-75, this);
+            }
             
             if(play){
                 //draw pea
                 Iterator<Pea> itp = peas.iterator();
                 while (itp.hasNext()){
                     pea=itp.next();
-                    g.drawImage(img[10], pea.getCoorX(), pea.getCoorY(), this);
+                    if(pea.getType()==2){ //peashooter
+                        g.drawImage(img[10], pea.getCoorX(), pea.getCoorY(), this);
+                    }else{ //repeater
+                        g.drawImage(img[19], pea.getCoorX(), pea.getCoorY(), this);
+                    }
                     pea.move();
                         
                     if(pea.getCoorX()>1030){ //pea move beyond the frame
@@ -289,12 +305,11 @@ public class World extends JPanel implements ActionListener{
                         Audio.win(); //play win sound
                         end_sound=false;
                     }
-                    r_end = new Rectangle(0, 0, 1024, 626);
                     g2.setColor(Color.WHITE);
                     g2.setComposite(AlphaComposite.SrcOver.derive(0.6f));
                     g2.fill(r_end);
                     g2.setComposite(AlphaComposite.SrcOver.derive(1f));
-                    r_again = new Rectangle(445, 410, 140, 65);
+                    r_again = new Rectangle(442, 410, 140, 65);
 
                     g.drawImage(img[16],263,130,500,250,this); //win image
                     g.drawImage(img[17],442,410,140,65,this); //play again image
@@ -304,12 +319,11 @@ public class World extends JPanel implements ActionListener{
                         Audio.lose(); //play lose sound
                         end_sound=false;
                     }
-                    r_end = new Rectangle(0, 0, 1024, 626);
                     g2.setColor(Color.WHITE);
                     g2.setComposite(AlphaComposite.SrcOver.derive(0.6f));
                     g2.fill(r_end);
                     g2.setComposite(AlphaComposite.SrcOver.derive(1f));
-                    r_again = new Rectangle(395, 340, 240, 35);
+                    r_again = new Rectangle(400, 395, 220, 45);
                     
                     g.drawImage(img[18],425,85,180,210,this); //brain image
                     g.drawImage(img[11],365,190,this); //lose image
@@ -348,9 +362,9 @@ public class World extends JPanel implements ActionListener{
                             }
                         }catch(Exception ex){}
                     }
-                    if(!sun_clicked){
+                    if(!sun_clicked){ //sun is not clicked
                         // check if mouse clicked plants
-                        if (r_sunflower.contains(e.getPoint())) { //click sunflower
+                        if(r_sunflower.contains(e.getPoint())) { //click sunflower
                             if(player.getCredits()>=50){ //>=50
                                 Audio.seedlift(); //play seedlift sound
                                 player.setChoice((player.getChoice()==1) ? 0:1);
@@ -391,6 +405,34 @@ public class World extends JPanel implements ActionListener{
                         }
                     }else{sun_clicked=false;}
 
+                    //check shovel
+                    if(player.getShovel()){
+                        A: for(i=0;i<5;i++){
+                            for(j=0;j<9;j++){
+                                if(field[i][j].contains(e.getPoint())){ //click field
+                                    if(Plant.getOcc(i, j)!=0){ //plant exist
+                                        Plant.setOcc(i, j); //remove plant
+
+                                        for(Plant plant: plants){
+                                            if(plant.X()==i && plant.Y()==j){
+                                                plant.stop(); //stop plant's activity
+                                                Audio.remove(); //play remove sound
+                                                plants.remove(plant);
+                                                break A;
+                                            }
+                                        }
+                                    }
+                                    break A; //field empty
+                                }
+                            }
+                        }
+                        player.setShovel(false);
+
+                    }else if(r_shovel.contains(e.getPoint())){ //click shovel
+                        player.setShovel(true);
+                        Audio.shovel(); //play shovel sound
+                    }
+
                 }else{ //the game is not playing
                     if (r_again.contains(e.getPoint())) { //click try/play again
                         play=true;
@@ -428,7 +470,7 @@ public class World extends JPanel implements ActionListener{
             img[7]=t.getImage(getClass().getResource("Assets/Repeater.gif"));
             img[8]=t.getImage(getClass().getResource("Assets/Zombie.gif"));
             img[9]=t.getImage(getClass().getResource("Assets/Zombief.gif"));
-            img[10]=t.getImage(getClass().getResource("Assets/Pea.png"));
+            img[10]=t.getImage(getClass().getResource("Assets/Pea_p.png"));
             img[11]=t.getImage(getClass().getResource("Assets/Wasted.png"));
             img[12]=t.getImage(getClass().getResource("Assets/Tryagain.png"));
             img[13]=t.getImage(getClass().getResource("Assets/Sunflower_g.png"));
@@ -437,6 +479,9 @@ public class World extends JPanel implements ActionListener{
             img[16]=t.getImage(getClass().getResource("Assets/Win.png"));
             img[17]=t.getImage(getClass().getResource("Assets/Playagain.png"));
             img[18]=t.getImage(getClass().getResource("Assets/Brain.png"));
+            img[19]=t.getImage(getClass().getResource("Assets/Pea_r.png"));
+            img[20]=t.getImage(getClass().getResource("Assets/Zombief2.gif"));
+            img[21]=t.getImage(getClass().getResource("Assets/Shovel.png"));
         }catch(Exception ex){
             ex.printStackTrace();
             JOptionPane.showMessageDialog(null, ex.toString()); //show error dialog
@@ -444,10 +489,12 @@ public class World extends JPanel implements ActionListener{
     }
 
     private void init(){
-        //create rectangle for plant menu, peas, and try again
+        //create rectangle for plant menu, shovel, and end game
         r_sunflower = new Rectangle(30, 184, pwidth+26, pheight+56);
         r_peashooter = new Rectangle(30, 190+pheight+50, pwidth+26, pheight+52);
         r_repeater = new Rectangle(30, 190+2*pheight+95, pwidth+26, pheight+55);
+        r_shovel = new Rectangle(145, 520, 70, 75);
+        r_end = new Rectangle(0, 0, 1024, 626);
         
         //create rectangle clickable area for field
         int[] fw = {0,90,165,250,330,410,492,570,651,749}; //field width

@@ -9,6 +9,7 @@ import javax.swing.JOptionPane;
 
 public class Player {
     private int sunCredits, temp, choice=0;
+    private boolean shovel=false;
     private Font font;
 
     //profil player
@@ -62,6 +63,13 @@ public class Player {
     }
     public void setChoice(int choice){
         this.choice=choice;
+    }
+    
+    public boolean getShovel(){
+        return shovel;
+    }
+    public void setShovel(boolean shovel){
+        this.shovel=shovel;
     }
 
     //jumlah credit pada plants

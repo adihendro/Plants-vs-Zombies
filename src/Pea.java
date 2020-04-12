@@ -7,7 +7,7 @@ public class Pea{
     private int x, y; //array for pea location [5][9]
     private int coorX, coorY; //pea coordinate
     private static Point[][] pea_f = new Point[5][9]; //array for pea coordinate
-    private Clip clip;
+    private Clip clip, clip2;
     
     public Pea(int type, int x, int y){
         this.type=type;
@@ -23,7 +23,9 @@ public class Pea{
 
         try{
             clip = AudioSystem.getClip();
+            clip2 = AudioSystem.getClip();
             clip.open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Splat.wav")))); 
+            clip2.open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Shieldhit.wav")))); 
         }catch(Exception ex)  { 
             ex.printStackTrace();
         }
@@ -56,5 +58,8 @@ public class Pea{
     }
     public void splat(){ //play splat sound
         clip.start();
+    }
+    public void shieldhit(){ //play shieldhit sound
+        clip2.start();
     }
 }
