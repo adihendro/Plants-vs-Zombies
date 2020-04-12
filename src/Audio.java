@@ -26,6 +26,7 @@ public class Audio{
             clip[6].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Plant.wav")))); 
             clip[7].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Eat.wav")))); 
             clip[8].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Buzzer.wav")))); 
+            clip[9].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Evillaugh.wav")))); 
         }catch(Exception ex)  { 
             ex.printStackTrace();
             JOptionPane.showMessageDialog(null, ex.toString()); //show error dialog
@@ -45,9 +46,12 @@ public class Audio{
         clip[0].start(); 
         clip[0].loop(Clip.LOOP_CONTINUOUSLY);
     }
+    public static void evillaugh(){
+        clip[0].stop();
+        clip[9].start(); 
+    }
 
     public static void begin(){
-        clip[0].stop();
         clip[2].stop();
         clip[3].stop();
         

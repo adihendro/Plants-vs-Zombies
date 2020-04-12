@@ -54,7 +54,6 @@ public class World extends JPanel implements ActionListener{
 
         try{ //load image
             img[0]=Toolkit.getDefaultToolkit().getImage(getClass().getResource("Assets/Menu.jpg"));
-            img[1]=Toolkit.getDefaultToolkit().getImage(getClass().getResource("Assets/Play.png"));
         }catch(Exception ex){
             ex.printStackTrace();
             JOptionPane.showMessageDialog(null, ex.toString()); //show error dialog
@@ -68,9 +67,10 @@ public class World extends JPanel implements ActionListener{
             }
         });
 
-        r_play = new Rectangle(445, 515, 135, 42);
+        r_play = new Rectangle(445, 525, 135, 42);
 
         Audio.menu();
+        timer.start();
     }
 
 
@@ -100,7 +100,6 @@ public class World extends JPanel implements ActionListener{
         
         if(!start){
             g.drawImage(img[0], 0, 0, 1024, 626, this);
-            g.drawImage(img[1], 445, 515, 135, 42, this);
             
         }else{
             
@@ -162,9 +161,9 @@ public class World extends JPanel implements ActionListener{
                 }
             }
 
-            //make a transparent plant selection following mouse movement
+            //draw a transparent plant following mouse position
             if(player.getChoice()==1){ //sunflower
-                g2.setComposite(AlphaComposite.SrcOver.derive(0.7f)); //set alpha 0.7
+                g2.setComposite(AlphaComposite.SrcOver.derive(0.7f)); //set alpha to 0.7
                 g2.drawImage(img[2], mouse.getX()-swidth/2, mouse.getY()-sheight/2, swidth, sheight, this);
                 g2.setComposite(AlphaComposite.SrcOver.derive(1f)); //set alpha back to 1
             }else if(player.getChoice()==2){ //peashooter
@@ -328,9 +327,10 @@ public class World extends JPanel implements ActionListener{
         public void mousePressed(MouseEvent e) { //if mouse pressed
             if(!start){
                 if (r_play.contains(e.getPoint())) { //click play
+                    Audio.evillaugh();
                     start=true;
-                    start();
                     r_play=null;
+                    start();
                 }
             }else{
 
