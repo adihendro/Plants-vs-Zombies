@@ -175,21 +175,6 @@ public class World extends JPanel implements ActionListener{
                 }
             }
 
-            //draw transparent plant following mouse position
-            if(player.getChoice()==1){ //sunflower
-                g2.setComposite(AlphaComposite.SrcOver.derive(0.7f)); //set alpha to 0.7
-                g2.drawImage(img[2], mouse.getX()-swidth/2, mouse.getY()-sheight/2, swidth, sheight, this);
-                g2.setComposite(AlphaComposite.SrcOver.derive(1f)); //set alpha back to 1
-            }else if(player.getChoice()==2){ //peashooter
-                g2.setComposite(AlphaComposite.SrcOver.derive(0.7f));
-                g2.drawImage(img[3], mouse.getX()-pwidth/2, mouse.getY()-pheight/2, pwidth, pheight, this);
-                g2.setComposite(AlphaComposite.SrcOver.derive(1f));
-            }else if(player.getChoice()==3){ //repeater
-                g2.setComposite(AlphaComposite.SrcOver.derive(0.7f));
-                g2.drawImage(img[4], mouse.getX()-(rwidth+8)/2, mouse.getY()-(rheight+8)/2, rwidth+4, rheight+4, this);
-                g2.setComposite(AlphaComposite.SrcOver.derive(1f));
-            }
-            
             //zombie
             Iterator<Zombie> itz = zombies.iterator(); 
             while (itz.hasNext()){
@@ -267,6 +252,21 @@ public class World extends JPanel implements ActionListener{
                 g.drawImage(img[23], 138, 525, 80, 80, this);
                 //draw shovel following mouse position
                 g.drawImage(img[21], mouse.getX(), mouse.getY()-80, 80, 80, this);
+            }
+
+            //draw transparent plant following mouse position
+            if(player.getChoice()==1){ //sunflower
+                g2.setComposite(AlphaComposite.SrcOver.derive(0.7f)); //set alpha to 0.7
+                g2.drawImage(img[2], mouse.getX()-swidth/2, mouse.getY()-sheight/2, swidth, sheight, this);
+                g2.setComposite(AlphaComposite.SrcOver.derive(1f)); //set alpha back to 1
+            }else if(player.getChoice()==2){ //peashooter
+                g2.setComposite(AlphaComposite.SrcOver.derive(0.7f));
+                g2.drawImage(img[3], mouse.getX()-pwidth/2, mouse.getY()-pheight/2, pwidth, pheight, this);
+                g2.setComposite(AlphaComposite.SrcOver.derive(1f));
+            }else if(player.getChoice()==3){ //repeater
+                g2.setComposite(AlphaComposite.SrcOver.derive(0.7f));
+                g2.drawImage(img[4], mouse.getX()-(rwidth+8)/2, mouse.getY()-(rheight+8)/2, rwidth+4, rheight+4, this);
+                g2.setComposite(AlphaComposite.SrcOver.derive(1f));
             }
             
             if(play){
