@@ -32,7 +32,11 @@ public class Zombie extends Actor implements Comparable<Zombie>{
             super.health=60;
             zombieDamage=15;
             zombieSpeed=0.55f;
-        }
+        } // else if (type==3){//Flying zombie
+	    //super.health=100;
+            //zombiedamage=20;
+           // zombieSpeed=0.5f;
+    //}
     }
 
     //initialization block
