@@ -7,13 +7,13 @@ import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
 public class Audio{
-    private static Clip[] clip = new Clip[15]; 
+    private static Clip[] clip = new Clip[18]; 
     private static Timer timer; //set timer
 
     static{
         try{
             // create clip reference 
-            for(int i=0;i<15;i++){
+            for(int i=0;i<18;i++){
                 clip[i] = AudioSystem.getClip(); 
             }
             // open audioInputStream to the clip 
@@ -29,9 +29,11 @@ public class Audio{
             clip[9].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Evillaugh.wav")))); 
             clip[10].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Shovel.wav")))); 
             clip[11].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Remove.wav")))); 
+            clip[12].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Wave.wav")))); 
+            clip[13].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Siren.wav")))); 
         }catch(Exception ex)  { 
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(null, ex.toString()); //show error dialog
+            JOptionPane.showMessageDialog(null, "Cannot open audio!"); //show error dialog
         } 
 
         //play zombies coming after 12 seconds
@@ -107,5 +109,14 @@ public class Audio{
     public static void buzzer(){
         clip[8].setMicrosecondPosition(0);
         clip[8].start();
+    }
+
+    public static void wave(){
+        clip[12].setMicrosecondPosition(0);
+        clip[12].start();
+    }
+    public static void siren(){
+        clip[13].setMicrosecondPosition(0);
+        clip[13].start();
     }
 }

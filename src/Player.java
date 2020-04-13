@@ -23,7 +23,7 @@ public class Player {
             ge.registerFont(font); //register the font
         } catch (Exception ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(null, ex.toString()); //show error dialog
+            JOptionPane.showMessageDialog(null, "Cannot open font!"); //show error dialog
         }
         // font=new Font("Chalkboard", Font.BOLD, 20); //load font
     }

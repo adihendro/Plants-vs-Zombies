@@ -22,8 +22,10 @@ public class Pea{
         }
 
         try{
+            // create clip reference 
             clip = AudioSystem.getClip();
             clip2 = AudioSystem.getClip();
+            // open audioInputStream to the clip 
             clip.open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Splat.wav")))); 
             clip2.open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Shieldhit.wav")))); 
         }catch(Exception ex)  { 

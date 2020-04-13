@@ -1,24 +1,28 @@
 import java.awt.event.ActionEvent;  
 import java.awt.event.ActionListener;
 import java.util.Collections;
+import javax.sound.sampled.AudioSystem; 
+import javax.sound.sampled.Clip; 
 import javax.swing.Timer;
 
 public class Zombie extends Actor implements Comparable<Zombie>{
     protected int zombieDamage;
     protected float zombieSpeed;
     private int[] column = {296,377,458,539,620,701,782,863,944}; //9
-    private int type, lane, coorY, yp;
+    private int type, lane, coorY, yp, id;
     private float coorX; //zombie x coordinate
     private static int[] arrY = new int[5]; //zombie y coordinate
-    private static int n=0, max=40, interval;
+    private static int n=0, max=50, interval;
     private static boolean gameOver=false;
     private static Timer timer; //spawning zombie timer
     private Timer timer2; //attacking plant timer
+    private Clip clip, clip2;
 
     public Zombie(int type){
         this.type=type;
         coorX=1020f;
         coorY=arrY[setLane()];
+        id=n;
         if(type==1){ //Normal zombie
             super.health=35;
             zombieDamage=10;
@@ -47,6 +51,18 @@ public class Zombie extends Actor implements Comparable<Zombie>{
             }
         });
         timer2.setInitialDelay(200);
+
+        try{
+            // create clip reference 
+            clip = AudioSystem.getClip(); 
+            clip2 = AudioSystem.getClip(); 
+            // open audioInputStream to the clip 
+            clip.open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Yuck.wav")))); 
+            clip2.open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Yuck2.wav")))); 
+        }catch(Exception ex)  { 
+            ex.printStackTrace();
+        } 
+
     }
 
     //static initialization block
@@ -71,6 +87,7 @@ public class Zombie extends Actor implements Comparable<Zombie>{
             }
         });
         timer.start();
+        timer.setDelay(interval*700);
     }
     public static void stop(){
         timer.stop(); //stop deploying zombie
@@ -87,6 +104,7 @@ public class Zombie extends Actor implements Comparable<Zombie>{
     public int getType(){return type;}
     public int getDamage(){return zombieDamage;}
     public int getHealth(){return health;}
+    public int getId(){return id;}
     public float getCoorX(){return coorX;}
     public int getCoorY(){return coorY;}
     public int getLane(){return lane;}
@@ -106,28 +124,32 @@ public class Zombie extends Actor implements Comparable<Zombie>{
         return lane;
     }
     
-    public static void resetN(){n=0;}
-
     public static int setType(){
         if(n<=3){ //easy
-            timer.setDelay(interval*450);
+            timer.setDelay(interval*550);
             return 1; //normal zombie
         }else if(n<=6){ //medium
-            timer.setDelay(interval*220);
+            timer.setDelay(interval*200);
             if((int)(Math.random() * 4)==2){ //generate zombie type from 0 to 3
                 return 2; //football zombie
             }else{
                 return 1; //normal zombie
             }
-        }else if(n<=15){ //hard
-            timer.setDelay(interval*140);
-            if((int)(Math.random() * 3)==2){ //generate zombie type from 0 to 2
+        }else if(n<=20){ //hard
+            timer.setDelay(interval*160);
+            if(n==20){ //stop when 20 zombies are out
+                timer.stop(); //wait for wave
+            }
+            if((int)(Math.random() * 2)==1){ //generate zombie type from 0 to 1
                 return 2; //football zombie
             }else{
                 return 1; //normal zombie
             }
-        }else{ //n<max extreme
-            timer.setDelay(interval*100);
+        }else{ //(n<=max) extreme
+            timer.setDelay(interval*90);
+            if(n==21){
+                Audio.siren(); //play siren audio
+            }
             if((int)(Math.random() * 4)==1){ //generate zombie type from 0 to 3
                 return 1; //normal zombie
             }else{
@@ -135,7 +157,14 @@ public class Zombie extends Actor implements Comparable<Zombie>{
             }
         }
     }
+    
+    public static void startWave(){ //start wave
+        timer.setInitialDelay(5000);
+        timer.start();
+    }
 
+    public static void resetN(){n=0;}
+    
     public boolean gameOver(){
         if(coorX>210){ //zombie hasn't reach house yet
             return false;
@@ -166,5 +195,12 @@ public class Zombie extends Actor implements Comparable<Zombie>{
     }
     public void stopEat(){
         timer2.stop(); //stop eating plant
+    }
+
+    public void yuck(){ //play yuck sound
+        clip.start();
+    }
+    public void yuck2(){ //play yuck2 sound
+        clip2.start();
     }
 }
