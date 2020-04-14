@@ -162,7 +162,7 @@ public class Zombie extends Actor implements Comparable<Zombie>{
     }
     
     public static void startWave(){ //start wave
-        timer.setInitialDelay(5000);
+        timer.setInitialDelay(6000);
         timer.start();
         World.setWave(1);
     }

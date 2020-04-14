@@ -14,7 +14,7 @@ public class Player {
 
     //profil player
     public Player(){
-        sunCredits=5000;
+        sunCredits=50;
         temp=sunCredits;
         try{
             //create the font to use
