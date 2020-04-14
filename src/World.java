@@ -57,7 +57,7 @@ public class World extends JPanel implements ActionListener{
         timer = new Timer(25, this); //set up timer for 25 milliseconds
 
         try{ //load image
-            img[0]=Toolkit.getDefaultToolkit().getImage(getClass().getResource("Assets/Menu.jpg"));
+            img[0]=Toolkit.getDefaultToolkit().getImage(getClass().getResource("Assets/image/Menu.jpg"));
         }catch(Exception ex){
             ex.printStackTrace();
             JOptionPane.showMessageDialog(null, "Cannot open image!"); //show error dialog
@@ -494,36 +494,36 @@ public class World extends JPanel implements ActionListener{
 
     private void getImg(){
         try{ //load image
-            img[0]=t.getImage(getClass().getResource("Assets/Background.jpg"));
-            img[1]=t.getImage(getClass().getResource("Assets/Sun.png"));
-            img[2]=t.getImage(getClass().getResource("Assets/Sunflower.png"));
-            img[3]=t.getImage(getClass().getResource("Assets/Peashooter.png"));
-            img[4]=t.getImage(getClass().getResource("Assets/Repeater.png"));
-            img[5]=t.getImage(getClass().getResource("Assets/Sunflower.gif"));
-            img[6]=t.getImage(getClass().getResource("Assets/Peashooter.gif"));
-            img[7]=t.getImage(getClass().getResource("Assets/Repeater.gif"));
-            img[8]=t.getImage(getClass().getResource("Assets/Zombie.gif"));
-            img[9]=t.getImage(getClass().getResource("Assets/Zombief.gif"));
-            img[10]=t.getImage(getClass().getResource("Assets/Pea_p.png"));
-            img[11]=t.getImage(getClass().getResource("Assets/Wasted.png"));
-            img[12]=t.getImage(getClass().getResource("Assets/Tryagain.png"));
-            img[13]=t.getImage(getClass().getResource("Assets/Sunflower_g.png"));
-            img[14]=t.getImage(getClass().getResource("Assets/Peashooter_g.png"));
-            img[15]=t.getImage(getClass().getResource("Assets/Repeater_g.png"));
-            img[16]=t.getImage(getClass().getResource("Assets/Win.png"));
-            img[17]=t.getImage(getClass().getResource("Assets/Playagain.png"));
-            img[18]=t.getImage(getClass().getResource("Assets/Brain.png"));
-            img[19]=t.getImage(getClass().getResource("Assets/Pea_r.png"));
-            img[20]=t.getImage(getClass().getResource("Assets/Zombief2.gif"));
-            img[21]=t.getImage(getClass().getResource("Assets/Shovel.png"));
-            img[22]=t.getImage(getClass().getResource("Assets/Shovel1.png"));
-            img[23]=t.getImage(getClass().getResource("Assets/Shovel2.png"));
-            img[24]=t.getImage(getClass().getResource("Assets/Progress1.png"));
-            img[25]=t.getImage(getClass().getResource("Assets/Progress2.png"));
-            img[26]=t.getImage(getClass().getResource("Assets/Progress3.png"));
-            img[27]=t.getImage(getClass().getResource("Assets/Progress4.png"));
-            img[28]=t.getImage(getClass().getResource("Assets/HugeWave.png"));
-            img[29]=t.getImage(getClass().getResource("Assets/FinalWave.png"));
+            img[0]=t.getImage(getClass().getResource("Assets/image/Background.jpg"));
+            img[1]=t.getImage(getClass().getResource("Assets/image/Sun.png"));
+            img[2]=t.getImage(getClass().getResource("Assets/image/Sunflower.png"));
+            img[3]=t.getImage(getClass().getResource("Assets/image/Peashooter.png"));
+            img[4]=t.getImage(getClass().getResource("Assets/image/Repeater.png"));
+            img[5]=t.getImage(getClass().getResource("Assets/gif/Sunflower.gif"));
+            img[6]=t.getImage(getClass().getResource("Assets/gif/Peashooter.gif"));
+            img[7]=t.getImage(getClass().getResource("Assets/gif/Repeater.gif"));
+            img[8]=t.getImage(getClass().getResource("Assets/gif/Zombie.gif"));
+            img[9]=t.getImage(getClass().getResource("Assets/gif/Zombief.gif"));
+            img[10]=t.getImage(getClass().getResource("Assets/image/Pea_p.png"));
+            img[11]=t.getImage(getClass().getResource("Assets/image/Wasted.png"));
+            img[12]=t.getImage(getClass().getResource("Assets/image/Tryagain.png"));
+            img[13]=t.getImage(getClass().getResource("Assets/image/Sunflower_g.png"));
+            img[14]=t.getImage(getClass().getResource("Assets/image/Peashooter_g.png"));
+            img[15]=t.getImage(getClass().getResource("Assets/image/Repeater_g.png"));
+            img[16]=t.getImage(getClass().getResource("Assets/image/Win.png"));
+            img[17]=t.getImage(getClass().getResource("Assets/image/Playagain.png"));
+            img[18]=t.getImage(getClass().getResource("Assets/image/Brain.png"));
+            img[19]=t.getImage(getClass().getResource("Assets/image/Pea_r.png"));
+            img[20]=t.getImage(getClass().getResource("Assets/gif/Zombief2.gif"));
+            img[21]=t.getImage(getClass().getResource("Assets/image/Shovel.png"));
+            img[22]=t.getImage(getClass().getResource("Assets/image/Shovel1.png"));
+            img[23]=t.getImage(getClass().getResource("Assets/image/Shovel2.png"));
+            img[24]=t.getImage(getClass().getResource("Assets/image/Progress1.png"));
+            img[25]=t.getImage(getClass().getResource("Assets/image/Progress2.png"));
+            img[26]=t.getImage(getClass().getResource("Assets/image/Progress3.png"));
+            img[27]=t.getImage(getClass().getResource("Assets/image/Progress4.png"));
+            img[28]=t.getImage(getClass().getResource("Assets/image/HugeWave.png"));
+            img[29]=t.getImage(getClass().getResource("Assets/image/FinalWave.png"));
         }catch(Exception ex){
             ex.printStackTrace();
             JOptionPane.showMessageDialog(null, "Cannot open image!"); //show error dialog
