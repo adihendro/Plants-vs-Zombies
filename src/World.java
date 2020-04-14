@@ -32,13 +32,15 @@ public class World extends JPanel implements ActionListener{
     //img: 0.background, 1.sun, 2.sunflower, 3.peashooter, 4.repeater, 5.sungif, 6.peagif, 7.repgif, 8.zombie, 9.zombief 
     //10.pea_p, 11.wasted, 12.try again, 13.sun_g, 14.pea_g, 15.rep_g, 16.win, 17.play again, 18.brain, 19.pea_r, 
     //20.zombief2, 21.shovel, 22.shovel1, 23.shovel2, 24.progress1, 25.progress2, 26.progress3, 27.progress4
-    private Image[] img = new Image[28];
+    //28.hugewave, 29.finalwave
+    private Image[] img = new Image[30];
     private Toolkit t = Toolkit.getDefaultToolkit();
     private Rectangle r_play, r_sunflower, r_peashooter, r_repeater, r_again, r_end; //rectangle for menu and others
     private Ellipse2D e_shovel; //ellipse for shovel
     private Shape[][] field = new Shape[5][9]; //rectangle array with 5 rows and 9 columns for field area
     private Point mouse = new Point(); //point for mouse position
     private int xp, yp, i, j; //coordinate
+    private static int wave=0; //zombies wave
     private boolean start=false, play=true, win=false, end_sound=true, sun_clicked=false;
 
     private Player player;  
@@ -226,11 +228,13 @@ public class World extends JPanel implements ActionListener{
                     }else{
                         zombie.yuck();
                     }
-                    if(zombie.getId()==20){ //when zombie 20 is dead
+                    itz.remove();
+                    
+                    //check if all zombies before wave are dead
+                    if(Zombie.getN()==Zombie.getWave() && zombies.isEmpty()){
                         Audio.wave(); //play wave audio
                         Zombie.startWave(); //start wave
                     }
-                    itz.remove();
                 }
                 
                 //check if zombie reaches house
@@ -238,8 +242,8 @@ public class World extends JPanel implements ActionListener{
                     play=false;
                 }
             }
-
-            //check if all zombies are killed
+           
+            //check if all zombies are dead
             if(Zombie.getN()==Zombie.getMax() && zombies.isEmpty()){
                 play=false;
                 win=true;
@@ -311,6 +315,13 @@ public class World extends JPanel implements ActionListener{
                             its.remove();
                         }
                     }
+                }
+
+                //wave
+                if(wave==1){ //a huge wave of zombies is approaching
+                    g.drawImage(img[28], 160, 290, 743, 42, this);
+                }else if(wave==2){ //final wave
+                    g.drawImage(img[29], 380, 280, 300, 61, this);
                 }
 
             }else{ //play=false, win or game over
@@ -415,8 +426,8 @@ public class World extends JPanel implements ActionListener{
                                         if(plant.put(i,j,player.getChoice())){
                                             Audio.plant(); //play plant sound
                                             player.plant();
-                                            player.setChoice(0);
                                         }
+                                        player.setChoice(0);
                                         break A;
                                     }
                                 }
@@ -511,6 +522,8 @@ public class World extends JPanel implements ActionListener{
             img[25]=t.getImage(getClass().getResource("Assets/Progress2.png"));
             img[26]=t.getImage(getClass().getResource("Assets/Progress3.png"));
             img[27]=t.getImage(getClass().getResource("Assets/Progress4.png"));
+            img[28]=t.getImage(getClass().getResource("Assets/HugeWave.png"));
+            img[29]=t.getImage(getClass().getResource("Assets/FinalWave.png"));
         }catch(Exception ex){
             ex.printStackTrace();
             JOptionPane.showMessageDialog(null, "Cannot open image!"); //show error dialog
@@ -540,5 +553,9 @@ public class World extends JPanel implements ActionListener{
                 Plant.setCoor(i, j);
             }
         }
+    }
+
+    public static void setWave(int w){
+        wave=w;
     }
 }

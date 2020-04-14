@@ -7,13 +7,13 @@ import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
 public class Audio{
-    private static Clip[] clip = new Clip[18]; 
+    private static Clip[] clip = new Clip[20]; 
     private static Timer timer; //set timer
 
     static{
         try{
             // create clip reference 
-            for(int i=0;i<18;i++){
+            for(int i=0;i<20;i++){
                 clip[i] = AudioSystem.getClip(); 
             }
             // open audioInputStream to the clip 
@@ -31,6 +31,12 @@ public class Audio{
             clip[11].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Remove.wav")))); 
             clip[12].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Wave.wav")))); 
             clip[13].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Siren.wav")))); 
+            clip[14].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Groan_brains1.wav")))); 
+            clip[15].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Groan_brains2.wav")))); 
+            clip[16].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Groan_brains3.wav")))); 
+            clip[17].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Groan1.wav")))); 
+            clip[18].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Groan2.wav")))); 
+            clip[19].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Groan3.wav")))); 
         }catch(Exception ex)  { 
             ex.printStackTrace();
             JOptionPane.showMessageDialog(null, "Cannot open audio!"); //show error dialog
@@ -118,5 +124,30 @@ public class Audio{
     public static void siren(){
         clip[13].setMicrosecondPosition(0);
         clip[13].start();
+    }
+
+    public static void brain1(){
+        clip[14].setMicrosecondPosition(0);
+        clip[14].start();
+    }
+    public static void brain2(){
+        clip[15].setMicrosecondPosition(0);
+        clip[15].start();
+    }
+    public static void brain3(){
+        clip[16].setMicrosecondPosition(0);
+        clip[16].start();
+    }
+    public static void groan1(){
+        clip[17].setMicrosecondPosition(0);
+        clip[17].start();
+    }
+    public static void groan2(){
+        clip[18].setMicrosecondPosition(0);
+        clip[18].start();
+    }
+    public static void groan3(){
+        clip[19].setMicrosecondPosition(0);
+        clip[19].start();
     }
 }
