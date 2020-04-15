@@ -26,8 +26,8 @@ public class Pea{
             clip = AudioSystem.getClip();
             clip2 = AudioSystem.getClip();
             // open audioInputStream to the clip 
-            clip.open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Splat.wav")))); 
-            clip2.open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Shieldhit.wav")))); 
+            clip.open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/wav/Splat.wav")))); 
+            clip2.open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/wav/Shieldhit.wav")))); 
         }catch(Exception ex)  { 
             ex.printStackTrace();
         }

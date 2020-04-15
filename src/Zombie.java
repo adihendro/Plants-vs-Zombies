@@ -60,8 +60,8 @@ public class Zombie extends Actor implements Comparable<Zombie>{
             clip = AudioSystem.getClip(); 
             clip2 = AudioSystem.getClip(); 
             // open audioInputStream to the clip 
-            clip.open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Yuck.wav")))); 
-            clip2.open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Yuck2.wav")))); 
+            clip.open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/wav/Yuck.wav")))); 
+            clip2.open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/wav/Yuck2.wav")))); 
         }catch(Exception ex)  { 
             ex.printStackTrace();
         } 

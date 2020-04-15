@@ -3,7 +3,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.GraphicsEnvironment;
-import java.io.File;
 
 import javax.swing.JOptionPane;
 
@@ -18,7 +17,7 @@ public class Player {
         temp=sunCredits;
         try{
             //create the font to use
-            font=Font.createFont(Font.TRUETYPE_FONT, getClass().getResource("Assets/Chalkboard.ttc").openStream()).deriveFont(Font.BOLD, 20f);
+            font=Font.createFont(Font.TRUETYPE_FONT, getClass().getResource("Assets/font/Chalkboard.ttc").openStream()).deriveFont(Font.BOLD, 20f);
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(font); //register the font
         } catch (Exception ex) {

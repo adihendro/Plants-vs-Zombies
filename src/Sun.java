@@ -33,7 +33,7 @@ public class Sun{
     {
         try{
             clip = AudioSystem.getClip();
-            clip.open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Points.wav")))); 
+            clip.open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/wav/Points.wav")))); 
         }catch(Exception ex){ 
             ex.printStackTrace();
         }
