@@ -57,7 +57,7 @@ public class World extends JPanel implements ActionListener{
         timer = new Timer(25, this); //set up timer for 25 milliseconds
 
         try{ //load image
-            img[0]=Toolkit.getDefaultToolkit().getImage(getClass().getResource("Assets/image/Menu.jpg"));
+            img[0]=Toolkit.getDefaultToolkit().getImage(getClass().getResource("Assets/image/Menu.jpg")); // Untuk load menu awal
         }catch(Exception ex){
             ex.printStackTrace();
             JOptionPane.showMessageDialog(null, "Cannot open image!"); //show error dialog
