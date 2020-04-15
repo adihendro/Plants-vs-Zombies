@@ -9,7 +9,7 @@ public class Zombie extends Actor implements Comparable<Zombie>{
     protected int zombieDamage;
     protected float zombieSpeed;
     private int[] column = {296,377,458,539,620,701,782,863,944}; //9
-    private int type, lane, coorY, yp, id;
+    private int type, lane, coorY, yp;
     private float coorX; //zombie x coordinate
     private static int[] arrY = new int[5]; //zombie y coordinate
     private static int n=0, max=50, interval, wave=20;
@@ -22,7 +22,6 @@ public class Zombie extends Actor implements Comparable<Zombie>{
         this.type=type;
         coorX=1020f;
         coorY=arrY[setLane()];
-        id=n;
         if(type==1){ //Normal zombie
             super.health=35;
             zombieDamage=10;
@@ -110,7 +109,6 @@ public class Zombie extends Actor implements Comparable<Zombie>{
     public int getType(){return type;}
     public int getDamage(){return zombieDamage;}
     public int getHealth(){return health;}
-    public int getId(){return id;}
     public float getCoorX(){return coorX;}
     public int getCoorY(){return coorY;}
     public int getLane(){return lane;}
