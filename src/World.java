@@ -295,11 +295,14 @@ public class World extends JPanel implements ActionListener{
                 while (its.hasNext()){
                     sun=its.next();
                     if(sun.isSunflower()){ //sun from sunflower
-                        if(sun.getY()<sun.getLimit()){ //sun waits a while until gone
-                            g.drawImage(img[1],sun.getX(),sun.getY2(),80,80,this);
-                            sun.setE(new Ellipse2D.Float(sun.getX(), sun.getY2(), 80, 80));
-                            sun.lower();
-                        }else{ //falling sun gone
+                        if(!sun.isWaiting()){ //if the sun is not waiting
+                            sun.startTimer(); //start waiting thread
+                            sun.setWaiting(); //set waiting variable to true
+                        }
+                        if(sun.isTsunAlive()){ //waiting thread running
+                            g.drawImage(img[1],sun.getX(),sun.getY(),80,80,this);
+                            sun.setE(new Ellipse2D.Float(sun.getX(), sun.getY(), 80, 80));
+                        }else{ //remove sunflower sun
                             its.remove();
                         }
                     }else{ //sun from the sky
@@ -308,11 +311,16 @@ public class World extends JPanel implements ActionListener{
                             sun.setE(new Ellipse2D.Float(sun.getX(), sun.getY(), 80, 80));
                             sun.lower();
                         }else if(sun.getY()<(sun.getLimit()+300)){ //sun waits a while until gone
-                            g.drawImage(img[1],sun.getX(),sun.getLimit(),80,80,this);
-                            sun.setE(new Ellipse2D.Float(sun.getX(), sun.getLimit(), 80, 80));
-                            sun.lower();
-                        }else{ //falling sun gone
-                            its.remove();
+                            if(!sun.isWaiting()){ //if the sun is not waiting
+                                sun.startTimer(); //start waiting thread
+                                sun.setWaiting(); //set waiting variable to true
+                            }
+                            if(sun.isTsunAlive()){ //waiting thread running
+                                g.drawImage(img[1],sun.getX(),sun.getY(),80,80,this);
+                                sun.setE(new Ellipse2D.Float(sun.getX(), sun.getY(), 80, 80));
+                            }else{ //remove falling sun
+                                its.remove();
+                            }
                         }
                     }
                 }
