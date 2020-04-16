@@ -1,18 +1,19 @@
 import java.awt.event.ActionEvent;  
 import java.awt.event.ActionListener;
 import javax.swing.Timer;
-// import javax.sound.sampled.AudioSystem; 
-// import javax.sound.sampled.Clip;
+import javax.sound.sampled.AudioSystem; 
+import javax.sound.sampled.Clip;
 
 public class Plant<T> extends Actor{
     private T type;
-    private boolean repeat=false;
-    private boolean idle=true, threaten=false;
+    private boolean idle=true, threaten=false, repeat=false, explode=false;
     private Timer timer, timer2, timer3; //set timer
     private int x, y; //array for plant location [5][9]
+    private int cw=80, ch=82; //cherrybomb
     private static int[][] occ = new int[5][10];
     private static Point[][] coor = new Point[5][9]; //array for plants coordinate
-    // private Clip clip;
+    private Clip clip, clip2;
+    private Thread tcherry; //thread for waiting time
     
     public Plant(T type, int x, int y){
         this.type=type;
@@ -25,7 +26,10 @@ public class Plant<T> extends Actor{
         }else if(type.equals(3)){ //Repeater
             super.health = 60;
         }else if(type.equals(4)){ //Wallnut
-            super.health=200;
+            super.health = 200;
+        }else if(type.equals(5)){ //Cherrybomb
+            super.health = 1000;
+            tcherry = new Thread(new CherryWaits()); 
         }else{}
     }
 
@@ -63,17 +67,19 @@ public class Plant<T> extends Actor{
             }
         });
 
-        // try{
-        //     clip = AudioSystem.getClip();
-        //     clip.open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Shoot.wav"))));
-        // }catch(Exception ex)  { 
-        //     ex.printStackTrace();
-        // }
+        try{
+            clip = AudioSystem.getClip();
+            clip2 = AudioSystem.getClip();
+            clip.open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/wav/Cherry_enlarge.wav")))); 
+            clip2.open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/wav/Cherrybomb.wav")))); 
+        }catch(Exception ex)  { 
+            ex.printStackTrace();
+        }
     }
 
     //getter
-    public int X(){return x;}
-    public int Y(){return y;}
+    public int getX(){return x;}
+    public int getY(){return y;}
     public T getType(){return type;}
     public boolean isThreaten(){return threaten;}
     public static int getOcc(int x, int y){return occ[x][y];}
@@ -107,13 +113,44 @@ public class Plant<T> extends Actor{
         timer2.start();
         idle=false;
     }
+    public void act(){
+        timer3.start();
+    }
     public void stop(){
         timer.stop();
         timer2.stop();
         timer3.stop();
         idle=true;
     }
-    public void act(){
-        timer3.start();
+
+
+    //private class Threading
+    private class CherryWaits implements Runnable { 
+        public void run() { 
+            try{
+                Thread.sleep(800); //Exploded cherry waits for 800 milliseconds
+            } catch (InterruptedException e) {}
+        }
+    } 
+    public void startTimer(){
+        tcherry.start();
+    }
+    public void enlarge(){
+        cw+=1;
+        ch+=1;
+    }
+    public int getCw(){return cw;}
+    public int getCh(){return ch;}
+    public boolean isExploded(){return explode;}
+    public boolean isTcherryAlive(){return tcherry.isAlive();}
+    public void setExplode(){
+        explode=true;
+    }
+    public void cherry_enlarge(){ //play cherry_enlarge sound
+        clip.start();
+    }
+    public void cherrybomb(){ //play cherrybomb sound
+        clip.stop();
+        clip2.start();
     }
 }

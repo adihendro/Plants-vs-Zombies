@@ -26,8 +26,8 @@ public class Pea{
             clip = AudioSystem.getClip();
             clip2 = AudioSystem.getClip();
             // open audioInputStream to the clip 
-            clip.open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Splat.wav")))); 
-            clip2.open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Shieldhit.wav")))); 
+            clip.open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/wav/Splat.wav")))); 
+            clip2.open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/wav/Shieldhit.wav")))); 
         }catch(Exception ex)  { 
             ex.printStackTrace();
         }
@@ -46,8 +46,8 @@ public class Pea{
     //getter
     public int getCoorX(){return coorX;}
     public int getCoorY(){return coorY;}
-    public int X(){return x;}
-    public int Y(){return y;}
+    public int getX(){return x;}
+    public int getY(){return y;}
     public int getType(){return type;}
     public int getDamage(){return damage;}
 

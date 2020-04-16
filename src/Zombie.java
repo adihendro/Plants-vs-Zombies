@@ -44,7 +44,7 @@ public class Zombie extends Actor implements Comparable<Zombie>{
         timer2=new Timer(1000, new ActionListener(){
             public void actionPerformed(ActionEvent e) {
                 for(Plant plant: World.plants){
-                    if(plant.X()==lane && plant.Y()==yp){ //intersect plant
+                    if(plant.getX()==lane && plant.getY()==yp){ //intersect plant
                         if(!Audio.isEating() && !gameOver){
                             Audio.eat();
                         }
@@ -60,8 +60,8 @@ public class Zombie extends Actor implements Comparable<Zombie>{
             clip = AudioSystem.getClip(); 
             clip2 = AudioSystem.getClip(); 
             // open audioInputStream to the clip 
-            clip.open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Yuck.wav")))); 
-            clip2.open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Yuck2.wav")))); 
+            clip.open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/wav/Yuck.wav")))); 
+            clip2.open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/wav/Yuck2.wav")))); 
         }catch(Exception ex)  { 
             ex.printStackTrace();
         } 
@@ -112,7 +112,7 @@ public class Zombie extends Actor implements Comparable<Zombie>{
     public float getCoorX(){return coorX;}
     public int getCoorY(){return coorY;}
     public int getLane(){return lane;}
-    public int getColumn(){
+    public int getColumn(){ //convert x coordinate to field column
         int c=9;
         for(int i=0;i<9;i++){
             if(coorX<=column[i] && coorX>column[i]-60){
@@ -178,9 +178,9 @@ public class Zombie extends Actor implements Comparable<Zombie>{
     public void attack(){
         //check is zombie intersect plant
         yp=getColumn();
-        if(Plant.getOcc(lane, yp)!=0){ //intersect plant
+        if(Plant.getOcc(lane, yp)!=0 && Plant.getOcc(lane, yp)!=5){ //intersect plant (excluding cherrybomb)
             A: for(Plant plant: World.plants){
-                if(plant.X()==lane && plant.Y()==yp){
+                if(plant.getX()==lane && plant.getY()==yp){
                     timer2.start();
                     if(plant.isDead()){ //plant dies
                         plant.stop(); //stop plant's activity

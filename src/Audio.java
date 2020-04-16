@@ -17,26 +17,26 @@ public class Audio{
                 clip[i] = AudioSystem.getClip(); 
             }
             // open audioInputStream to the clip 
-            clip[0].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Menu.wav")))); 
-            clip[1].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Background.wav")))); 
-            clip[2].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Win.wav")))); 
-            clip[3].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Lose.wav")))); 
-            clip[4].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Zombies_coming.wav")))); 
-            clip[5].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Seedlift.wav")))); 
-            clip[6].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Plant.wav")))); 
-            clip[7].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Eat.wav")))); 
-            clip[8].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Buzzer.wav")))); 
-            clip[9].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Evillaugh.wav")))); 
-            clip[10].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Shovel.wav")))); 
-            clip[11].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Remove.wav")))); 
-            clip[12].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Wave.wav")))); 
-            clip[13].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Siren.wav")))); 
-            clip[14].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Groan_brains1.wav")))); 
-            clip[15].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Groan_brains2.wav")))); 
-            clip[16].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Groan_brains3.wav")))); 
-            clip[17].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Groan1.wav")))); 
-            clip[18].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Groan2.wav")))); 
-            clip[19].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Groan3.wav")))); 
+            clip[0].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/wav/Menu.wav")))); 
+            clip[1].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/wav/Background.wav")))); 
+            clip[2].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/wav/Win.wav")))); 
+            clip[3].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/wav/Lose.wav")))); 
+            clip[4].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/wav/Zombies_coming.wav")))); 
+            clip[5].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/wav/Seedlift.wav")))); 
+            clip[6].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/wav/Plant.wav")))); 
+            clip[7].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/wav/Eat.wav")))); 
+            clip[8].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/wav/Buzzer.wav")))); 
+            clip[9].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/wav/Evillaugh.wav")))); 
+            clip[10].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/wav/Shovel.wav")))); 
+            clip[11].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/wav/Remove.wav")))); 
+            clip[12].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/wav/Wave.wav")))); 
+            clip[13].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/wav/Siren.wav")))); 
+            clip[14].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/wav/Groan_brains1.wav")))); 
+            clip[15].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/wav/Groan_brains2.wav")))); 
+            clip[16].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/wav/Groan_brains3.wav")))); 
+            clip[17].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/wav/Groan1.wav")))); 
+            clip[18].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/wav/Groan2.wav")))); 
+            clip[19].open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/wav/Groan3.wav")))); 
         }catch(Exception ex)  { 
             ex.printStackTrace();
             JOptionPane.showMessageDialog(null, "Cannot open audio!"); //show error dialog

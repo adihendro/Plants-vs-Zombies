@@ -8,23 +8,24 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip; 
 
 public class Sun{
-    private int sunX, sunY, limitSunY, sunY2; //falling sun x and y position (coordinate)
-    private boolean sunflower=false; //for sunflower's sun
-    private static Timer timer; //set timer
+    private int sunX, sunY, limitSunY; //falling sun x and y position (coordinate)
+    private boolean sunflower; //for sunflower's sun
+    private boolean waiting=false; //for waiting thread
     private Ellipse2D e_sun; //ellipse for falling sun
+    private static Timer timer; //set timer
     private Clip clip;
+    private Thread tsun; //thread for waiting time
 
     public Sun(){
         setX();
         sunY=-85;
         setLimit();
-        e_sun = new Ellipse2D.Float(-10, -10, 1, 1);
+        sunflower=false;
     }
 
     public Sun(int x, int y){
         sunX=Plant.getCoor(x, y).getX()-15;
         sunY=Plant.getCoor(x, y).getY()-30;
-        sunY2=sunY;
         limitSunY=sunY+300;
         sunflower=true;
     }
@@ -33,10 +34,11 @@ public class Sun{
     {
         try{
             clip = AudioSystem.getClip();
-            clip.open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/Points.wav")))); 
+            clip.open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/wav/Points.wav")))); 
         }catch(Exception ex){ 
             ex.printStackTrace();
         }
+        tsun = new Thread(new SunWaits()); 
     }
 
     public static void start(int interval){
@@ -48,20 +50,30 @@ public class Sun{
         timer.setRepeats(true);
         timer.start();
     }
-
     public static void stop(){
         timer.stop();
+    }
+
+    //private class Threading
+    private class SunWaits implements Runnable { 
+        public void run() { 
+            try{
+                Thread.sleep(3000); //Sun waits for 3 seconds 
+            } catch (InterruptedException e) {}
+        }
+    } 
+    public void startTimer(){
+        tsun.start();
     }
 
     //getter
     public int getX(){return sunX;}
     public int getY(){return sunY;}
-    public int getY2(){return sunY2;}
     public int getLimit(){return limitSunY;}
     public boolean isSunflower(){return sunflower;}
-    public Ellipse2D getE(){
-        return e_sun;
-    }
+    public Ellipse2D getE(){return e_sun;}
+    public boolean isTsunAlive(){return tsun.isAlive();}
+    public boolean isWaiting(){return waiting;}
 
     //setter
     public void setE(Ellipse2D e_sun){
@@ -72,6 +84,9 @@ public class Sun{
     }
     public void setLimit(){ 
         limitSunY=(int)(Math.random() * (470-200+1)+200); //generate limit falling sunY from y=200 to y=470
+    }
+    public void setWaiting(){
+        waiting=true;
     }
 
     public void lower(){ //lower sun position
