@@ -44,7 +44,7 @@ public class Zombie extends Actor implements Comparable<Zombie>{
         timer2=new Timer(1000, new ActionListener(){
             public void actionPerformed(ActionEvent e) {
                 for(Plant plant: World.plants){
-                    if(plant.X()==lane && plant.Y()==yp){ //intersect plant
+                    if(plant.getX()==lane && plant.getY()==yp){ //intersect plant
                         if(!Audio.isEating() && !gameOver){
                             Audio.eat();
                         }
@@ -178,9 +178,9 @@ public class Zombie extends Actor implements Comparable<Zombie>{
     public void attack(){
         //check is zombie intersect plant
         yp=getColumn();
-        if(Plant.getOcc(lane, yp)!=0){ //intersect plant
+        if(Plant.getOcc(lane, yp)!=0 && Plant.getOcc(lane, yp)!=5){ //intersect plant (excluding cherrybomb)
             A: for(Plant plant: World.plants){
-                if(plant.X()==lane && plant.Y()==yp){
+                if(plant.getX()==lane && plant.getY()==yp){
                     timer2.start();
                     if(plant.isDead()){ //plant dies
                         plant.stop(); //stop plant's activity

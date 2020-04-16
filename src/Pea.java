@@ -46,8 +46,8 @@ public class Pea{
     //getter
     public int getCoorX(){return coorX;}
     public int getCoorY(){return coorY;}
-    public int X(){return x;}
-    public int Y(){return y;}
+    public int getX(){return x;}
+    public int getY(){return y;}
     public int getType(){return type;}
     public int getDamage(){return damage;}
 
