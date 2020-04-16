@@ -6,7 +6,7 @@ import javax.sound.sampled.Clip;
 
 public class Plant<T> extends Actor{
     private T type;
-    private boolean idle=true, threaten=false, repeat=false, explode=false;
+    private boolean idle=true, threaten=false, repeat=false, exploded=false;
     private Timer timer, timer2, timer3; //set timer
     private int x, y; //array for plant location [5][9]
     private int cw=80, ch=82; //cherrybomb
@@ -133,10 +133,10 @@ public class Plant<T> extends Actor{
     }
     public int getCw(){return cw;}
     public int getCh(){return ch;}
-    public boolean isExploded(){return explode;}
+    public boolean isExploded(){return exploded;}
     public boolean isTcherryAlive(){return tcherry.isAlive();}
     public void setExplode(){
-        explode=true;
+        exploded=true;
     }
     public void cherry_enlarge(){ //play cherry_enlarge sound
         clip.start();

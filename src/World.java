@@ -167,13 +167,13 @@ public class World extends JPanel implements ActionListener{
                             plant.startTimer(); //start waiting thread
                             
                             //kill zombie
-                            Iterator<Zombie> itz = zombies.iterator(); 
-                            while (itz.hasNext()){
-                                Zombie zombie=itz.next();
-                                if(zombie.getLane()<=i+1 && zombie.getLane()>=i-1 
-                                && zombie.getColumn()<=j+1 && zombie.getColumn()>=j-1){ //zombie exist around plant 3x3
+                            Iterator<Zombie> itzo = zombies.iterator(); 
+                            while (itzo.hasNext()){
+                                Zombie zombie=itzo.next();
+                                if(zombie.getLane()<=(i+1) && zombie.getLane()>=(i-1) 
+                                && zombie.getColumn()<=(j+1) && zombie.getColumn()>=(j-1)){ //zombies around plant 3x3
                                     zombie.stopEat(); //stop eating plant
-                                    itz.remove();
+                                    itzo.remove();
                                 }
                             }
                         }
@@ -197,7 +197,7 @@ public class World extends JPanel implements ActionListener{
                     yp=plant.getY();
 
                     A: for(Zombie zombie: zombies){
-                        if(xp==zombie.getLane() && yp<=zombie.getColumn()){ //zombie exist in front of plant?
+                        if(xp==zombie.getLane() && yp<=zombie.getColumn()){ //zombies in front of plant
                             if(plant.isIdle()){
                                 plant.attack();
                             }
@@ -269,19 +269,18 @@ public class World extends JPanel implements ActionListener{
                     }
                     itz.remove();
                 }
-
-                //check if all zombies before wave are dead
-                if(Zombie.getN()==Zombie.getWave() && zombies.isEmpty()){
-                    Audio.wave(); //play wave audio
-                    Zombie.startWave(); //start wave
-                }
                 
                 //check if zombie reaches house
                 if(zombie.gameOver()){
                     play=false;
                 }
             }
-           
+
+            //check if all zombies before wave are dead
+            if(wave==0 && Zombie.getN()==Zombie.getWave() && zombies.isEmpty()){
+                Zombie.startWave(); //start wave
+            }
+
             //check if all zombies are dead
             if(Zombie.getN()==Zombie.getMax() && zombies.isEmpty()){
                 play=false;
@@ -557,11 +556,11 @@ public class World extends JPanel implements ActionListener{
                     if (rec[1].contains(e.getPoint())) { //click try/play again
                         play=true;
                         win=false;
+                        end_sound=true;
                         player.resetCredits();
                         plants.clear();
                         zombies.clear();
                         Zombie.resetN();
-                        end_sound=true;
                         Audio.begin();
 
                         Sun.start(5);
