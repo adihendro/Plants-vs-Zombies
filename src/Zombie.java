@@ -112,7 +112,7 @@ public class Zombie extends Actor implements Comparable<Zombie>{
     public float getCoorX(){return coorX;}
     public int getCoorY(){return coorY;}
     public int getLane(){return lane;}
-    public int getColumn(){
+    public int getColumn(){ //convert x coordinate to field column
         int c=9;
         for(int i=0;i<9;i++){
             if(coorX<=column[i] && coorX>column[i]-60){

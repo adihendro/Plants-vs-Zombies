@@ -112,16 +112,16 @@ public class World extends JPanel implements ActionListener{
             g.drawImage(img[0], 0, 0, 1024, 626, this);
 
             //draw progress
-            xp = Math.round((185.0f/Zombie.getMax())*Zombie.getN());
-            yp = Math.round((167.0f/Zombie.getMax())*Zombie.getN());
-            g.drawImage(img[27], 795+185-xp, 588, xp, 16, this); //draw greenbar (max 185 pixels)
-            g.drawImage(img[26], 790, 572, 195, 40, this); //draw bar
-            if(Zombie.getN() <= Zombie.getMax()-6){
-                g.drawImage(img[25], 790, 572, 241, 40, this); //draw flag
-            }else{ //raise flag in the last 6 zombies
-                g.drawImage(img[25], 790, 560+Math.round((12.0f/6)*(Zombie.getMax()-Zombie.getN())), 241, 40, this);
+            xp = Math.round((205.0f/Zombie.getMax())*Zombie.getN());
+            yp = Math.round((190.0f/Zombie.getMax())*Zombie.getN());
+            g.drawImage(img[27], 498+205-xp, 586, xp, 16, this); //draw greenbar (max 205 pixels)
+            g.drawImage(img[26], 490, 570, 215, 40, this); //draw bar
+            if(Zombie.getN() <= Zombie.getMax()-5){
+                g.drawImage(img[25], 489, 562, 261, 49, this); //draw flag
+            }else{ //raise flag for the last 5 zombies
+                g.drawImage(img[25], 489, 550+Math.round((12.0f/5)*(Zombie.getMax()-Zombie.getN())), 261, 49, this);
             }
-            g.drawImage(img[24], 952-yp, 574, 35, 38, this); //draw zombie head (785 to 952; max 167 pixels)
+            g.drawImage(img[24], 675-yp, 572, 35, 38, this); //draw zombie head (485 to 675; max 190 pixels)
             
             //draw black&white plant menu
             if(player.getCredits()<150){ //suncredits <150
@@ -222,7 +222,7 @@ public class World extends JPanel implements ActionListener{
 
                 //check if zombie is dead
                 if(zombie.isDead()){
-                    zombie.stopEat();
+                    zombie.stopEat(); //stop eating plant
                     if(zombie.getType()==2){ //football zombie
                         zombie.yuck2();
                     }else{
@@ -461,6 +461,12 @@ public class World extends JPanel implements ActionListener{
                                                 Audio.remove(); //play remove sound
                                                 plants.remove(plant);
                                                 break A;
+                                            }
+                                        }
+
+                                        for(Zombie zombie: zombies){
+                                            if(zombie.getLane()==i && zombie.getColumn()==j){
+                                                zombie.stopEat(); //stop attacking plant
                                             }
                                         }
                                     }
