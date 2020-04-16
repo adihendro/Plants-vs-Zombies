@@ -155,7 +155,7 @@ public class World extends JPanel implements ActionListener{
                     
                 }else if(plant.getType().equals(5)){ //cherrybomb
                     if(plant.getCw()<110){ //enlarge
-                        g.drawImage(img[30], xp-plant.getCw()/2, yp-plant.getCh()/2, plant.getCw(), plant.getCh(), this);
+                        g.drawImage(img[30], xp-plant.getCw()/2-4, yp-plant.getCh()/2-4, plant.getCw(), plant.getCh(), this);
                         plant.enlarge();
                         plant.cherry_enlarge(); //play cherry_enlarge sound
                     }else{ //explode
@@ -167,13 +167,13 @@ public class World extends JPanel implements ActionListener{
                             plant.startTimer(); //start waiting thread
                             
                             //kill zombie
-                            Iterator<Zombie> itzo = zombies.iterator(); 
-                            while (itzo.hasNext()){
-                                Zombie zombie=itzo.next();
+                            Iterator<Zombie> itz = zombies.iterator(); 
+                            while (itz.hasNext()){
+                                Zombie zombie=itz.next();
                                 if(zombie.getLane()<=(i+1) && zombie.getLane()>=(i-1) 
                                 && zombie.getColumn()<=(j+1) && zombie.getColumn()>=(j-1)){ //zombies around plant 3x3
                                     zombie.stopEat(); //stop eating plant
-                                    itzo.remove();
+                                    itz.remove();
                                 }
                             }
                         }
@@ -193,8 +193,8 @@ public class World extends JPanel implements ActionListener{
                     }
 
                     //shoot zombie
-                    xp=plant.getX();
-                    yp=plant.getY();
+                    xp=plant.getX(); //field row
+                    yp=plant.getY(); //field column
 
                     A: for(Zombie zombie: zombies){
                         if(xp==zombie.getLane() && yp<=zombie.getColumn()){ //zombies in front of plant

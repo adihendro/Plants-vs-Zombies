@@ -50,7 +50,7 @@ public class Player {
     }
     // reset credit
     public void resetCredits(){
-        sunCredits=50;
+        sunCredits=5000;
     }
     //getter jumlah suncredit dari player
     public int getCredits(){

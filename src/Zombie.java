@@ -114,9 +114,33 @@ public class Zombie extends Actor implements Comparable<Zombie>{
     public int getLane(){return lane;}
     public int getColumn(){ //convert x coordinate to field column
         int c=9;
-        for(int i=0;i<9;i++){
+        if(type==2){ //football zombie
+            A: for(int i=8;i>=1;i--){
+                if(coorX<=column[i]-20 && coorX>column[i-1]-20){
+                    c=i;
+                    break A;
+                }else if(coorX<=column[0]-20){
+                    c=0;
+                }
+            }
+        }else{
+            A: for(int i=8;i>=1;i--){
+                if(coorX<=column[i] && coorX>column[i-1]){
+                    c=i;
+                    break A;
+                }else if(coorX<=column[0]){
+                    c=0;
+                }
+            }
+        }
+        return c;
+    }
+    public int getColumnEat(){ //convert x coordinate to field column for attacking plant
+        int c=9;
+        A: for(int i=8;i>=0;i--){
             if(coorX<=column[i] && coorX>column[i]-60){
                 c=i;
+                break A;
             }
         }
         return c;
@@ -177,8 +201,8 @@ public class Zombie extends Actor implements Comparable<Zombie>{
         }
     }
     public void attack(){
-        //check is zombie intersect plant
-        yp=getColumn();
+        //check if zombie intersects plant
+        yp=getColumnEat();
         if(Plant.getOcc(lane, yp)!=0 && Plant.getOcc(lane, yp)!=5){ //intersect plant (excluding cherrybomb)
             A: for(Plant plant: World.plants){
                 if(plant.getX()==lane && plant.getY()==yp){
@@ -192,7 +216,7 @@ public class Zombie extends Actor implements Comparable<Zombie>{
                     }
                 }
             }
-        }else{ //empty spot
+        }else{ //field empty
             coorX-=zombieSpeed; //move
         }
     }

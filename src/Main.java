@@ -8,6 +8,8 @@ public class Main{
         int inset=30;
         if(System.getProperty("os.name").equals("Mac OS X")){
             inset=23;
+        }else if(System.getProperty("os.name").equals("Linux")){
+            inset=38;
         }
         System.out.println(System.getProperty("os.name"));
 
