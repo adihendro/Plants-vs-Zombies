@@ -28,8 +28,15 @@ public class Plant<T> extends Actor{
         }else if(type.equals(4)){ //Wallnut
             super.health = 200;
         }else if(type.equals(5)){ //Cherrybomb
-            super.health = 1000;
             tcherry = new Thread(new CherryWaits()); 
+            try{
+                clip = AudioSystem.getClip();
+                clip2 = AudioSystem.getClip();
+                clip.open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/wav/Cherry_enlarge.wav")))); 
+                clip2.open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/wav/Cherrybomb.wav")))); 
+            }catch(Exception ex)  { 
+                ex.printStackTrace();
+            }
         }else{}
     }
 
@@ -38,8 +45,6 @@ public class Plant<T> extends Actor{
         //shoot pea every 2 seconds
         timer=new Timer(2000, new ActionListener(){
             public void actionPerformed(ActionEvent e) {
-                // clip.setMicrosecondPosition(0);
-                // clip.start(); //play shoot sound
                 World.peas.add(new Pea((int)type, x, y));
             }
         });
@@ -49,8 +54,6 @@ public class Plant<T> extends Actor{
             public void actionPerformed(ActionEvent e) {
                 if(type.equals(3)){ //repeater
                     if(repeat){
-                        // clip.setMicrosecondPosition(0);
-                        // clip.start(); //play shoot sound
                         World.peas.add(new Pea(3, x, y));
                     }else{
                         repeat=true;
@@ -66,15 +69,6 @@ public class Plant<T> extends Actor{
                 World.suns.add(new Sun(x, y));
             }
         });
-
-        try{
-            clip = AudioSystem.getClip();
-            clip2 = AudioSystem.getClip();
-            clip.open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/wav/Cherry_enlarge.wav")))); 
-            clip2.open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/wav/Cherrybomb.wav")))); 
-        }catch(Exception ex)  { 
-            ex.printStackTrace();
-        }
     }
 
     //getter
@@ -84,9 +78,7 @@ public class Plant<T> extends Actor{
     public boolean isThreaten(){return threaten;}
     public static int getOcc(int x, int y){return occ[x][y];}
     public static Point getCoor(int x, int y){return coor[x][y];}
-    public boolean isIdle(){
-        return idle;
-    }
+    public boolean isIdle(){return idle;}
     
     //setter
     public static void setOcc(int i, int j){
@@ -123,21 +115,21 @@ public class Plant<T> extends Actor{
         idle=true;
     }
 
-
+    //cherrybomb
     //private class Threading
     private class CherryWaits implements Runnable { 
         public void run() { 
             try{
-                Thread.sleep(800); //Exploded cherry waits for 800 milliseconds
+                Thread.sleep(1000); //Exploded cherry waits for 1 second
             } catch (InterruptedException e) {}
         }
     } 
     public void startTimer(){
         tcherry.start();
     }
+
     public void enlarge(){
-        cw+=1;
-        ch+=1;
+        cw+=1;ch+=1;
     }
     public int getCw(){return cw;}
     public int getCh(){return ch;}
