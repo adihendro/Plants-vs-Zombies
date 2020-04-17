@@ -33,7 +33,7 @@ public class World extends JPanel implements ActionListener{
     //10.pea_p, 11.wasted, 12.try again, 13.sun_g, 14.pea_g, 15.rep_g, 16.win, 17.play again, 18.brain, 19.pea_r, 
     //20.zombief2, 21.shovel, 22.shovel1, 23.shovel2, 24.progress1, 25.progress2, 26.progress3, 27.progress4
     //28.hugewave, 29.finalwave, 30.cherry, 31.powie, 32.cherry_g 33. Flying Zombie
-    private Image[] img = new Image[34];
+    private Image[] img = new Image[35];
     private Toolkit t = Toolkit.getDefaultToolkit();
     //rec: 0.r_play, 1.r_again, 2.r_end, 3.r_sunflower, 4.r_peashooter, 5.r_repeater, 6.r_wallnut, 7.r_cherrybomb
     private Rectangle[] rec = new Rectangle[8]; //rectangle for menu and others
@@ -112,6 +112,7 @@ public class World extends JPanel implements ActionListener{
             Graphics2D g2 = (Graphics2D) g;
             //draw background
             g.drawImage(img[0], 0, 0, 1024, 626, this);
+            g.drawImage(img[34], 20, 25, 150, 580, this);
 
             //draw progress
             xp = Math.round((205.0f/Zombie.getMax())*Zombie.getN());
@@ -300,11 +301,12 @@ public class World extends JPanel implements ActionListener{
 
             //draw shovel
             if(!player.getShovel()){ //if shovel is idle
-                g.drawImage(img[22], 138, 525, 80, 80, this);
+                g.drawImage(img[22], 173, 549, 70, 70, this);
+                // g.drawImage(image, x, y, width, length, this);
             }else{ //if shovel is taken
-                g.drawImage(img[23], 138, 525, 80, 80, this);
+                g.drawImage(img[23], 173, 549, 70, 70, this);
                 //draw shovel following mouse position
-                g.drawImage(img[21], mouse.getX(), mouse.getY()-80, 80, 80, this);
+                g.drawImage(img[21], mouse.getX(), mouse.getY()-70, 70, 70, this);
             }
 
             //draw transparent plant following mouse position
@@ -430,15 +432,31 @@ public class World extends JPanel implements ActionListener{
                 }
             }
 
-            g2.setColor(Color.WHITE);
-            g2.setComposite(AlphaComposite.SrcOver.derive(0.6f));
-            g2.fill(rec[6]);
-            g2.setComposite(AlphaComposite.SrcOver.derive(1f));
+            // CHECK RECTANGLE EXISTANCE
+            // g2.setColor(Color.YELLOW);
+            // g2.setComposite(AlphaComposite.SrcOver.derive(0.6f));
+            // g2.fill(rec[3]);
+            // g2.setComposite(AlphaComposite.SrcOver.derive(1f));
 
-            g2.setColor(Color.WHITE);
-            g2.setComposite(AlphaComposite.SrcOver.derive(0.6f));
-            g2.fill(rec[7]);
-            g2.setComposite(AlphaComposite.SrcOver.derive(1f));
+            // g2.setColor(Color.GREEN);
+            // g2.setComposite(AlphaComposite.SrcOver.derive(0.6f));
+            // g2.fill(rec[4]);
+            // g2.setComposite(AlphaComposite.SrcOver.derive(1f));
+
+            // g2.setColor(Color.BLACK);
+            // g2.setComposite(AlphaComposite.SrcOver.derive(0.6f));
+            // g2.fill(rec[5]);
+            // g2.setComposite(AlphaComposite.SrcOver.derive(1f));
+
+            // g2.setColor(Color.WHITE);
+            // g2.setComposite(AlphaComposite.SrcOver.derive(0.6f));
+            // g2.fill(rec[6]);
+            // g2.setComposite(AlphaComposite.SrcOver.derive(1f));
+
+            // g2.setColor(Color.RED);
+            // g2.setComposite(AlphaComposite.SrcOver.derive(0.6f));
+            // g2.fill(rec[7]);
+            // g2.setComposite(AlphaComposite.SrcOver.derive(1f));
 
         }
 
@@ -624,6 +642,7 @@ public class World extends JPanel implements ActionListener{
             img[31]=t.getImage(getClass().getResource("Assets/image/Powie.png"));
             img[32]=t.getImage(getClass().getResource("Assets/image/Cherry_g.png"));
             img[33]=t.getImage(getClass().getResource("Assets/gif/Zombie_fly.gif"));
+            img[34]=t.getImage(getClass().getResource("Assets/image/Background_menu.png"));
         }catch(Exception ex){
             ex.printStackTrace();
             JOptionPane.showMessageDialog(null, "Cannot open image!"); //show error dialog
@@ -632,15 +651,16 @@ public class World extends JPanel implements ActionListener{
 
     private void init(){    
         //create rectangle for plant menu and end game
-        rec[3] = new Rectangle(30, 184, pwidth+26, pheight+56); //sunflower
-        rec[4] = new Rectangle(30, 190+pheight+50, pwidth+26, pheight+52); //peashooter
-        rec[5] = new Rectangle(30, 190+2*pheight+95, pwidth+26, pheight+55); //repeater
-        rec[6] = new Rectangle(130, 190+pheight+50, pwidth+26, pheight+55); //wallnut
-        rec[7] = new Rectangle(130, 190+2*pheight+95, pwidth+26, pheight+55); //cherrybomb
+        rec[3] = new Rectangle(30, 160, pwidth+70, pheight+20); //sunflower
+        rec[4] = new Rectangle(30, 185+pheight, pwidth+70, pheight+15); //peashooter
+        rec[5] = new Rectangle(30, 340, pwidth+70, pheight+15); //repeater
+        rec[6] = new Rectangle(30, 425, pwidth+70, pheight+15); //wallnut
+        rec[7] = new Rectangle(30, 510, pwidth+70, pheight+20); //cherrybomb
         rec[2] = new Rectangle(0, 0, 1024, 626); //end
-        
+        // Rectangle(x, y, width, height); 
+
         //create ellipse for shovel
-        e_shovel = new Ellipse2D.Float(138, 525, 80, 80);
+        e_shovel = new Ellipse2D.Float(173, 549, 70, 70);
 
         //create rectangle clickable area for field
         int[] fw = {0,90,165,250,330,410,492,570,651,749}; //field width
