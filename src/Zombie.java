@@ -31,11 +31,11 @@ public class Zombie extends Actor implements Comparable<Zombie>{
             super.health=80;
             zombieDamage=15;
             zombieSpeed=0.55f;
-        } // else if (type==3){//Flying zombie
-	    //super.health=100;
-            //zombiedamage=20;
-           // zombieSpeed=0.5f;
-        //}
+        } else if (type==3){//Flying zombie
+	        super.health=65;
+            zombieDamage=15;
+            zombieSpeed=0.4f;
+        }
     }
 
     //initialization block
@@ -113,6 +113,7 @@ public class Zombie extends Actor implements Comparable<Zombie>{
     public float getCoorX(){return coorX;}
     public int getCoorY(){return coorY;}
     public int getLane(){return lane;}
+    
     public int getColumn(){ //convert x coordinate to field column
         int c=9;
         if(type==2){ //football zombie
@@ -136,6 +137,7 @@ public class Zombie extends Actor implements Comparable<Zombie>{
         }
         return c;
     }
+   
     public int getColumnEat(){ //convert x coordinate to field column for attacking plant
         int c=9;
         A: for(int i=8;i>=0;i--){
@@ -156,13 +158,13 @@ public class Zombie extends Actor implements Comparable<Zombie>{
     public static int setType(){
         if(n<=3){ //easy
             timer.setDelay(interval*550);
-            return 1; //normal zombie
+            return 3; //normal zombie
         }else if(n<=6){ //medium
             timer.setDelay(interval*200);
             if((int)(Math.random() * 4)==2){ //generate zombie type from 0 to 3
                 return 2; //football zombie
             }else{
-                return 1; //normal zombie
+                return 1; //normal zombiee
             }
         }else if(n<=wave){ //hard
             timer.setDelay(interval*160);

@@ -32,8 +32,8 @@ public class World extends JPanel implements ActionListener{
     //img: 0.background, 1.sun, 2.sunflower, 3.peashooter, 4.repeater, 5.sungif, 6.peagif, 7.repgif, 8.zombie, 9.zombief 
     //10.pea_p, 11.wasted, 12.try again, 13.sun_g, 14.pea_g, 15.rep_g, 16.win, 17.play again, 18.brain, 19.pea_r, 
     //20.zombief2, 21.shovel, 22.shovel1, 23.shovel2, 24.progress1, 25.progress2, 26.progress3, 27.progress4
-    //28.hugewave, 29.finalwave, 30.cherry, 31.powie, 32.cherry_g
-    private Image[] img = new Image[33];
+    //28.hugewave, 29.finalwave, 30.cherry, 31.powie, 32.cherry_g 33. Flying Zombie
+    private Image[] img = new Image[34];
     private Toolkit t = Toolkit.getDefaultToolkit();
     //rec: 0.r_play, 1.r_again, 2.r_end, 3.r_sunflower, 4.r_peashooter, 5.r_repeater, 6.r_wallnut, 7.r_cherrybomb
     private Rectangle[] rec = new Rectangle[8]; //rectangle for menu and others
@@ -232,14 +232,15 @@ public class World extends JPanel implements ActionListener{
                 //draw zombie
                 if(zombie.getType()==1){ //standard zombie
                     // g.drawImage(img[8], Math.round(zombie.getCoorX()), zombie.getCoorY()-10, 103, 120, this); //flying
-                    g.drawImage(img[8], Math.round(fxp), zombie.getCoorY(), pwidth+11, pheight+53, this);
-                    
+                    g.drawImage(img[8], Math.round(fxp), zombie.getCoorY(), pwidth+11, pheight+53, this);   
                 }else if(zombie.getType()==2){ //football zombie
                     if(zombie.getHealth()>=40){ //zombie uses helmet
                         g.drawImage(img[9], Math.round(fxp), zombie.getCoorY(), this);
                     }else{ //zombie doesn't use helmet
                         g.drawImage(img[20], Math.round(fxp), zombie.getCoorY(), this);
                     }
+                }else if(zombie.getType()==3){ //football zombie
+                    g.drawImage(img[33], Math.round(fxp), zombie.getCoorY(), this);    
                 }
 
                 //check if zombie intersects pea
@@ -256,6 +257,12 @@ public class World extends JPanel implements ActionListener{
                         }else if(zombie.getType()==2){ //football zombie
                             if((pea.getCoorX()>=fxp+9) && (pea.getCoorX()<=fxp+105)){
                                 pea.shieldhit(); //play shieldhit sound
+                                zombie.hit(pea.getDamage()); //damage zombie
+                                itpea.remove(); //remove pea from list
+                            }
+                        } else if(zombie.getType()==3){ //football zombie
+                            if((pea.getCoorX()>=fxp) && (pea.getCoorX()<=fxp)){
+                                pea.splat(); //play splat sound
                                 zombie.hit(pea.getDamage()); //damage zombie
                                 itpea.remove(); //remove pea from list
                             }
@@ -616,6 +623,7 @@ public class World extends JPanel implements ActionListener{
             img[30]=t.getImage(getClass().getResource("Assets/image/Cherry.png"));
             img[31]=t.getImage(getClass().getResource("Assets/image/Powie.png"));
             img[32]=t.getImage(getClass().getResource("Assets/image/Cherry_g.png"));
+            img[33]=t.getImage(getClass().getResource("Assets/gif/Zombie_fly.gif"));
         }catch(Exception ex){
             ex.printStackTrace();
             JOptionPane.showMessageDialog(null, "Cannot open image!"); //show error dialog
