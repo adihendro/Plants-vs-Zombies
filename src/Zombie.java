@@ -118,10 +118,10 @@ public class Zombie extends Actor implements Comparable<Zombie>{
         int c=9;
         if(type==2){ //football zombie
             A: for(int i=8;i>=1;i--){
-                if(coorX<=column[i]-20 && coorX>column[i-1]-20){
+                if(coorX<=column[i]-17 && coorX>column[i-1]-17){
                     c=i;
                     break A;
-                }else if(coorX<=column[0]-20){
+                }else if(coorX<=column[0]-17){
                     c=0;
                 }
             }
