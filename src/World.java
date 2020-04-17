@@ -41,6 +41,7 @@ public class World extends JPanel implements ActionListener{
     private Shape[][] field = new Shape[5][9]; //rectangle array with 5 rows and 9 columns for field area
     private Point mouse = new Point(); //point for mouse position
     private int xp, yp, i, j; //coordinate
+    private float fxp;
     private static int wave=0; //zombies wave
     private boolean start=false, play=true, win=false, end_sound=true, sun_clicked=false;
 
@@ -82,7 +83,7 @@ public class World extends JPanel implements ActionListener{
     public void start(){
         player = new Player();
         Sun.start(5);
-        Zombie.start(10);
+        Zombie.start(18);
         
         getImg(); //load image from disk
         init();
@@ -187,6 +188,7 @@ public class World extends JPanel implements ActionListener{
 
                 }else{
                     if(plant.getType().equals(2)){ //peashooter gif
+                        // g.drawImage(img[6], xp-(pwidth+2)/2, yp-(pheight+6)/2, pwidth+4, pheight+8, this); //wallnut
                         g.drawImage(img[6], xp-(pwidth+2)/2, yp-(pheight+2)/2, pwidth+2, pheight+2, this);
                     }else if(plant.getType().equals(3)){ //repeater gif
                         g.drawImage(img[7], xp-(rwidth+20)/2, yp-(rheight+9)/2, rwidth+26, rheight+13, this);
@@ -221,40 +223,41 @@ public class World extends JPanel implements ActionListener{
             while (itz.hasNext()){
                 Zombie zombie=itz.next();
                 
+                //if (zombie intersects plant) -> eat; else -> move
+                zombie.attack();
+
+                fxp=zombie.getCoorX(); //get zombie x coordinate (float)
+                yp=zombie.getLane(); //get zombie lane (int)
+
                 //draw zombie
                 if(zombie.getType()==1){ //standard zombie
-                    // g.drawImage(img[8], Math.round(zombie.getCoorX()), zombie.getCoorY()-10, 103, 120, this);
-                    g.drawImage(img[8], Math.round(zombie.getCoorX()), zombie.getCoorY(), pwidth+11, pheight+53, this);
+                    // g.drawImage(img[8], Math.round(zombie.getCoorX()), zombie.getCoorY()-10, 103, 120, this); //flying
+                    g.drawImage(img[8], Math.round(fxp), zombie.getCoorY(), pwidth+11, pheight+53, this);
+                    
                 }else if(zombie.getType()==2){ //football zombie
-                    if(zombie.getHealth()>=30){ //zombie uses helmet
-                        g.drawImage(img[9], Math.round(zombie.getCoorX()), zombie.getCoorY(), this);
+                    if(zombie.getHealth()>=40){ //zombie uses helmet
+                        g.drawImage(img[9], Math.round(fxp), zombie.getCoorY(), this);
                     }else{ //zombie doesn't use helmet
-                        g.drawImage(img[20], Math.round(zombie.getCoorX()), zombie.getCoorY(), this);
+                        g.drawImage(img[20], Math.round(fxp), zombie.getCoorY(), this);
                     }
                 }
 
-                //check if zombie intersects plant
-                zombie.attack();
-                
                 //check if zombie intersects pea
                 Iterator<Pea> itpea = peas.iterator(); 
-                A: while (itpea.hasNext()){
+                while (itpea.hasNext()){
                     pea=itpea.next();
-                    xp=zombie.getLane(); //get zombie lane
-                    if(pea.getX()==xp){ //same lane
+                    if(pea.getX()==yp){ //same lane
                         if(zombie.getType()==1){ //normal zombie
-                            if((pea.getCoorX()>=zombie.getCoorX()-3) && (pea.getCoorX()<=zombie.getCoorX()+92)){
+                            if((pea.getCoorX()>=fxp-4) && (pea.getCoorX()<=fxp+92)){
                                 pea.splat(); //play splat sound
                                 zombie.hit(pea.getDamage()); //damage zombie
                                 itpea.remove(); //remove pea from list
-                                break A;
                             }
                         }else if(zombie.getType()==2){ //football zombie
-                            if((pea.getCoorX()>=zombie.getCoorX()+10) && (pea.getCoorX()<=zombie.getCoorX()+105)){
+                            if((pea.getCoorX()>=fxp+9) && (pea.getCoorX()<=fxp+105)){
                                 pea.shieldhit(); //play shieldhit sound
                                 zombie.hit(pea.getDamage()); //damage zombie
                                 itpea.remove(); //remove pea from list
-                                break A;
                             }
                         }
                     }
@@ -527,12 +530,12 @@ public class World extends JPanel implements ActionListener{
                                     if(Plant.getOcc(i, j)!=0){ //plant exist
                                         Plant.setOcc(i, j); //remove plant
 
-                                        for(Plant plant: plants){
+                                        B: for(Plant plant: plants){
                                             if(plant.getX()==i && plant.getY()==j){
                                                 plant.stop(); //stop plant's activity
                                                 Audio.remove(); //play remove sound
                                                 plants.remove(plant);
-                                                break A;
+                                                break B;
                                             }
                                         }
 

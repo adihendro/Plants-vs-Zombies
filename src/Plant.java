@@ -6,7 +6,7 @@ import javax.sound.sampled.Clip;
 
 public class Plant<T> extends Actor{
     private T type;
-    private boolean idle=true, threaten=false, repeat=false, exploded=false;
+    private boolean idle=true, threaten=false, exploded=false;
     private Timer timer, timer2, timer3; //set timer
     private int x, y; //array for plant location [5][9]
     private int cw=80, ch=82; //cherrybomb
@@ -49,19 +49,13 @@ public class Plant<T> extends Actor{
             }
         });
         
-        //repeater shoots second pea every 2.15 seconds
-        timer2=new Timer(150, new ActionListener(){
+        //repeater shoots second pea every 2.2 seconds
+        timer2=new Timer(2000, new ActionListener(){
             public void actionPerformed(ActionEvent e) {
-                if(type.equals(3)){ //repeater
-                    if(repeat){
-                        World.peas.add(new Pea(3, x, y));
-                    }else{
-                        repeat=true;
-                    }
-                }
+                World.peas.add(new Pea(3, x, y));
             }
         });
-        timer2.setDelay(2000);
+        timer2.setInitialDelay(2200);
 
         //drop sun every 10 seconds
         timer3=new Timer(10000, new ActionListener(){
@@ -102,7 +96,9 @@ public class Plant<T> extends Actor{
     }
     public void attack(){
         timer.start();
-        timer2.start();
+        if(type.equals(3)){ //repeater
+            timer2.start();
+        }
         idle=false;
     }
     public void act(){
@@ -114,6 +110,7 @@ public class Plant<T> extends Actor{
         timer3.stop();
         idle=true;
     }
+
 
     //cherrybomb
     //private class Threading

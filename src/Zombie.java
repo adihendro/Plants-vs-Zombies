@@ -23,19 +23,19 @@ public class Zombie extends Actor implements Comparable<Zombie>{
         coorX=1020f;
         coorY=arrY[setLane()];
         if(type==1){ //Normal zombie
-            super.health=35;
+            super.health=45;
             zombieDamage=10;
             zombieSpeed=0.3f;
             // zombieSpeed=5f;
         }else if(type==2) { //Football zombie
-            super.health=60;
+            super.health=80;
             zombieDamage=15;
             zombieSpeed=0.55f;
         } // else if (type==3){//Flying zombie
 	    //super.health=100;
             //zombiedamage=20;
            // zombieSpeed=0.5f;
-    //}
+        //}
     }
 
     //initialization block
@@ -71,11 +71,11 @@ public class Zombie extends Actor implements Comparable<Zombie>{
     //static initialization block
     static{
         for(int i=0;i<5;i++){
-            arrY[i]=117+i*98-82;
+            arrY[i]=117+i*98-82; //initialize zombies y coordinate
         }
     }
 
-    //init
+    //spawning zombie automatically
     public static void start(int inter){
         interval=inter;
         timer=new Timer(interval*1000, new ActionListener(){
@@ -101,6 +101,7 @@ public class Zombie extends Actor implements Comparable<Zombie>{
 	public int compareTo(Zombie z) { //sort zombies based on lane
 		return lane-z.getLane();
 	}
+
 
     //getter
     public static int getN(){return n;}
@@ -224,6 +225,7 @@ public class Zombie extends Actor implements Comparable<Zombie>{
         timer2.stop(); //stop eating plant
     }
 
+    //Audio
     public static void playAudio(){
         if(n==1){
             Audio.groan1();
