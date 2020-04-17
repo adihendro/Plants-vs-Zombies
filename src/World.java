@@ -223,6 +223,7 @@ public class World extends JPanel implements ActionListener{
                 
                 //draw zombie
                 if(zombie.getType()==1){ //standard zombie
+                    // g.drawImage(img[8], Math.round(zombie.getCoorX()), zombie.getCoorY()-10, 103, 120, this);
                     g.drawImage(img[8], Math.round(zombie.getCoorX()), zombie.getCoorY(), pwidth+11, pheight+53, this);
                 }else if(zombie.getType()==2){ //football zombie
                     if(zombie.getHealth()>=30){ //zombie uses helmet

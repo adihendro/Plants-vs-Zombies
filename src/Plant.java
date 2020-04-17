@@ -120,7 +120,7 @@ public class Plant<T> extends Actor{
     private class CherryWaits implements Runnable { 
         public void run() { 
             try{
-                Thread.sleep(900); //Exploded cherry waits for 900 milliseconds
+                Thread.sleep(800); //Exploded cherry waits for 800 milliseconds
             } catch (InterruptedException e) {}
         }
     } 
