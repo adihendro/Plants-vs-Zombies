@@ -34,7 +34,7 @@ public class World extends JPanel implements ActionListener{
     //20.zombief2, 21.shovel, 22.shovel1, 23.shovel2, 24.progress1, 25.progress2, 26.progress3, 27.progress4
 
     //28.hugewave, 29.finalwave, 30.cherry, 31.powie, 32.cherry_g 33. Flying Zombie
-    private Image[] img = new Image[35];
+    private Image[] img = new Image[39];
 
     private Toolkit t = Toolkit.getDefaultToolkit();
     //rec: 0.r_play, 1.r_again, 2.r_end, 3.r_sunflower, 4.r_peashooter, 5.r_repeater, 6.r_wallnut, 7.r_cherrybomb
@@ -155,8 +155,7 @@ public class World extends JPanel implements ActionListener{
                     plant.act();
 
                 }else if(plant.getType().equals(4)){ //wallnut gif
-
-                    
+                        g.drawImage(img[36], xp-(rwidth+20)/2, yp-(rheight+9)/2, rwidth+26, rheight+13, this);
                 }else if(plant.getType().equals(5)){ //cherrybomb
                     if(plant.getCw()<110){ //enlarge
                         g.drawImage(img[30], xp-plant.getCw()/2-4, yp-plant.getCh()/2-4, plant.getCw(), plant.getCh(), this);
@@ -325,7 +324,7 @@ public class World extends JPanel implements ActionListener{
                 g2.setComposite(AlphaComposite.SrcOver.derive(1f));
             }else if(player.getChoice()==4){ //wallnut
                 g2.setComposite(AlphaComposite.SrcOver.derive(0.7f));
-                g2.drawImage(img[4], mouse.getX()-(rwidth+8)/2, mouse.getY()-(rheight+8)/2, rwidth+4, rheight+4, this);
+                g2.drawImage(img[35], mouse.getX()-(rwidth+8)/2, mouse.getY()-(rheight+8)/2, rwidth+4, rheight+4, this);
                 g2.setComposite(AlphaComposite.SrcOver.derive(1f));
             }else if(player.getChoice()==5){ //cherrybomb
                 g2.setComposite(AlphaComposite.SrcOver.derive(0.7f));
@@ -433,7 +432,7 @@ public class World extends JPanel implements ActionListener{
                 }
             }
 
-            // CHECK RECTANGLE EXISTANCE
+            // //CHECK RECTANGLE EXISTANCE
             // g2.setColor(Color.YELLOW);
             // g2.setComposite(AlphaComposite.SrcOver.derive(0.6f));
             // g2.fill(rec[3]);
@@ -644,6 +643,10 @@ public class World extends JPanel implements ActionListener{
             img[32]=t.getImage(getClass().getResource("Assets/image/Cherry_g.png"));
             img[33]=t.getImage(getClass().getResource("Assets/gif/Zombie_fly.gif"));
             img[34]=t.getImage(getClass().getResource("Assets/image/Background_menu.png"));
+            img[35]=t.getImage(getClass().getResource("Assets/image/Wallnut.png"));
+            img[36]=t.getImage(getClass().getResource("Assets/gif/walnut_full_life.gif"));
+            img[37]=t.getImage(getClass().getResource("Assets/gif/walnut_half_life.gif"));
+            img[38]=t.getImage(getClass().getResource("Assets/gif/walnut_dead.gif"));
         }catch(Exception ex){
             ex.printStackTrace();
             JOptionPane.showMessageDialog(null, "Cannot open image!"); //show error dialog
