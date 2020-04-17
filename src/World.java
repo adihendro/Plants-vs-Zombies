@@ -83,7 +83,7 @@ public class World extends JPanel implements ActionListener{
     public void start(){
         player = new Player();
         Sun.start(5);
-        Zombie.start(10);
+        Zombie.start(18);
         
         getImg(); //load image from disk
         init();
