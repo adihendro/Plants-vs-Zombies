@@ -83,7 +83,7 @@ public class World extends JPanel implements ActionListener{
     public void start(){
         player = new Player();
         Sun.start(5);
-        Zombie.start(18);
+        Zombie.start(10);
         
         getImg(); //load image from disk
         init();
@@ -248,19 +248,19 @@ public class World extends JPanel implements ActionListener{
                     pea=itpea.next();
                     if(pea.getX()==yp){ //same lane
                         if(zombie.getType()==1){ //normal zombie
-                            if((pea.getCoorX()>=fxp-4) && (pea.getCoorX()<=fxp+92)){
+                            if((pea.getCoorX()>=fxp-6) && (pea.getCoorX()<=fxp+92)){
                                 pea.splat(); //play splat sound
                                 zombie.hit(pea.getDamage()); //damage zombie
                                 itpea.remove(); //remove pea from list
                             }
                         }else if(zombie.getType()==2){ //football zombie
-                            if((pea.getCoorX()>=fxp+9) && (pea.getCoorX()<=fxp+105)){
+                            if((pea.getCoorX()>=fxp+7) && (pea.getCoorX()<=fxp+105)){
                                 pea.shieldhit(); //play shieldhit sound
                                 zombie.hit(pea.getDamage()); //damage zombie
                                 itpea.remove(); //remove pea from list
                             }
-                        } else if(zombie.getType()==3){ //football zombie
-                            if((pea.getCoorX()>=fxp) && (pea.getCoorX()<=fxp)){
+                        }else if(zombie.getType()==3){ //flying zombie
+                            if((pea.getCoorX()>=fxp+24) && (pea.getCoorX()<=fxp+92)){
                                 pea.splat(); //play splat sound
                                 zombie.hit(pea.getDamage()); //damage zombie
                                 itpea.remove(); //remove pea from list
