@@ -577,6 +577,7 @@ public class World extends JPanel implements ActionListener{
                         plants.clear();
                         zombies.clear();
                         Zombie.resetN();
+                        Zombie.resetGameOver();
                         
                         Audio.begin();
                         Sun.start();

@@ -36,7 +36,7 @@ public class Zombie extends Actor implements Comparable<Zombie>{
 
     //initialization block
     {
-        //attacking plant
+        //attacking plant every 1 second
         timer2=new Timer(1000, new ActionListener(){
             public void actionPerformed(ActionEvent e) {
                 for(Plant plant: World.plants){
@@ -227,6 +227,7 @@ public class Zombie extends Actor implements Comparable<Zombie>{
             return true;
         }
     }
+    public static void resetGameOver(){gameOver=false;}
     public static void resetN(){n=0;}
     
 
