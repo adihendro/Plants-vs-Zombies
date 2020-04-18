@@ -85,7 +85,7 @@ public class World extends JPanel implements ActionListener{
     public void start(){
         player = new Player();
         Sun.start(5);
-        Zombie.start(10);
+        Zombie.start(6);
         
         getImg(); //load image from disk
         init();
@@ -278,6 +278,9 @@ public class World extends JPanel implements ActionListener{
                 //check if zombie reaches house
                 if(zombie.gameOver()){
                     play=false;
+                    if(fxp<=23){ //remove zombie
+                        itz.remove();
+                    }
                 }
             }
 
@@ -345,9 +348,9 @@ public class World extends JPanel implements ActionListener{
             
             if(play){
                 //draw pea
-                Iterator<Pea> itpea = peas.iterator();
-                while (itpea.hasNext()){
-                    pea=itpea.next();
+                Iterator<Pea> itpea_p = peas.iterator();
+                while (itpea_p.hasNext()){
+                    pea=itpea_p.next();
                     if(pea.getType()==2){ //peashooter
                         g.drawImage(img[10], pea.getCoorX(), pea.getCoorY(), this);
                     }else{ //repeater
@@ -356,7 +359,7 @@ public class World extends JPanel implements ActionListener{
                     pea.move();
                         
                     if(pea.getCoorX()>1030){ //pea move beyond the frame
-                        itpea.remove();
+                        itpea_p.remove();
                     }
                 }
             

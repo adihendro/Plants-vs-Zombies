@@ -153,7 +153,7 @@ public class Zombie extends Actor implements Comparable<Zombie>{
     public static int setType(){
         if(n<=3){ //easy
             timer.setDelay(interval*550);
-            return 2; //normal zombie
+            return 3; //normal zombie
         }else if(n<=6){ //medium
             timer.setDelay(interval*200);
             if((int)(Math.random() * 4)==2){ //generate zombie type from 0 to 3
