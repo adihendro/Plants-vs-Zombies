@@ -84,8 +84,8 @@ public class World extends JPanel implements ActionListener{
 
     public void start(){
         player = new Player();
-        Sun.start(5);
-        Zombie.start(6);
+        Sun.start();
+        Zombie.start(18);
         
         getImg(); //load image from disk
         init();
@@ -233,7 +233,7 @@ public class World extends JPanel implements ActionListener{
                         g.drawImage(img[20], Math.round(fxp), zombie.getCoorY(), this);
                     }
                 }else if(zombie.getType()==3){ //flying zombie
-                    g.drawImage(img[33], Math.round(fxp), zombie.getCoorY()-10, 103, 120, this);
+                    g.drawImage(img[33], Math.round(fxp), zombie.getCoorY()-10, 101, 120, this);
                     zombie.move();
                 }
 
@@ -338,7 +338,7 @@ public class World extends JPanel implements ActionListener{
                 g2.setComposite(AlphaComposite.SrcOver.derive(1f));
             }else if(player.getChoice()==4){ //wallnut
                 g2.setComposite(AlphaComposite.SrcOver.derive(0.7f));
-                g2.drawImage(img[35], mouse.getX()-(pwidth+2)/2, mouse.getY()-(pheight+6)/2, pwidth-1, pheight+3, this);
+                g2.drawImage(img[35], mouse.getX()-32, mouse.getY()-36, 61, 69, this);
                 g2.setComposite(AlphaComposite.SrcOver.derive(1f));
             }else if(player.getChoice()==5){ //cherrybomb
                 g2.setComposite(AlphaComposite.SrcOver.derive(0.7f));
@@ -579,7 +579,7 @@ public class World extends JPanel implements ActionListener{
                         Zombie.resetN();
                         
                         Audio.begin();
-                        Sun.start(5);
+                        Sun.start();
                         Zombie.start(18);
                         for(i=0;i<5;i++){
                             for(j=0;j<9;j++){

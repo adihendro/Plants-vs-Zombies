@@ -32,8 +32,9 @@ public class Sun{
         tsun = new Thread(new SunWaits()); 
     }
 
-    public static void start(int interval){
-        timer=new Timer(interval*1000, new ActionListener(){
+    //drop sun every 5 seconds
+    public static void start(){
+        timer=new Timer(5000, new ActionListener(){
             public void actionPerformed(ActionEvent e) {
                 World.suns.add(new Sun());
             }

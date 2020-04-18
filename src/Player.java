@@ -11,7 +11,7 @@ public class Player {
     private Font font;
 
     public Player(){
-        sunCredits=5000;
+        sunCredits=50;
         temp=sunCredits;
         try{
             //create the font to use
@@ -48,7 +48,7 @@ public class Player {
         sunCredits+=25;
     }
     public void resetCredits(){
-        sunCredits=5000;
+        sunCredits=50;
     }
     
     public int getChoice(){

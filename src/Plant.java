@@ -9,7 +9,7 @@ public class Plant<T> extends Actor{
     private boolean idle=true, threaten=false, exploded=false;
     private Timer timer, timer2, timer3; //set timer
     private int x, y; //array for plant location [5][9]
-    private int cw=80, ch=82; //cherrybomb
+    private int cw=74, ch=76; //cherrybomb
     private static int[][] occ = new int[5][10];
     private static Point[][] coor = new Point[5][9]; //array for plants coordinate
     private Clip clip, clip2;
@@ -50,13 +50,13 @@ public class Plant<T> extends Actor{
             }
         });
         
-        //repeater shoots second pea every 2.2 seconds
+        //repeater shoots second pea every 2.15 seconds
         timer2=new Timer(2000, new ActionListener(){
             public void actionPerformed(ActionEvent e) {
                 World.peas.add(new Pea(3, x, y));
             }
         });
-        timer2.setInitialDelay(2200);
+        timer2.setInitialDelay(2150);
 
         //drop sun every 10 seconds
         timer3=new Timer(10000, new ActionListener(){

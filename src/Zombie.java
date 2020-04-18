@@ -6,13 +6,11 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip; 
 
 public class Zombie extends Actor implements Comparable<Zombie>{
-    protected int zombieDamage;
-    protected float zombieSpeed;
+    private int type, zombieDamage, lane, coorY, yp;
+    private float zombieSpeed, coorX; //zombie x coordinate
     private int[] column = {296,377,458,539,620,701,782,863,944}; //9
-    private int type, lane, coorY, yp;
-    private float coorX; //zombie x coordinate
     private static int[] arrY = new int[5]; //zombie y coordinate
-    private static int n=0, max=50, interval, wave=20;
+    private static int n=0, max=50, interval, random, wave=20;
     private static boolean gameOver=false;
     private static Timer timer; //spawning zombie timer
     private Timer timer2; //attacking plant timer
@@ -27,12 +25,12 @@ public class Zombie extends Actor implements Comparable<Zombie>{
             zombieDamage=10;
             zombieSpeed=0.3f;
         }else if(type==2){ //Football zombie
-            super.health=80;
+            super.health=70;
             zombieDamage=15;
             zombieSpeed=0.55f;
-        }else if(type==3){//Flying zombie
-	        super.health=65;
-            zombieSpeed=0.45f;
+        }else if(type==3){ //Flying zombie
+	        super.health=55;
+            zombieSpeed=0.4f;
         }
     }
 
@@ -77,7 +75,7 @@ public class Zombie extends Actor implements Comparable<Zombie>{
             }
         });
         timer.start();
-        timer.setDelay(interval*700);
+        timer.setDelay(interval*800);
     }
     public static void stop(){
         timer.stop(); //stop deploying zombie
@@ -153,7 +151,7 @@ public class Zombie extends Actor implements Comparable<Zombie>{
     public static int setType(){
         if(n<=3){ //easy
             timer.setDelay(interval*550);
-            return 3; //normal zombie
+            return 1; //normal zombie
         }else if(n<=6){ //medium
             timer.setDelay(interval*200);
             if((int)(Math.random() * 4)==2){ //generate zombie type from 0 to 3
@@ -166,24 +164,30 @@ public class Zombie extends Actor implements Comparable<Zombie>{
             if(n==wave){ //stop when wave zombies are about to come
                 timer.stop(); //wait for wave
             }
-            if((int)(Math.random() * 2)==1){ //generate zombie type from 0 to 1
-                return 2; //football zombie
-            }else{
+            random=(int)(Math.random() * 4); //generate zombie type from 0 to 3
+            if(random<=1){ //0 or 1
                 return 1; //normal zombie
+            }else if(random==2){ //2
+                return 2; //football zombie
+            }else{ //3
+                return 3; //flying zombie
             }
         }else{ //(n<=max) extreme
             timer.setDelay(interval*80);
-            if((int)(Math.random() * 4)==1){ //generate zombie type from 0 to 3
-                return 1; //normal zombie
-            }else{
+            random=(int)(Math.random() * 5); //generate zombie type from 0 to 4
+            if(random<=1){ //0 or 1
                 return 2; //football zombie
+            }else if(random<=3){ //2 or 3
+                return 3; //flying zombie
+            }else{ //4
+                return 1; //normal zombie
             }
         }
     }
     
     public void attack(){
-        //check if zombie intersects plant
         yp=getColumnEat();
+        //check if zombie intersects plant
         if(Plant.getOcc(lane, yp)!=0){ //intersect plant
             A: for(Plant plant: World.plants){
                 if(plant.getX()==lane && plant.getY()==yp){
