@@ -1,9 +1,9 @@
 import java.awt.event.ActionEvent;  
 import java.awt.event.ActionListener;
 import java.util.Collections;
+import javax.swing.Timer;
 import javax.sound.sampled.AudioSystem; 
 import javax.sound.sampled.Clip; 
-import javax.swing.Timer;
 
 public class Zombie extends Actor implements Comparable<Zombie>{
     protected int zombieDamage;
@@ -16,7 +16,7 @@ public class Zombie extends Actor implements Comparable<Zombie>{
     private static boolean gameOver=false;
     private static Timer timer; //spawning zombie timer
     private Timer timer2; //attacking plant timer
-    private Clip clip, clip2;
+    private Clip clip;
 
     public Zombie(int type){
         this.type=type;
@@ -26,12 +26,11 @@ public class Zombie extends Actor implements Comparable<Zombie>{
             super.health=45;
             zombieDamage=10;
             zombieSpeed=0.3f;
-            // zombieSpeed=5f;
         }else if(type==2){ //Football zombie
             super.health=80;
             zombieDamage=15;
             zombieSpeed=0.55f;
-        } else if (type==3){//Flying zombie
+        }else if(type==3){//Flying zombie
 	        super.health=65;
             zombieSpeed=0.45f;
         }
@@ -53,18 +52,6 @@ public class Zombie extends Actor implements Comparable<Zombie>{
             }
         });
         timer2.setInitialDelay(200);
-
-        try{
-            // create clip reference 
-            clip = AudioSystem.getClip(); 
-            clip2 = AudioSystem.getClip(); 
-            // open audioInputStream to the clip 
-            clip.open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/wav/Yuck.wav")))); 
-            clip2.open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/wav/Yuck2.wav")))); 
-        }catch(Exception ex)  { 
-            ex.printStackTrace();
-        } 
-
     }
 
     //static initialization block
@@ -194,28 +181,10 @@ public class Zombie extends Actor implements Comparable<Zombie>{
         }
     }
     
-    public static void startWave(){ //start wave
-        Audio.wave(); //play wave audio
-        timer.setInitialDelay(5000);
-        timer.start();
-        World.setWave(1);
-    }
-
-    public static void resetN(){n=0;}
-    
-    public boolean gameOver(){
-        if(coorX>210){ //zombie hasn't reach house yet
-            return false;
-        }else{ //zombie reaches house
-            gameOver=true;
-            return true;
-        }
-    }
     public void attack(){
         //check if zombie intersects plant
         yp=getColumnEat();
         if(Plant.getOcc(lane, yp)!=0){ //intersect plant
-        // if(Plant.getOcc(lane, yp)!=0 && Plant.getOcc(lane, yp)!=5){ //intersect plant (excluding cherrybomb)
             A: for(Plant plant: World.plants){
                 if(plant.getX()==lane && plant.getY()==yp){
                     timer2.start();
@@ -238,6 +207,23 @@ public class Zombie extends Actor implements Comparable<Zombie>{
     public void stopEat(){
         timer2.stop(); //stop eating plant
     }
+
+    public static void startWave(){ //start wave
+        Audio.wave(); //play wave audio
+        timer.setInitialDelay(5000);
+        timer.start();
+        World.setWave(1); //set wave to 1
+    }
+    
+    public boolean gameOver(){
+        if(coorX>210){ //zombie hasn't reach house yet
+            return false;
+        }else{ //zombie reaches house
+            gameOver=true;
+            return true;
+        }
+    }
+    public static void resetN(){n=0;}
     
 
     //Audio
@@ -266,20 +252,37 @@ public class Zombie extends Actor implements Comparable<Zombie>{
 
         if(n==wave+1){
             Audio.siren(); //play siren audio
-            World.setWave(2);
+            World.setWave(2); //set wave to 2
         }else if(n==wave+2){
             Audio.brain1();
-            World.setWave(0);
+            World.setWave(0); //set wave to 0
         }else if(n==wave+5){
             Audio.groan3();
         }else if(n==wave+8){
             Audio.groan1();
         }
     }
+
     public void yuck(){ //play yuck sound
+        try{
+            // create clip reference 
+            clip = AudioSystem.getClip(); 
+            // open audioInputStream to the clip 
+            clip.open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/wav/Yuck.wav")))); 
+        }catch(Exception ex){ 
+            ex.printStackTrace();
+        } 
         clip.start();
     }
     public void yuck2(){ //play yuck2 sound
-        clip2.start();
+        try{
+            // create clip reference 
+            clip = AudioSystem.getClip(); 
+            // open audioInputStream to the clip 
+            clip.open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/wav/Yuck2.wav")))); 
+        }catch(Exception ex){ 
+            ex.printStackTrace();
+        } 
+        clip.start();
     }
 }

@@ -35,7 +35,7 @@ public class Plant<T> extends Actor{
                 clip2 = AudioSystem.getClip();
                 clip.open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/wav/Cherry_enlarge.wav")))); 
                 clip2.open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/wav/Cherrybomb.wav")))); 
-            }catch(Exception ex)  { 
+            }catch(Exception ex){ 
                 ex.printStackTrace();
             }
         }else{}
@@ -128,7 +128,7 @@ public class Plant<T> extends Actor{
     }
 
     public void enlarge(){
-        cw+=1;ch+=1;
+        cw+=1; ch+=1;
     }
     public int getCw(){return cw;}
     public int getCh(){return ch;}

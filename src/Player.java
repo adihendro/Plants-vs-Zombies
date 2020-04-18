@@ -3,7 +3,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.GraphicsEnvironment;
-
 import javax.swing.JOptionPane;
 
 public class Player {
@@ -11,7 +10,6 @@ public class Player {
     private boolean shovel=false;
     private Font font;
 
-    //profil player
     public Player(){
         sunCredits=5000;
         temp=sunCredits;
@@ -24,15 +22,14 @@ public class Player {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(null, "Cannot open font!"); //show error dialog
         }
-        // font=new Font("Chalkboard", Font.BOLD, 20); //load font
+        //font=new Font("Chalkboard", Font.BOLD, 20); //load font
     }
 
-    public void draw(Graphics2D g){
-        //sunflower points
+    public void draw(Graphics2D g){ //sunflower points
         g.setFont(font); 
         g.setColor(Color.BLACK);
-        FontMetrics metrics = g.getFontMetrics(font); //font width and height
-        //to animate sunflower points change
+        FontMetrics metrics = g.getFontMetrics(font); //get font width and height
+        //animate sunflower points change
         if(sunCredits==temp){
             g.drawString(Integer.toString(temp), 91-(metrics.stringWidth(Integer.toString(temp))/2), 136);
         }else if(sunCredits<temp){
@@ -44,17 +41,14 @@ public class Player {
         }
     }
 
-    //add 25 credits
+    public int getCredits(){
+        return sunCredits;
+    }
     public void addSunCredits(){
         sunCredits+=25;
     }
-    // reset credit
     public void resetCredits(){
         sunCredits=5000;
-    }
-    //getter jumlah suncredit dari player
-    public int getCredits(){
-        return sunCredits;
     }
     
     public int getChoice(){
@@ -71,9 +65,8 @@ public class Player {
         this.shovel=shovel;
     }
 
-    //jumlah credit pada plants
     public void plant(){
-        switch (choice){
+        switch(choice){
             case 1: sunCredits-=50; break; //sunflower
             case 2: sunCredits-=100; break; //peashooter
             case 3: sunCredits-=150; break; //repeater
@@ -82,9 +75,3 @@ public class Player {
         }
     }
 }
-
-
-
-
-
-	

@@ -2,15 +2,13 @@ import java.awt.geom.Ellipse2D;
 import java.awt.event.ActionEvent;  
 import java.awt.event.ActionListener;
 import java.lang.Math;
-
 import javax.swing.Timer;
 import javax.sound.sampled.AudioSystem; 
 import javax.sound.sampled.Clip; 
 
 public class Sun{
     private int sunX, sunY, limitSunY; //falling sun x and y position (coordinate)
-    private boolean sunflower; //for sunflower's sun
-    private boolean waiting=false; //for waiting thread
+    private boolean sunflower, waiting=false; //waiting thread
     private Ellipse2D e_sun; //ellipse for falling sun
     private static Timer timer; //set timer
     private Clip clip;
@@ -24,20 +22,13 @@ public class Sun{
     }
 
     public Sun(int x, int y){
-        sunX=Plant.getCoor(x, y).getX()-15;
-        sunY=Plant.getCoor(x, y).getY()-30;
-        limitSunY=sunY+300;
+        sunX=Plant.getCoor(x,y).getX()-15;
+        sunY=Plant.getCoor(x,y).getY()-30;
         sunflower=true;
     }
 
     //initialization block
     {
-        try{
-            clip = AudioSystem.getClip();
-            clip.open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/wav/Points.wav")))); 
-        }catch(Exception ex){ 
-            ex.printStackTrace();
-        }
         tsun = new Thread(new SunWaits()); 
     }
 
@@ -94,6 +85,14 @@ public class Sun{
     }
 
     public void points(){ //play points sound
+        try{
+            // create clip reference 
+            clip = AudioSystem.getClip();
+            // open audioInputStream to the clip 
+            clip.open(AudioSystem.getAudioInputStream(Audio.class.getResource(("Assets/wav/Points.wav")))); 
+        }catch(Exception ex){ 
+            ex.printStackTrace();
+        }
         clip.start();
     }
 }

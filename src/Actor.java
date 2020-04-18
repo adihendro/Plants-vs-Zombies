@@ -8,7 +8,7 @@ public abstract class Actor{
         health-=damage;
     }
 
-    //is Actor dead method
+    //check is Actor dead
     public boolean isDead(){
         return health<=0;
     }

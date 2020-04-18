@@ -1,10 +1,9 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import javax.sound.sampled.AudioSystem; 
-import javax.sound.sampled.Clip; 
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
+import javax.sound.sampled.AudioSystem; 
+import javax.sound.sampled.Clip; 
 
 public class Audio{
     private static Clip[] clip = new Clip[20]; 
@@ -58,16 +57,17 @@ public class Audio{
     }
     public static void evillaugh(){
         clip[0].stop();
+        clip[0]=null;
         clip[9].start(); 
     }
 
     public static void begin(){
+        clip[9]=null;
         clip[2].stop();
         clip[3].stop();
         
         clip[1].start(); 
         clip[1].loop(Clip.LOOP_CONTINUOUSLY);
-       
         timer.start();
     }
 
