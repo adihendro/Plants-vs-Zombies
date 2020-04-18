@@ -155,7 +155,8 @@ public class World extends JPanel implements ActionListener{
                     plant.act();
 
                 }else if(plant.getType().equals(4)){ //wallnut gif
-                        g.drawImage(img[36], xp-(rwidth+20)/2, yp-(rheight+9)/2, rwidth+26, rheight+13, this);
+                        g.drawImage(img[36], xp-(pwidth+2)/2, yp-(pheight+6)/2, pwidth+4, pheight+8, this);
+                        // g.drawImage(img[36], xp-(rwidth+20)/2, yp-(rheight+9)/2, rwidth+26, rheight+13, this);
                 }else if(plant.getType().equals(5)){ //cherrybomb
                     if(plant.getCw()<110){ //enlarge
                         g.drawImage(img[30], xp-plant.getCw()/2-4, yp-plant.getCh()/2-4, plant.getCw(), plant.getCh(), this);
@@ -190,7 +191,6 @@ public class World extends JPanel implements ActionListener{
 
                 }else{
                     if(plant.getType().equals(2)){ //peashooter gif
-                        // g.drawImage(img[6], xp-(pwidth+2)/2, yp-(pheight+6)/2, pwidth+4, pheight+8, this); //wallnut
                         g.drawImage(img[6], xp-(pwidth+2)/2, yp-(pheight+2)/2, pwidth+2, pheight+2, this);
                     }else if(plant.getType().equals(3)){ //repeater gif
                         g.drawImage(img[7], xp-(rwidth+20)/2, yp-(rheight+9)/2, rwidth+26, rheight+13, this);
@@ -644,9 +644,9 @@ public class World extends JPanel implements ActionListener{
             img[33]=t.getImage(getClass().getResource("Assets/gif/Zombie_fly.gif"));
             img[34]=t.getImage(getClass().getResource("Assets/image/Background_menu.png"));
             img[35]=t.getImage(getClass().getResource("Assets/image/Wallnut.png"));
-            img[36]=t.getImage(getClass().getResource("Assets/gif/walnut_full_life.gif"));
-            img[37]=t.getImage(getClass().getResource("Assets/gif/walnut_half_life.gif"));
-            img[38]=t.getImage(getClass().getResource("Assets/gif/walnut_dead.gif"));
+            img[36]=t.getImage(getClass().getResource("Assets/gif/Walnut_full_life.gif"));
+            img[37]=t.getImage(getClass().getResource("Assets/gif/Walnut_half_life.gif"));
+            img[38]=t.getImage(getClass().getResource("Assets/gif/Walnut_dead.gif"));
         }catch(Exception ex){
             ex.printStackTrace();
             JOptionPane.showMessageDialog(null, "Cannot open image!"); //show error dialog
