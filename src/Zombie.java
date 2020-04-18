@@ -161,8 +161,8 @@ public class Zombie extends Actor implements Comparable<Zombie>{
             }
         }else if(n<=wave){ //hard
             timer.setDelay(interval*160);
-            if(n==wave){ //stop when wave zombies are about to come
-                timer.stop(); //wait for wave
+            if(n==wave){ //stop when final wave zombies are about to come
+                timer.stop(); //wait for final wave
             }
             random=(int)(Math.random() * 4); //generate zombie type from 0 to 3
             if(random<=1){ //0 or 1
@@ -212,7 +212,7 @@ public class Zombie extends Actor implements Comparable<Zombie>{
         timer2.stop(); //stop eating plant
     }
 
-    public static void startWave(){ //start wave
+    public static void startWave(){ //start final wave
         Audio.wave(); //play wave audio
         timer.setInitialDelay(5000);
         timer.start();
