@@ -32,8 +32,8 @@ public class World extends JPanel implements ActionListener{
     //img: 0.background, 1.sun, 2.sunflower, 3.peashooter, 4.repeater, 5.sungif, 6.peagif, 7.repgif, 8.zombie, 9.zombief 
     //10.pea_p, 11.wasted, 12.try again, 13.sun_g, 14.pea_g, 15.rep_g, 16.win, 17.play again, 18.brain, 19.pea_r, 
     //20.zombief2, 21.shovel, 22.shovel1, 23.shovel2, 24.progress1, 25.progress2, 26.progress3, 27.progress4
-
-    //28.hugewave, 29.finalwave, 30.cherry, 31.powie, 32.cherry_g 33. Flying Zombie
+    //28.hugewave, 29.finalwave, 30.cherry, 31.powie, 32.cherry_g, 33.zombie_fly, 34.background_menu, 
+    //35.wallnut, 36.wallnut_g, 37.wallgif_full, 38.wallgif_half
     private Image[] img = new Image[39];
 
     private Toolkit t = Toolkit.getDefaultToolkit();
@@ -60,7 +60,7 @@ public class World extends JPanel implements ActionListener{
     public World(){
         timer = new Timer(25, this); //set up timer for 25 milliseconds
 
-        try{ //load image menu
+        try{ //load main menu
             img[0]=Toolkit.getDefaultToolkit().getImage(getClass().getResource("Assets/image/Menu.jpg"));
         }catch(Exception ex){
             ex.printStackTrace();
@@ -107,41 +107,27 @@ public class World extends JPanel implements ActionListener{
         super.paintComponent(g);
         
         if(!start){
+            //draw main menu
             g.drawImage(img[0], 0, 0, 1024, 625, this);
             
         }else{
-            
             Graphics2D g2 = (Graphics2D) g;
+
             //draw background
-            g.drawImage(img[0], 0, 0, 1024, 626, this);
-            g.drawImage(img[34], 20, 25, 150, 580, this);
+            g.drawImage(img[0], 0, 0, 1024, 625, this);
 
             //draw progress
             xp = Math.round((205.0f/Zombie.getMax())*Zombie.getN());
             yp = Math.round((190.0f/Zombie.getMax())*Zombie.getN());
-            g.drawImage(img[27], 498+205-xp, 586, xp, 16, this); //draw greenbar (max 205 pixels)
-            g.drawImage(img[26], 490, 570, 215, 40, this); //draw bar
+            g.drawImage(img[27], 498+205-xp, 588, xp, 16, this); //draw greenbar (max 205 pixels)
+            g.drawImage(img[26], 490, 572, 215, 40, this); //draw bar
             if(Zombie.getN() <= Zombie.getMax()-5){
-                g.drawImage(img[25], 489, 562, 261, 49, this); //draw flag
+                g.drawImage(img[25], 489, 564, 261, 49, this); //draw flag
             }else{ //raise flag for the last 5 zombies
-                g.drawImage(img[25], 489, 550+Math.round((12.0f/5)*(Zombie.getMax()-Zombie.getN())), 261, 49, this);
+                g.drawImage(img[25], 489, 552+Math.round((12.0f/5)*(Zombie.getMax()-Zombie.getN())), 261, 49, this);
             }
-            g.drawImage(img[24], 675-yp, 572, 35, 38, this); //draw zombie head (485 to 675; max 190 pixels)
+            g.drawImage(img[24], 675-yp, 574, 35, 38, this); //draw zombie head (485 to 675; max 190 pixels)
             
-            //draw black&white plant menu
-            if(player.getCredits()<150){ //suncredits <150
-                g.drawImage(img[15], 40, 433, rwidth+2, rheight+1, this); //draw repeater g
-                if(player.getCredits()<100){ //suncredits <100
-                    g.drawImage(img[14], 41, 320, pwidth+2, pheight, this); //draw peashooter g
-                    if(player.getCredits()<50){ //suncredits <50
-                        g.drawImage(img[13], 42, 196, swidth, sheight, this); //draw sunflower g
-                    }
-                }
-            }
-
-            //draw sunflower points
-            player.draw(g2);
-
             //draw plant
             Iterator<Plant<Integer>> itpl = plants.iterator(); 
             while (itpl.hasNext()){
@@ -155,8 +141,12 @@ public class World extends JPanel implements ActionListener{
                     plant.act();
 
                 }else if(plant.getType().equals(4)){ //wallnut gif
-                        g.drawImage(img[36], xp-(pwidth+2)/2, yp-(pheight+6)/2, pwidth+4, pheight+8, this);
-                        // g.drawImage(img[36], xp-(rwidth+20)/2, yp-(rheight+9)/2, rwidth+26, rheight+13, this);
+                    if(plant.getHealth()>=100){ //wallnut full life
+                        g.drawImage(img[37], xp-(pwidth+2)/2, yp-(pheight+4)/2, pwidth+2, pheight+5, this);
+                    }else{ //wallnut half life
+                        g.drawImage(img[38], xp-(pwidth+2)/2, yp-(pheight+4)/2, pwidth+2, pheight+5, this);
+                    }
+
                 }else if(plant.getType().equals(5)){ //cherrybomb
                     if(plant.getCw()<110){ //enlarge
                         g.drawImage(img[30], xp-plant.getCw()/2-4, yp-plant.getCh()/2-4, plant.getCw(), plant.getCh(), this);
@@ -169,6 +159,7 @@ public class World extends JPanel implements ActionListener{
                             plant.cherrybomb(); //play cherrybomb sound
                             plant.setExplode(); //set explode to true
                             plant.startTimer(); //start waiting thread
+                            Plant.setOcc(i, j); //set spot to empty
                             
                             //kill zombie
                             Iterator<Zombie> itz = zombies.iterator(); 
@@ -182,9 +173,9 @@ public class World extends JPanel implements ActionListener{
                             }
                         }
                         if(plant.isTcherryAlive()){ //waiting thread running
+                            //draw explosion
                             g.drawImage(img[31], xp-150, yp-125, 300, 250, this);
                         }else{ //remove explosion
-                            Plant.setOcc(i, j); //set spot to empty
                             itpl.remove();
                         }
                     }      
@@ -226,7 +217,9 @@ public class World extends JPanel implements ActionListener{
                 Zombie zombie=itz.next();
                 
                 //if (zombie intersects plant) -> eat; else -> move
-                zombie.attack();
+                if(zombie.getType()!=3){ //not flying zombie
+                    zombie.attack();
+                }
 
                 fxp=zombie.getCoorX(); //get zombie x coordinate (float)
                 yp=zombie.getLane(); //get zombie lane (int)
@@ -242,6 +235,7 @@ public class World extends JPanel implements ActionListener{
                     }
                 }else if(zombie.getType()==3){ //flying zombie
                     g.drawImage(img[33], Math.round(fxp), zombie.getCoorY()-10, 103, 120, this);
+                    zombie.move();
                 }
 
                 //check if zombie intersects pea
@@ -299,14 +293,32 @@ public class World extends JPanel implements ActionListener{
                 win=true;
             }
 
+            //draw plant menu
+            g.drawImage(img[34], 15, 22, 150, 580, this);
+
+            //draw sunflower points
+            player.draw(g2);
+
+            //draw black&white plant menu
+            if(player.getCredits()<150){ //suncredits <150
+                g.drawImage(img[15], 33, 339, rwidth+2, rheight+2, this); //draw repeater g
+                g.drawImage(img[32], 30, 512, rwidth+7, rheight+6, this); //draw cherrybomb g
+                if(player.getCredits()<100){ //suncredits <100
+                    g.drawImage(img[14], 34, 255, pwidth+2, pheight, this); //draw peashooter g
+                    if(player.getCredits()<50){ //suncredits <50
+                        g.drawImage(img[13], 34, 164, swidth, sheight, this); //draw sunflower g
+                        g.drawImage(img[36], 32, 426, swidth-1, sheight-2, this); //draw wallnut g
+                    }
+                }
+            }
+
             //draw shovel
             if(!player.getShovel()){ //if shovel is idle
-                g.drawImage(img[22], 173, 549, 70, 70, this);
-                // g.drawImage(image, x, y, width, length, this);
+                g.drawImage(img[22], 171, 548, 70, 70, this);
             }else{ //if shovel is taken
-                g.drawImage(img[23], 173, 549, 70, 70, this);
+                g.drawImage(img[23], 171, 548, 70, 70, this);
                 //draw shovel following mouse position
-                g.drawImage(img[21], mouse.getX(), mouse.getY()-70, 70, 70, this);
+                g.drawImage(img[21], mouse.getX(), mouse.getY()-70, 68, 70, this);
             }
 
             //draw transparent plant following mouse position
@@ -316,19 +328,19 @@ public class World extends JPanel implements ActionListener{
                 g2.setComposite(AlphaComposite.SrcOver.derive(1f)); //set alpha back to 1
             }else if(player.getChoice()==2){ //peashooter
                 g2.setComposite(AlphaComposite.SrcOver.derive(0.7f));
-                g2.drawImage(img[3], mouse.getX()-pwidth/2, mouse.getY()-pheight/2, pwidth, pheight, this);
+                g2.drawImage(img[3], mouse.getX()-pwidth/2+1, mouse.getY()-pheight/2, pwidth+2, pheight, this);
                 g2.setComposite(AlphaComposite.SrcOver.derive(1f));
             }else if(player.getChoice()==3){ //repeater
                 g2.setComposite(AlphaComposite.SrcOver.derive(0.7f));
-                g2.drawImage(img[4], mouse.getX()-(rwidth+8)/2, mouse.getY()-(rheight+8)/2, rwidth+4, rheight+4, this);
+                g2.drawImage(img[4], mouse.getX()-rwidth/2+2, mouse.getY()-rheight/2+2, rwidth+2, rheight+2, this);
                 g2.setComposite(AlphaComposite.SrcOver.derive(1f));
             }else if(player.getChoice()==4){ //wallnut
                 g2.setComposite(AlphaComposite.SrcOver.derive(0.7f));
-                g2.drawImage(img[35], mouse.getX()-(rwidth+8)/2, mouse.getY()-(rheight+8)/2, rwidth+4, rheight+4, this);
+                g2.drawImage(img[35], mouse.getX()-(pwidth+2)/2, mouse.getY()-(pheight+6)/2, pwidth-1, pheight+3, this);
                 g2.setComposite(AlphaComposite.SrcOver.derive(1f));
             }else if(player.getChoice()==5){ //cherrybomb
                 g2.setComposite(AlphaComposite.SrcOver.derive(0.7f));
-                g2.drawImage(img[30], mouse.getX()-40, mouse.getY()-41, 80, 82, this);
+                g2.drawImage(img[30], mouse.getX()-37, mouse.getY()-38, 74, 76, this);
                 g2.setComposite(AlphaComposite.SrcOver.derive(1f));
             }
             
@@ -531,9 +543,11 @@ public class World extends JPanel implements ActionListener{
                             A: for(i=0;i<5;i++){
                                 for(j=0;j<9;j++){
                                     if(field[i][j].contains(e.getPoint())){ //plant the plant in field
-                                        if(plant.put(i,j,player.getChoice())){
+                                        if(plant.put(i,j,player.getChoice())){ //empty spot
                                             Audio.plant(); //play plant sound
                                             player.plant();
+                                        }else{ //plant exist in the spot
+                                            Audio.seedlift(); //play seedlift sound
                                         }
                                         player.setChoice(0);
                                         break A;
@@ -570,7 +584,7 @@ public class World extends JPanel implements ActionListener{
                                             }
                                         }
                                     }
-                                    break A; //field empty
+                                    break A; //empty spot
                                 }
                             }
                         }
@@ -644,9 +658,9 @@ public class World extends JPanel implements ActionListener{
             img[33]=t.getImage(getClass().getResource("Assets/gif/Zombie_fly.gif"));
             img[34]=t.getImage(getClass().getResource("Assets/image/Background_menu.png"));
             img[35]=t.getImage(getClass().getResource("Assets/image/Wallnut.png"));
-            img[36]=t.getImage(getClass().getResource("Assets/gif/Walnut_full_life.gif"));
-            img[37]=t.getImage(getClass().getResource("Assets/gif/Walnut_half_life.gif"));
-            img[38]=t.getImage(getClass().getResource("Assets/gif/Walnut_dead.gif"));
+            img[36]=t.getImage(getClass().getResource("Assets/image/Wallnut_g.png"));
+            img[37]=t.getImage(getClass().getResource("Assets/gif/Wallnut_full.gif"));
+            img[38]=t.getImage(getClass().getResource("Assets/gif/Wallnut_half.gif"));
         }catch(Exception ex){
             ex.printStackTrace();
             JOptionPane.showMessageDialog(null, "Cannot open image!"); //show error dialog
@@ -661,7 +675,6 @@ public class World extends JPanel implements ActionListener{
         rec[6] = new Rectangle(30, 425, pwidth+70, pheight+15); //wallnut
         rec[7] = new Rectangle(30, 510, pwidth+70, pheight+20); //cherrybomb
         rec[2] = new Rectangle(0, 0, 1024, 626); //end
-        // Rectangle(x, y, width, height); 
 
         //create ellipse for shovel
         e_shovel = new Ellipse2D.Float(173, 549, 70, 70);

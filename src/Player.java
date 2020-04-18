@@ -34,13 +34,13 @@ public class Player {
         FontMetrics metrics = g.getFontMetrics(font); //font width and height
         //to animate sunflower points change
         if(sunCredits==temp){
-            g.drawString(Integer.toString(temp), 74-(metrics.stringWidth(Integer.toString(temp))/2), 165);
+            g.drawString(Integer.toString(temp), 91-(metrics.stringWidth(Integer.toString(temp))/2), 136);
         }else if(sunCredits<temp){
             temp-=5;
-            g.drawString(Integer.toString(temp), 74-(metrics.stringWidth(Integer.toString(temp))/2), 165);
+            g.drawString(Integer.toString(temp), 91-(metrics.stringWidth(Integer.toString(temp))/2), 136);
         }else{ //sunCredits>temp
             temp+=5;
-            g.drawString(Integer.toString(temp), 74-(metrics.stringWidth(Integer.toString(temp))/2), 165);
+            g.drawString(Integer.toString(temp), 91-(metrics.stringWidth(Integer.toString(temp))/2), 136);
         }
     }
 

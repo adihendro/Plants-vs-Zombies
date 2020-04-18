@@ -28,6 +28,7 @@ public class Plant<T> extends Actor{
         }else if(type.equals(4)){ //Wallnut
             super.health = 200;
         }else if(type.equals(5)){ //Cherrybomb
+            super.health = 200;
             tcherry = new Thread(new CherryWaits()); 
             try{
                 clip = AudioSystem.getClip();
@@ -69,6 +70,7 @@ public class Plant<T> extends Actor{
     public int getX(){return x;}
     public int getY(){return y;}
     public T getType(){return type;}
+    public int getHealth(){return health;}
     public boolean isThreaten(){return threaten;}
     public static int getOcc(int x, int y){return occ[x][y];}
     public static Point getCoor(int x, int y){return coor[x][y];}
