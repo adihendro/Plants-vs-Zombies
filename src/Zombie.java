@@ -25,11 +25,11 @@ public class Zombie extends Actor implements Comparable<Zombie>{
             zombieDamage=10;
             zombieSpeed=0.3f;
         }else if(type==2){ //Football zombie
-            super.health=70;
+            super.health=75;
             zombieDamage=15;
             zombieSpeed=0.55f;
         }else if(type==3){ //Flying zombie
-	        super.health=55;
+	        super.health=60;
             zombieSpeed=0.4f;
         }
     }
@@ -174,12 +174,12 @@ public class Zombie extends Actor implements Comparable<Zombie>{
             }
         }else{ //(n<=max) extreme
             timer.setDelay(interval*80);
-            random=(int)(Math.random() * 5); //generate zombie type from 0 to 4
-            if(random<=1){ //0 or 1
+            random=(int)(Math.random() * 6); //generate zombie type from 0 to 5
+            if(random<=2){ //0, 1, or 2
                 return 2; //football zombie
-            }else if(random<=3){ //2 or 3
+            }else if(random<=4){ //3 or 4
                 return 3; //flying zombie
-            }else{ //4
+            }else{ //5
                 return 1; //normal zombie
             }
         }
