@@ -19,10 +19,11 @@ invasion. The house is located on the left side of the screen and zombies will c
 use several kinds of plants to kill and stop zombies from getting into the house. Player wins if all zombies
 were killed and no zombie reaches the house. If there is any zombie gets into the house, player will lose.
 
-The game will start with 50 sunflower points. Every 5 seconds a sun will fall from the sky
+The game start with 50 sunflower points. Every 5 seconds a sun will fall from the sky. A sun is worth 25 sunflower points.
 There will be 20 zombies in the first wave and 30 zombies later, making a total of 50 zombies.
 
 Below are characters inside the game and their statistics:
+
 —Plants—
 
 1. Sunflower 
