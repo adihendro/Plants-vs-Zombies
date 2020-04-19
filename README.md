@@ -1,14 +1,13 @@
 # Plants vs Zombies
 Java Swing PVZ Game
 
+## Welcome to Plants vs Zombies!
 
-Welcome to Plants vs Zombies!
-
-Before playing, there are few things to know:
+### Before playing, there are few things to know:
 1. This game needs mouse to operate. Make sure you have the right input device.
 2. This game equipped with in-game sound effects. Make sure to turn your volume on.
 
-How to run the program:
+### How to run the program:
 1. Put all files into 1 folder
 2. Open command prompt (Windows) or terminal (macOS) in that folder
 3. Compile all .java files with command:
@@ -16,7 +15,7 @@ How to run the program:
 4. Run the program with command: java Main
 5. Enjoy!
 
-Tips:
+### Tips:
 After compiling all .java files, you can create a jar file
 1. Put PVZ.mf file in the compiled .class folder
 2. Create jar file with command:
@@ -24,7 +23,7 @@ After compiling all .java files, you can create a jar file
 3. Run the program by simply double clicking PVZ.jar file
 
 
-About the game:
+### About the game:
 This game, for most parts, looks like distinguished "Plant vs Zombie". The goal is to protect the house from zombies
 invasion. The house is located on the left side of the screen and zombies will come from the right side. Player may
 use several kinds of plants to kill and stop zombies from getting into the house. Player wins if all zombies
@@ -35,7 +34,7 @@ There will be 20 zombies in the first wave and 30 zombies later, making a total 
 
 Below are characters inside the game and their statistics:
 
-—Plants—
+### —Plants—
 
 1. Sunflower
 Produce 1 sun every 10 seconds
@@ -66,7 +65,7 @@ health: 200
 damage: Massive
 range: 3x3
 
-—Zombies—
+### —Zombies—
 
 1. Normal Zombie
 Just a normal zombie
