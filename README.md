@@ -55,7 +55,7 @@ health: 60
 damage: 5x2
 
 4. Wallnut
-Block zombies
+Block zombies except Flying Zombie
 price: 50 
 health: 200
 
