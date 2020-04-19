@@ -34,7 +34,7 @@ There will be 20 zombies in the first wave and 30 zombies later, making a total 
 
 Below are characters inside the game and their statistics:
 
-### —Plants—
+### Plants
 
 1. Sunflower
 Produce 1 sun every 10 seconds
@@ -65,7 +65,7 @@ health: 200
 damage: Massive
 range: 3x3
 
-### —Zombies—
+### Zombies
 
 1. Normal Zombie
 Just a normal zombie
