@@ -11,15 +11,15 @@ Java Swing PVZ Game
 1. Put all files into 1 folder
 2. Open command prompt (Windows) or terminal (macOS) in that folder
 3. Compile all .java files with command:
-   javac Main.java World.java Actor.java Audio.java Plant.java Zombie.java Player.java Pea.java Sun.java Point.java
-4. Run the program with command: java Main
+   `javac Main.java World.java Actor.java Audio.java Plant.java Zombie.java Player.java Pea.java Sun.java Point.java`
+4. Run the program with command: `java Main`
 5. Enjoy!
 
 ### Tips:
 After compiling all .java files, you can create a jar file
 1. Put PVZ.mf file in the compiled .class folder
 2. Create jar file with command:
-   jar cmf PVZ.mf PVZ.jar *.class Assets
+   `jar cmf PVZ.mf PVZ.jar *.class Assets`
 3. Run the program by simply double clicking PVZ.jar file
 
 
