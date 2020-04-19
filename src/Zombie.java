@@ -154,10 +154,10 @@ public class Zombie extends Actor implements Comparable<Zombie>{
             return 1; //normal zombie
         }else if(n<=6){ //medium
             timer.setDelay(interval*200);
-            if((int)(Math.random() * 4)==2){ //generate zombie type from 0 to 3
+            if((int)(Math.random() * 3)==2){ //generate zombie type from 0 to 2
                 return 2; //football zombie
             }else{
-                return 1; //normal zombiee
+                return 1; //normal zombie
             }
         }else if(n<=wave){ //hard
             timer.setDelay(interval*160);
