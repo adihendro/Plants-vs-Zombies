@@ -227,7 +227,7 @@ public class World extends JPanel implements ActionListener{
                 if(zombie.getType()==1){ //standard zombie
                     g.drawImage(img[8], Math.round(fxp), zombie.getCoorY(), pwidth+11, pheight+53, this);   
                 }else if(zombie.getType()==2){ //football zombie
-                    if(zombie.getHealth()>=37){ //zombie uses helmet
+                    if(zombie.getHealth()>=45){ //zombie uses helmet
                         g.drawImage(img[9], Math.round(fxp), zombie.getCoorY(), this);
                     }else{ //zombie doesn't use helmet
                         g.drawImage(img[20], Math.round(fxp), zombie.getCoorY(), this);
@@ -302,14 +302,16 @@ public class World extends JPanel implements ActionListener{
             player.draw(g2);
 
             //draw black&white plant menu
-            if(player.getCredits()<150){
+            if(player.getCredits()<200){
                 g.drawImage(img[15], 33, 339, rwidth+2, rheight+2, this); //draw repeater g
-                g.drawImage(img[32], 30, 512, rwidth+7, rheight+6, this); //draw cherrybomb g
-                if(player.getCredits()<100){
-                    g.drawImage(img[14], 34, 255, pwidth+2, pheight, this); //draw peashooter g
-                    if(player.getCredits()<50){
-                        g.drawImage(img[13], 34, 164, swidth, sheight, this); //draw sunflower g
-                        g.drawImage(img[36], 32, 426, swidth-1, sheight-2, this); //draw wallnut g
+                if(player.getCredits()<150){
+                    g.drawImage(img[32], 30, 512, rwidth+7, rheight+6, this); //draw cherrybomb g
+                    if(player.getCredits()<100){
+                        g.drawImage(img[14], 34, 255, pwidth+2, pheight, this); //draw peashooter g
+                        if(player.getCredits()<50){
+                            g.drawImage(img[13], 34, 164, swidth, sheight, this); //draw sunflower g
+                            g.drawImage(img[36], 32, 426, swidth-1, sheight-2, this); //draw wallnut g
+                        }
                     }
                 }
             }
@@ -485,6 +487,7 @@ public class World extends JPanel implements ActionListener{
                                 player.setChoice((player.getChoice()==1) ? 0:1);
                             }else{
                                 Audio.buzzer(); //play buzzer sound
+                                player.setChoice(0);
                             }
                         }else if(rec[4].contains(e.getPoint())) { //click peashooter
                             if(player.getCredits()>=100){
@@ -492,13 +495,15 @@ public class World extends JPanel implements ActionListener{
                                 player.setChoice((player.getChoice()==2) ? 0:2);
                             }else{
                                 Audio.buzzer(); //play buzzer sound
+                                player.setChoice(0);
                             }
                         }else if(rec[5].contains(e.getPoint())) { //click repeater
-                            if(player.getCredits()>=150){
+                            if(player.getCredits()>=200){
                                 Audio.seedlift(); //play seedlift sound
                                 player.setChoice((player.getChoice()==3) ? 0:3);
                             }else{
                                 Audio.buzzer(); //play buzzer sound
+                                player.setChoice(0);
                             }
                         }else if(rec[6].contains(e.getPoint())) { //click wallnut
                             if(player.getCredits()>=50){
@@ -506,6 +511,7 @@ public class World extends JPanel implements ActionListener{
                                 player.setChoice((player.getChoice()==4) ? 0:4);
                             }else{
                                 Audio.buzzer(); //play buzzer sound
+                                player.setChoice(0);
                             }
                         }else if(rec[7].contains(e.getPoint())) { //click cherrybomb
                             if(player.getCredits()>=150){
@@ -513,6 +519,7 @@ public class World extends JPanel implements ActionListener{
                                 player.setChoice((player.getChoice()==5) ? 0:5);
                             }else{
                                 Audio.buzzer(); //play buzzer sound
+                                player.setChoice(0);
                             }
                         }else if(player.getChoice()!=0){ //to click field
                             A: for(i=0;i<5;i++){

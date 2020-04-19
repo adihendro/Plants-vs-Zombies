@@ -69,7 +69,7 @@ public class Player {
         switch(choice){
             case 1: sunCredits-=50; break; //sunflower
             case 2: sunCredits-=100; break; //peashooter
-            case 3: sunCredits-=150; break; //repeater
+            case 3: sunCredits-=200; break; //repeater
             case 4: sunCredits-=50; break; //wallnut
             case 5: sunCredits-=150; break; //cherrybomb
         }
