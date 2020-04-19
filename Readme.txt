@@ -5,12 +5,19 @@ Before playing, there are few things to know:
 2. This game equipped with in-game sound effects. Make sure to turn your volume on.
 
 How to run the program:
-1. Put all .java files into 1 folder
+1. Put all files into 1 folder
 2. Open command prompt (Windows) or terminal (macOS) in that folder
-3. Compile all the files with command:
+3. Compile all .java files with command:
    javac Main.java World.java Actor.java Audio.java Plant.java Zombie.java Player.java Pea.java Sun.java Point.java
 4. Run the program with command: java Main
 5. Enjoy!
+
+Tips:
+After compiling all .java files, you can create a jar file
+1. Put PVZ.mf file in the compiled .class folder
+2. Create jar file with command:
+   jar cmf PVZ.mf PVZ.jar *.class Assets
+3. Run the program by simply double clicking PVZ.jar file
 
 
 About the game:
@@ -45,7 +52,7 @@ damage: 5
 
 4. Wallnut
 Block zombies
-price: 150 
+price: 50 
 health: 200
 
 5. Cherrybomb
@@ -70,6 +77,7 @@ damage: 15
 speed: 0.55
 
 3. Flying Zombie
-This zombie flies through any plant up front. It can't eat your plant either
+Fly through any plant on the field. It can't eat the plant either.
+Why? Because it flies!
 health: 60
 speed: 0.4
