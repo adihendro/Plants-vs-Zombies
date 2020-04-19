@@ -10,7 +10,7 @@ Java Swing PVZ Game
 ### How to run the program:
 1. Put all files into 1 folder
 2. Open command prompt (Windows) or terminal (macOS) in that folder
-3. Compile all .java files with command:
+3. Compile all .java files with command: <br>
    `javac Main.java World.java Actor.java Audio.java Plant.java Zombie.java Player.java Pea.java Sun.java Point.java`
 4. Run the program with command: `java Main`
 5. Enjoy!
@@ -36,51 +36,51 @@ Below are characters inside the game and their statistics:
 
 #### Plants
 
-1. Sunflower
-Produce 1 sun every 10 seconds
-price: 50
+1. Sunflower <br>
+Produce 1 sun every 10 seconds <br>
+price: 50 <br>
 health: 40
 
-2. Peashooter
-Shoot 1 pea every 2 seconds
-price: 100 
-health: 40
+2. Peashooter <br>
+Shoot 1 pea every 2 seconds <br>
+price: 100  <br>
+health: 40 <br>
 damage: 6
 
-3. Repeater
-Shoot 2 peas every 2 seconds
-price: 200 
-health: 60
+3. Repeater <br>
+Shoot 2 peas every 2 seconds <br>
+price: 200  <br>
+health: 60 <br>
 damage: 5x2
 
-4. Wallnut
-Block zombies
-price: 50 
+4. Wallnut <br>
+Block zombies <br>
+price: 50  <br>
 health: 200
 
-5. Cherrybomb
-Explode and kill all zombies around
-price: 150 
-health: 200
-damage: Massive
+5. Cherrybomb <br>
+Explode and kill all zombies around <br>
+price: 150  <br>
+health: 200 <br>
+damage: Massive <br>
 range: 3x3
 
 #### Zombies
 
-1. Normal Zombie
-Just a normal zombie
-health: 50
-damage: 10
+1. Normal Zombie <br>
+Just a normal zombie <br>
+health: 50 <br>
+damage: 10 <br>
 speed: 0.3
 
-2. Football Zombie 
-Have double protection from helmet
-health: 90
-damage: 15
+2. Football Zombie  <br>
+Have double protection from helmet <br>
+health: 90 <br>
+damage: 15 <br>
 speed: 0.55
 
-3. Flying Zombie
-Fly through any plant on the field. It can't eat the plant either.
-Why? Because it flies!
-health: 60
+3. Flying Zombie <br>
+Fly through any plant on the field. It can't eat the plant either.  <br>
+Why? Because it flies! <br>
+health: 60 <br>
 speed: 0.4
