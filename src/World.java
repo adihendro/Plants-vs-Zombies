@@ -560,7 +560,7 @@ public class World extends JPanel implements ActionListener{
                                         }
                                         for(Zombie zombie: zombies){
                                             if(zombie.getLane()==i && zombie.getColumn()==j){
-                                                zombie.stopEat(); //stop attacking plant
+                                                zombie.stopEat(); //stop eating plant
                                             }
                                         }
                                     }
@@ -580,20 +580,23 @@ public class World extends JPanel implements ActionListener{
                         play=true;
                         win=false;
                         end_sound=true;
-                        player.resetCredits();
+			            for(Zombie zombie: zombies){
+                            zombie.stopEat(); //stop eating plant
+                        }
                         plants.clear();
                         zombies.clear();
                         Zombie.resetN();
                         Zombie.resetGameOver();
-                        
-                        Audio.begin();
-                        Sun.start();
-                        Zombie.start(18);
-                        for(i=0;i<5;i++){
+			            player.resetCredits();
+			            for(i=0;i<5;i++){
                             for(j=0;j<9;j++){
                                 Plant.setOcc(i, j);
                             }
                         }
+                        
+                        Audio.begin();
+                        Sun.start();
+                        Zombie.start(18);   
                     }
                 }
             }
