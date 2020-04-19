@@ -21,11 +21,11 @@ public class Zombie extends Actor implements Comparable<Zombie>{
         coorX=1020f;
         coorY=arrY[setLane()];
         if(type==1){ //Normal zombie
-            super.health=45;
+            super.health=50;
             zombieDamage=10;
             zombieSpeed=0.3f;
         }else if(type==2){ //Football zombie
-            super.health=75;
+            super.health=90;
             zombieDamage=15;
             zombieSpeed=0.55f;
         }else if(type==3){ //Flying zombie
@@ -126,14 +126,14 @@ public class Zombie extends Actor implements Comparable<Zombie>{
         int c=9;
         if(type==2){ //football zombie
             A: for(int i=8;i>=0;i--){
-                if(coorX<=column[i]-18 && coorX>column[i]-72){
+                if(coorX<=column[i]-14 && coorX>column[i]-78){
                     c=i;
                     break A;
                 }
             }
         }else{
             A: for(int i=8;i>=0;i--){
-                if(coorX<=column[i] && coorX>column[i]-60){
+                if(coorX<=column[i]+4 && coorX>column[i]-60){
                     c=i;
                     break A;
                 }
