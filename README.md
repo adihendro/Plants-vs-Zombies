@@ -3,7 +3,7 @@ Java Swing PVZ Game
 
 ## Welcome to Plants vs Zombies!
 
-### Before playing, there are few things to know:
+### Before playing, there are a few things to know:
 1. This game needs mouse to operate. Make sure you have the right input device.
 2. This game equipped with in-game sound effects. Make sure to turn your volume on.
 
