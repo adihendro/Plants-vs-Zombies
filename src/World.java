@@ -233,7 +233,7 @@ public class World extends JPanel implements ActionListener{
                         g.drawImage(img[20], Math.round(fxp), zombie.getCoorY(), this);
                     }
                 }else if(zombie.getType()==3){ //flying zombie
-                    g.drawImage(img[33], Math.round(fxp), zombie.getCoorY()-10, 101, 120, this);
+                    g.drawImage(img[33], Math.round(fxp), zombie.getCoorY()-15, 101, 120, this);
                     zombie.move();
                 }
 
