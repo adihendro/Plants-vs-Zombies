@@ -8,15 +8,17 @@ Java Swing PVZ Game
 2. This game equipped with in-game sound effects. Make sure to turn your volume on.
 
 ### How to run the game:
+Just open PVZ.jar file
+#### or compile java files:
 1. Go to src folder
 2. Open command prompt (Windows) or terminal (macOS)
-3. Compile all .java files with command: <br>
+3. Compile all java files with command: <br>
    `javac Main.java World.java Actor.java Audio.java Plant.java Zombie.java Player.java Pea.java Sun.java Point.java`
 4. Run the program with command: `java Main`
 5. Enjoy!
 
 ### Tips:
-After compiling all .java files, you can create a jar file
+After compiling all java files, you can create a jar file
 1. Put PVZ.mf file in the compiled .class folder
 2. Create jar file with command:
    `jar cmf PVZ.mf PVZ.jar *.class Assets`
@@ -24,10 +26,7 @@ After compiling all .java files, you can create a jar file
 
 
 ### About the game:
-This game looks like distinguished "Plants vs Zombies". Your goal is to protect a house from zombies
-invasion. The house is located on the left and zombies will come from the right. You can
-use several kinds of plants to kill and stop zombies from getting into the house. You win if all zombies
-are killed and no zombie gets into the house. If any zombie reaches the house, you will lose.
+This game looks like distinguished "Plants vs Zombies". Your goal is to protect a house from zombies invasion. The house is located on the left and zombies will come from the right. You can use several kinds of plants to kill and stop zombies from getting into the house. You win if all zombies are killed and no zombie gets into the house. If any zombie reaches the house, you will lose.
 
 The game starts with 50 sunflower points. A sun will fall from the sky every 5 seconds. The sun is worth 25 sunflower points.
 There are 20 zombies in the first wave and 30 zombies later, making a total of 50 zombies.
