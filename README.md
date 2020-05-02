@@ -58,5 +58,3 @@ Game's characters and statistics:
 ![Gameplay 1](Screenshots/Gameplay1.jpg "Gameplay 1")
 ### Gameplay 2
 ![Gameplay 2](Screenshots/Gameplay2.jpg "Gameplay 2")
-### Gameplay 3
-![Gameplay 3](Screenshots/Gameplay3.jpg "Gameplay 3")
