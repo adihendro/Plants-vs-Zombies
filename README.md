@@ -31,7 +31,7 @@ This game looks like distinguished "Plants vs Zombies". Your goal is to protect 
 The game starts with 50 sunflower points. A sun will fall from the sky every 5 seconds. The sun is worth 25 sunflower points.
 There are 20 zombies in the first wave and 30 zombies later, making a total of 50 zombies.
 
-Game's characters and statistics:
+#### Game's characters and statistics:
 
 | **PLANTS** | Sunflower | Peashooter | Repeater | Wallnut | Cherrybomb |
 | :----------: | :----------: | :----------: | :----------: | :----------: | :----------: |
