@@ -1,5 +1,5 @@
 # Plants vs Zombies
-Java Swing Game
+Java Swing PVZ Game
 
 ## Welcome to Plants vs Zombies!
 
@@ -47,3 +47,11 @@ Game's characters and statistics:
 | Health | 50 | 90 | 60 |
 | Damage | 12 | 15 | - |
 | Speed | 0.3 | 0.5 | 0.4 |
+
+### Screenshots:
+
+![Main Menu](Screenshots/MainMenu.png "Philadelphia's Magic Gardens")
+![Game](Screenshots/Game.png "Philadelphia's Magic Gardens")
+![Gameplay 1](Screenshots/Gameplay1.png "Philadelphia's Magic Gardens")
+![Gameplay 2](Screenshots/Gameplay2.png "Philadelphia's Magic Gardens")
+![Gameplay 3](Screenshots/Gameplay3.png "Philadelphia's Magic Gardens")
