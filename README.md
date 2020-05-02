@@ -48,10 +48,15 @@ Game's characters and statistics:
 | Damage | 12 | 15 | - |
 | Speed | 0.3 | 0.5 | 0.4 |
 
-### Screenshots:
 
+## Screenshots:
+### Main Menu
 ![Main Menu](Screenshots/MainMenu.jpg "Main Menu")
+### Game
 ![Game](Screenshots/Game.jpg "Game")
+### Gameplay 1
 ![Gameplay 1](Screenshots/Gameplay1.jpg "Gameplay 1")
+### Gameplay 2
 ![Gameplay 2](Screenshots/Gameplay2.jpg "Gameplay 2")
+### Gameplay 3
 ![Gameplay 3](Screenshots/Gameplay3.jpg "Gameplay 3")
