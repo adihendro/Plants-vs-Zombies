@@ -50,8 +50,8 @@ Game's characters and statistics:
 
 ### Screenshots:
 
-![Main Menu](Screenshots/MainMenu.png "Philadelphia's Magic Gardens")
-![Game](Screenshots/Game.png "Philadelphia's Magic Gardens")
-![Gameplay 1](Screenshots/Gameplay1.png "Philadelphia's Magic Gardens")
-![Gameplay 2](Screenshots/Gameplay2.png "Philadelphia's Magic Gardens")
-![Gameplay 3](Screenshots/Gameplay3.png "Philadelphia's Magic Gardens")
+![Main Menu](Screenshots/MainMenu.jpg "Main Menu")
+![Game](Screenshots/Game.jpg "Game")
+![Gameplay 1](Screenshots/Gameplay1.jpg "Gameplay 1")
+![Gameplay 2](Screenshots/Gameplay2.jpg "Gameplay 2")
+![Gameplay 3](Screenshots/Gameplay3.jpg "Gameplay 3")
