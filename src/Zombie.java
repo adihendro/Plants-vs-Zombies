@@ -22,12 +22,12 @@ public class Zombie extends Actor implements Comparable<Zombie>{
         coorY=arrY[setLane()];
         if(type==1){ //Normal zombie
             super.health=50;
-            zombieDamage=10;
+            zombieDamage=12;
             zombieSpeed=0.3f;
         }else if(type==2){ //Football zombie
             super.health=90;
             zombieDamage=15;
-            zombieSpeed=0.55f;
+            zombieSpeed=0.5f;
         }else if(type==3){ //Flying zombie
 	        super.health=60;
             zombieSpeed=0.4f;
@@ -150,7 +150,7 @@ public class Zombie extends Actor implements Comparable<Zombie>{
     
     public static int setType(){
         if(n<=3){ //easy
-            timer.setDelay(interval*550);
+            timer.setDelay(interval*450);
             return 1; //normal zombie
         }else if(n<=6){ //medium
             timer.setDelay(interval*200);
@@ -214,7 +214,7 @@ public class Zombie extends Actor implements Comparable<Zombie>{
 
     public static void startWave(){ //start final wave
         Audio.wave(); //play wave audio
-        timer.setInitialDelay(5000);
+        timer.setInitialDelay(4000);
         timer.start();
         World.setWave(1); //set wave to 1
     }

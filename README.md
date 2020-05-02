@@ -38,12 +38,12 @@ Game's characters and statistics:
 | :----------: | :----------: | :----------: | :----------: | :----------: | :----------: |
 | Description | Produce 1 sun every 10 seconds | Shoot 1 pea every 2 seconds | Shoot 2 peas every 2 seconds | Block zombies except Flying Zombie | Explode and kill all zombies around |
 | Price | 50 | 100 | 200 | 50 | 150 |
-| Health | 40 | 40 | 60 | 200 | 200 |
+| Health | 50 | 50 | 70 | 300 | 200 |
 | Damage | - | 6 | 5x2 | - | Massive |
 
 | **ZOMBIES** | Normal Zombie | Football Zombie | Flying Zombie |
 | :----------: | :----------: | :----------: | :----------: |
 | Description | Just a normal zombie | Have double protection from helmet | Fly through any plant on the field <br> It can't eat the plant either |
 | Health | 50 | 90 | 60 |
-| Damage | 10 | 15 | - |
-| Speed | 0.3 | 0.55 | 0.4 |
+| Damage | 12 | 15 | - |
+| Speed | 0.3 | 0.5 | 0.4 |

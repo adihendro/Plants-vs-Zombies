@@ -85,7 +85,7 @@ public class World extends JPanel implements ActionListener{
     public void start(){
         player = new Player();
         Sun.start();
-        Zombie.start(18);
+        Zombie.start(16);
         
         getImg(); //load image from disk
         init();
@@ -140,7 +140,7 @@ public class World extends JPanel implements ActionListener{
                     plant.act();
 
                 }else if(plant.getType().equals(4)){ //wallnut gif
-                    if(plant.getHealth()>=100){ //wallnut full life
+                    if(plant.getHealth()>=150){ //wallnut full life
                         g.drawImage(img[37], xp-(pwidth+2)/2, yp-(pheight+4)/2, pwidth+2, pheight+5, this);
                     }else{ //wallnut half life
                         g.drawImage(img[38], xp-(pwidth+2)/2, yp-(pheight+4)/2, pwidth+2, pheight+5, this);
@@ -596,7 +596,7 @@ public class World extends JPanel implements ActionListener{
                         
                         Audio.begin();
                         Sun.start();
-                        Zombie.start(18);   
+                        Zombie.start(16);   
                     }
                 }
             }

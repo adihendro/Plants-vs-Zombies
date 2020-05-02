@@ -20,13 +20,13 @@ public class Plant<T> extends Actor{
         this.x=x;
         this.y=y;
         if(type.equals(1)){ //Sunflower
-            super.health = 40;
+            super.health = 50;
         }else if(type.equals(2)){ //Peashooter
-            super.health = 40;
+            super.health = 50;
         }else if(type.equals(3)){ //Repeater
-            super.health = 60;
+            super.health = 70;
         }else if(type.equals(4)){ //Wallnut
-            super.health = 200;
+            super.health = 300;
         }else if(type.equals(5)){ //Cherrybomb
             super.health = 200;
             tcherry = new Thread(new CherryWaits()); 
