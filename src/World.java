@@ -528,8 +528,6 @@ public class World extends JPanel implements ActionListener{
                                         if(plant.put(i,j,player.getChoice())){ //empty spot
                                             Audio.plant(); //play plant sound
                                             player.plant();
-                                        }else{ //plant exist in the spot
-                                            Audio.seedlift(); //play seedlift sound
                                         }
                                         player.setChoice(0);
                                         break A;
@@ -537,7 +535,6 @@ public class World extends JPanel implements ActionListener{
                                 }
                             }
                             if(i==5){ //not selected a plant-able area
-                                Audio.seedlift(); //play seedlift sound
                                 player.setChoice(0);
                             }
                         }

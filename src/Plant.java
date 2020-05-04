@@ -50,13 +50,13 @@ public class Plant<T> extends Actor{
             }
         });
         
-        //repeater shoots second pea every 2.15 seconds
+        //repeater shoots second pea every 2.2 seconds
         timer2=new Timer(2000, new ActionListener(){
             public void actionPerformed(ActionEvent e) {
                 World.peas.add(new Pea(3, x, y));
             }
         });
-        timer2.setInitialDelay(2150);
+        timer2.setInitialDelay(2200);
 
         //drop sun every 10 seconds
         timer3=new Timer(10000, new ActionListener(){

@@ -75,7 +75,7 @@ public class Zombie extends Actor implements Comparable<Zombie>{
             }
         });
         timer.start();
-        timer.setDelay(interval*800);
+        timer.setDelay(interval*900);
     }
     public static void stop(){
         timer.stop(); //stop deploying zombie
@@ -150,17 +150,17 @@ public class Zombie extends Actor implements Comparable<Zombie>{
     
     public static int setType(){
         if(n<=3){ //easy
-            timer.setDelay(interval*450);
+            timer.setDelay(interval*550);
             return 1; //normal zombie
         }else if(n<=6){ //medium
-            timer.setDelay(interval*200);
+            timer.setDelay(interval*250);
             if((int)(Math.random() * 3)==2){ //generate zombie type from 0 to 2
                 return 2; //football zombie
             }else{
                 return 1; //normal zombie
             }
         }else if(n<=wave){ //hard
-            timer.setDelay(interval*160);
+            timer.setDelay(interval*200);
             if(n==wave){ //stop when final wave zombies are about to come
                 timer.stop(); //wait for final wave
             }
@@ -173,7 +173,7 @@ public class Zombie extends Actor implements Comparable<Zombie>{
                 return 3; //flying zombie
             }
         }else{ //(n<=max) extreme
-            timer.setDelay(interval*80);
+            timer.setDelay(interval*100);
             random=(int)(Math.random() * 6); //generate zombie type from 0 to 5
             if(random<=2){ //0, 1, or 2
                 return 2; //football zombie
